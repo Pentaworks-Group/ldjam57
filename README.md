@@ -1,4 +1,4 @@
-![Title](https://github.com/Pentaworks-Group/ldjamTemplate/Data/Pentaworks.png)
+![Title](https://github.com/Pentaworks-Group/ldjamTemplate/Data/Pentaworks.png?raw=true)
 
 # LDJam Template
 link LDJAM
