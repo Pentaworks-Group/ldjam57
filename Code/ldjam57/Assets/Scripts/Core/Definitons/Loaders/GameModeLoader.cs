@@ -62,7 +62,7 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                                 {
                                     Material = CheckItem(loadedDepository.Material, this.materialCache),
                                     Capacity = loadedDepository.Capacity,
-                                    Poition = loadedDepository.Poition,
+                                    Position = loadedDepository.Position,
                                     Reference = loadedDepository.Reference,
                                     Sprite = loadedDepository.Sprite,
                                 };
