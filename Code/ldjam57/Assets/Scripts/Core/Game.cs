@@ -71,6 +71,15 @@ namespace Assets.Scripts.Core
 
         protected override IEnumerator LoadDefintions()
         {
+            //var marketCache = new DefinitionCache<MarketDefinition>();
+            //var entityCache = new DefinitionCache<EntityDefinition>();
+            //var biomeCache = new DefinitionCache<BiomeDefinition>();
+
+            //yield return new DefinitionLoader<BeeDefinition>(beeCache).LoadDefinitions("Bees.json");
+            //yield return new DefinitionLoader<EntityDefinition>(entityCache).LoadDefinitions("Entities.json");
+            //yield return new BiomesLoader(biomeCache, entityCache).LoadDefinitions("Biomes.json");
+            //yield return new GameModeLoader(this.gameModeCache, beeCache, biomeCache, entityCache).LoadDefinitions("GameModes.json");
+
             yield return null;
             Debug.Log("loaded definitions");
         }
