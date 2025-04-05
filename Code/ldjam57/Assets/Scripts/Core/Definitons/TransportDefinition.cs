@@ -5,7 +5,7 @@ using GameFrame.Core.Definitions;
 
 namespace Assets.Scripts.Core.Definitons
 {
-    public class Transport : BaseDefinition
+    public class TransportDefinition : BaseDefinition
     {
         public String Name { get; set; }
         public GameFrame.Core.Math.Vector2 Size { get; set; }

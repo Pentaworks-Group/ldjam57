@@ -1,0 +1,13 @@
+[
+  {
+    "Reference": "Bag",
+    "Name": "Bag",
+    "Size": {
+      "X": 1,
+      "Y": 1
+    },
+    "AvailableSprints": [ "" ],
+    "Speed": 123.1,
+    "Capacity": 22
+  }
+]

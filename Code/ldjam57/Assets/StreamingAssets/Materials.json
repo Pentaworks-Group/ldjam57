@@ -1,0 +1,12 @@
+[
+  {
+    "Reference": "Dirt",
+    "Name": "Dirt",
+    "SpawnRange": {
+      "Min": 0,
+      "Max": -1
+    },
+    "Weight": 10,
+    "MiningSpeedFactor": 1
+  }
+]
