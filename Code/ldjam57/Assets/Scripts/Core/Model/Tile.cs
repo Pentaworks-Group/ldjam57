@@ -5,7 +5,7 @@ namespace Assets.Scripts.Core.Model
 {
     public class Tile
     {
-        public GameFrame.Core.Math.Vector2 Position { get; set; }
+        public GameFrame.Core.Math.Point2 Position { get; set; }
         public Dictionary<String, Double> MaterialAmounts { get; set; }
     }
 }
