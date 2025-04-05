@@ -1,11 +1,10 @@
+using Assets.Scripts.Core;
 using Assets.Scripts.Core.Model;
-using System;
+using GameFrame.Core.Math;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -16,7 +15,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public int widht;
         public int depth;
-
+        private float xOffset;
 
         [SerializeField]
         private Camera mainCamera;
@@ -35,7 +34,9 @@ namespace Assets.Scripts.Scenes.GameScene
 
 
 
-        private List<TileBehaviour> Tiles = new();
+        //private List<TileBehaviour> Tiles = new();
+        private Map<int, TileBehaviour> tileMap = new();
+
         private List<ShaftBehaviour> Shafts = new();
 
 
@@ -52,15 +53,14 @@ namespace Assets.Scripts.Scenes.GameScene
         public void ReplaceTile(TileBehaviour tile)
         {
             var newTile = GameObject.Instantiate(ShaftTemplate, tile.transform.position, tile.transform.rotation, TilesParent.transform);
-            int pos = tile.GetPosition();
+            Point2 pos = tile.GetPosition();
             newTile.name = "Shaft_" + pos;
             var shaftBehaviour = newTile.GetComponent<ShaftBehaviour>();
             shaftBehaviour.Init(this, pos);
             Shafts.Add(shaftBehaviour);
             newTile.SetActive(true);
-            Tiles[pos] = shaftBehaviour;
+            tileMap[pos.X, pos.Y] = shaftBehaviour;
             GameObject.Destroy(tile.gameObject);
-            Debug.Log("Replaced Tile " + pos);
         }
 
         public void DisplayPosibleDigSites()
@@ -71,47 +71,55 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void DisplayPosibleDigSites(MiningTool miningTool)
         {
+            ClearDigSites();
             foreach (var shaft in Shafts)
             {
-                if (miningTool.Size.X < 2)
+                var beneath = GetTile(shaft.GetPosition(), 0, 1);
+                if (beneath?.IsDigable() == true)
                 {
-                    var tile = GetTile(shaft.GetPosition(), -1, 0);
-                    if (tile?.IsDigable() == true)
+                    if (miningTool.Size.X < 2)
                     {
-                        var position = new Vector3(shaft.transform.position.x - 0.1f, shaft.transform.position.y, shaft.transform.position.z);
-                        CreateSite(shaft.GetPosition(), miningTool, position, Direction.Left);
-                    }
-                    tile = GetTile(shaft.GetPosition(), 1, 0);
-                    if (tile?.IsDigable() == true)
-                    {
-                        var position = new Vector3(shaft.transform.position.x + 0.1f, shaft.transform.position.y, shaft.transform.position.z);
-                        CreateSite(shaft.GetPosition(), miningTool, position, Direction.Right);
-                    }
-                    tile = GetTile(shaft.GetPosition(), 0, 1);
-                    if (tile?.IsDigable() == true)
-                    {
-                        var position = new Vector3(shaft.transform.position.x, shaft.transform.position.y - 0.1f, shaft.transform.position.z);
-                        CreateSite(shaft.GetPosition(), miningTool, position, Direction.Down);
+                        var tile = GetTile(shaft.GetPosition(), -1, 0);
+                        if (tile?.IsDigable() == true)
+                        {
+                            CreateSite(shaft.GetPosition(), miningTool, Direction.Left);
+                        }
+                        tile = GetTile(shaft.GetPosition(), 1, 0);
+                        if (tile?.IsDigable() == true)
+                        {
+                            CreateSite(shaft.GetPosition(), miningTool, Direction.Right);
+                        }
+                        tile = GetTile(shaft.GetPosition(), 0, 1);
+                        if (tile?.IsDigable() == true)
+                        {
+                            CreateSite(shaft.GetPosition(), miningTool, Direction.Down);
+                        }
                     }
                 }
             }
             for (var x = 0; x < widht; x++)
             {
-                if (Tiles[x].IsDigable())
+                if (tileMap[x, 0].IsDigable())
                 {
-                    var position = new Vector3(Tiles[x].transform.position.x, Tiles[x].transform.position.y + 0.9f, Tiles[x].transform.position.z);
-                    int pos = GetPosition(x, -1);
-                    CreateSite(pos, miningTool, position, Direction.Down);
+                    Point2 pos = new Point2(x, -1);
+                    CreateSite(pos, miningTool, Direction.Down);
                 }
             }
         }
 
         public void BuildDigSite(SiteBehaviour siteBehaviour)
         {
-            var newTool = GameObject.Instantiate(ToolTemplate, siteBehaviour.transform.position, ToolTemplate.transform.rotation, TilesParent.transform);
+            var p = siteBehaviour.transform.position;
+            var position = new UnityEngine.Vector3(p.x, p.y, ToolTemplate.transform.position.z);
+            var newTool = GameObject.Instantiate(ToolTemplate, position, siteBehaviour.transform.rotation, TilesParent.transform);
             newTool.transform.localScale = siteBehaviour.transform.localScale;
             newTool.Init(this, siteBehaviour.GetMiningTool(), siteBehaviour.GetDirection(), siteBehaviour.GetPosition());
             newTool.gameObject.SetActive(true);
+            ClearDigSites();
+        }
+
+        private void ClearDigSites()
+        {
             foreach (var site in Sites)
             {
                 GameObject.Destroy(site.gameObject);
@@ -119,11 +127,33 @@ namespace Assets.Scripts.Scenes.GameScene
             Sites.Clear();
         }
 
-
-        private void CreateSite(int pos, MiningTool miningTool, Vector3 position, Direction direction)
+        private void CreateSite(Point2 pos, MiningTool miningTool, Direction direction)
         {
-            var newSite = GameObject.Instantiate(SiteTemplate, position, SiteTemplate.transform.rotation, TilesParent.transform);
-            newSite.transform.localScale = new Vector3(miningTool.Size.X * 0.9f, miningTool.Size.Y * 0.9f, 1);
+            UnityEngine.Vector3 position;
+            Quaternion rotation;
+            if (direction == Direction.Down)
+            {
+                position = new UnityEngine.Vector3(pos.X - xOffset, -pos.Y - (1 - SiteTemplate.transform.localScale.y) / 2, SiteTemplate.transform.position.z);
+                rotation = SiteTemplate.transform.rotation;
+            }
+            else if (direction == Direction.Left)
+            {
+                position = new UnityEngine.Vector3(pos.X - (1 - SiteTemplate.transform.localScale.y) / 2 - xOffset, -pos.Y, SiteTemplate.transform.position.z);
+                rotation = SiteTemplate.transform.rotation;
+                rotation *= Quaternion.Euler(0, 0, -90);
+            }
+            else if (direction == Direction.Right)
+            {
+                position = new UnityEngine.Vector3(pos.X + (1 - SiteTemplate.transform.localScale.y) / 2 - xOffset, -pos.Y, SiteTemplate.transform.position.z);
+                rotation = SiteTemplate.transform.rotation;
+                rotation *= Quaternion.Euler(0, 0, 90);
+            }
+            else
+            {
+                return;
+            }
+            var newSite = GameObject.Instantiate(SiteTemplate, position, rotation, TilesParent.transform);
+            //newSite.transform.localScale = new Vector3(miningTool.Size.X * 0.9f, miningTool.Size.Y * 0.9f, 1);
             newSite.Init(this, pos, miningTool, direction);
             newSite.gameObject.SetActive(true);
             Sites.Add(newSite);
@@ -146,12 +176,13 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             if (context.phase == InputActionPhase.Performed)
             {
-                Vector2 mousePosition = Mouse.current.position.ReadValue();
+                UnityEngine.Vector2 mousePosition = Mouse.current.position.ReadValue();
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     GameObject clickedObject = hit.collider.gameObject;
                     IClickable clickable = clickedObject.GetComponent<IClickable>();
+                    Debug.Log("Clicked: " + clickedObject.name);
                     if (clickable != null)
                     {
                         clickable.OnClicked();
@@ -162,62 +193,71 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateWorld()
         {
-            var widhtHalf = widht / 2f;
+            xOffset = widht / 2f;
             var material = Base.Core.Game.State.GameMode.World.Materials[0];
 
             for (int y = 0; y < depth; y++)
             {
                 for (int x = 0; x < widht; x++)
                 {
-                    Vector3 position = new Vector3(-widhtHalf + x, -y, TileTemplate.transform.position.z);
+                    UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + x, -y, TileTemplate.transform.position.z);
                     var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
-                    var pos = GetPosition(x, y);
+                    var pos = new Point2(x, y);
                     groundTile.name = "Tile_" + pos;
                     groundTile.Init(this, pos, material);
                     groundTile.gameObject.SetActive(true);
-                    Tiles.Add(groundTile);
+                    tileMap[x, y] = groundTile;
                 }
             }
         }
 
-        private int GetPosition(int x, int y)
+
+
+
+        public bool GetRelativePosition(Point2 pos, int x, int y, out int outX, out int outY)
         {
-            return x + y * widht;
+            int oldX = pos.X;
+            int oldY = pos.Y;
+
+            outX = x + oldX;
+            if (outX < 0 || outX > widht)
+            {
+                outX = 0;
+                outY = 0;
+                return false;
+            }
+
+            outY = y + oldY;
+            if (outY < 0 || outY > depth)
+            {
+                outX = 0;
+                outY = 0;
+                return false;
+            }
+            return true;
         }
 
 
-        public int GetRelativePosition(int pos, int x, int y)
+        public bool GetRelativePosition(Point2 pos, int x, int y, out Point2 newPos)
         {
-            int oldX = pos % widht;
-            if (oldX < 0)
+            if (GetRelativePosition(pos, x, y, out int outX, out int outY))
             {
-                oldX += widht;
-                y -= 1;
+                newPos = new Point2(outX, outY);
+                return true;
             }
-            int oldY = pos / widht;
-
-            int newX = x + oldX;
-            if (newX < 0 || newX > widht)
-            {
-                return -1;
-            }
-
-            int newY = y + oldY;
-            if (newY < 0 || newY > depth)
-            {
-                return -1;
-            }
-            return GetPosition(newX, newY);
+            newPos = new Point2();
+            return false;
         }
 
-        internal TileBehaviour GetTile(int pos, int x, int y)
+        internal TileBehaviour GetTile(Point2 pos, int x, int y)
         {
-            int targetPos = GetRelativePosition(pos, x, y);
-            if (targetPos < 0)
+            if (!GetRelativePosition(pos, x, y, out int newX, out int newY))
             {
                 return null;
             }
-            return Tiles[targetPos];
+            return tileMap[newX, newY];
         }
+
+
     }
 }

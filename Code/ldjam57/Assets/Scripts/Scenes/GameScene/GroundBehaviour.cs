@@ -1,6 +1,7 @@
 
 using Assets.Scripts.Core.Definitons;
 using Assets.Scripts.Core.Model;
+using GameFrame.Core.Math;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -9,7 +10,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private MaterialDefinition material;
         private double miningProgress = 0;
 
-        public void Init(WorldBehaviour worldBehaviour, int pos, MaterialDefinition material)
+        public void Init(WorldBehaviour worldBehaviour, Point2 pos, MaterialDefinition material)
         {
             base.Init(worldBehaviour, pos);
             this.material = material;

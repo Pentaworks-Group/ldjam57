@@ -1,4 +1,5 @@
 using Assets.Scripts.Core.Model;
+using GameFrame.Core.Math;
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Scenes.GameScene
             this.digable = false;
         }
 
-        public void Init(WorldBehaviour worldBehaviour, int pos, MiningTool miningTool, Direction direction)
+        public void Init(WorldBehaviour worldBehaviour, Point2 pos, MiningTool miningTool, Direction direction)
         {
             base.Init(worldBehaviour, pos);
             this.miningTool = miningTool;
