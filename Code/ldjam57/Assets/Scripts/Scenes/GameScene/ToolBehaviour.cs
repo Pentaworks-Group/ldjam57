@@ -1,4 +1,5 @@
 using Assets.Scripts.Core.Model;
+using GameFrame.Core.Math;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public void Init(WorldBehaviour worldBehaviour, MiningTool minigTool, Direction direction, int pos)
+        public void Init(WorldBehaviour worldBehaviour, MiningTool minigTool, Direction direction, Point2 pos)
         {
             base.Init(worldBehaviour, pos);
             this.miningTool = minigTool;
@@ -62,24 +63,35 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             if (this.direction == Direction.Left)
             {
-                var newPos = worldBehaviour.GetRelativePosition(pos, -1, 0);
-                if (newPos == -1)
+                var validPos = worldBehaviour.GetRelativePosition(pos, -1, 0, out Point2 newPoint);
+                if (!validPos)
                 {
                     StopMining();        
                 }
                 var p = transform.position;
-                transform.position = new Vector3(p.x -1 , p.y, p.z);
-                pos = newPos;
-            } else if (this.direction == Direction.Down)
+                transform.position = new UnityEngine.Vector3(p.x -1 , p.y, p.z);
+                pos = newPoint;
+            } else if (this.direction == Direction.Right)
             {
-                var newPos = worldBehaviour.GetRelativePosition(pos, 0, 1);
-                if (newPos == -1)
+                var validPos = worldBehaviour.GetRelativePosition(pos, 1, 0, out Point2 newPoint);
+                if (!validPos)
                 {
                     StopMining();
                 }
                 var p = transform.position;
-                transform.position = new Vector3(p.x, p.y - 1, p.z);
-                pos = newPos;
+                transform.position = new UnityEngine.Vector3(p.x + 1, p.y, p.z);
+                pos = newPoint;
+            }
+            else if (this.direction == Direction.Down)
+            {
+                var validPos = worldBehaviour.GetRelativePosition(pos, 0, 1, out Point2 newPoint);
+                if (!validPos)
+                {
+                    StopMining();
+                }
+                var p = transform.position;
+                transform.position = new UnityEngine.Vector3(p.x, p.y - 1, p.z);
+                pos = newPoint;
             }
         }
 
@@ -90,6 +102,17 @@ namespace Assets.Scripts.Scenes.GameScene
                 for (int i = 0; i < miningTool.Size.Y; i++)
                 {
                     var target = worldBehaviour.GetTile(pos, -1, i);
+                    if (target != null && target.IsDigable())
+                    {
+                        targets.Add((GroundBehaviour)target);
+                    }
+                }
+            }
+            else if (this.direction == Direction.Right)
+            {
+                for (int i = 0; i < miningTool.Size.Y; i++)
+                {
+                    var target = worldBehaviour.GetTile(pos, 1, i);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
@@ -131,8 +154,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void OnClicked()
         {
-            Debug.Log("Open Menu");
-            isMining = !isMining;
+            Destroy(gameObject);
         }
 
     }

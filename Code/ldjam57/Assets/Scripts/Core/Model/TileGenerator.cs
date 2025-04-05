@@ -32,7 +32,7 @@ namespace Assets.Scripts.Core.Model
         {
             var tile = new Tile()
             {
-                Position = new GameFrame.Core.Math.Vector2(x, y),
+                Position = new GameFrame.Core.Math.Point2(x, y),
                 MaterialAmounts = GenerateMaterialAmounts(x, y)
             };
 
