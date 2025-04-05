@@ -8,6 +8,7 @@ namespace Assets.Scripts.Core.Definitons
     {
         public String Name { get; set; }
         public GameFrame.Core.Math.Range SpawnRange { get; set; }
+        public GameFrame.Core.Media.Color Color { get; set; }
         public Double Weight { get; set; }
         public Single MiningSpeedFactor { get; set; }
     }

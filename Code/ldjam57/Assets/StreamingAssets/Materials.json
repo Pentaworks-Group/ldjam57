@@ -2,11 +2,106 @@
   {
     "Reference": "Dirt",
     "Name": "Dirt",
+    "Color": {
+      "Red": 0.5,
+      "Green": 0.3,
+      "Blue": 0.1
+    },
     "SpawnRange": {
       "Min": 0,
       "Max": -1
     },
-    "Weight": 10,
+    "Weight": 1.5,
     "MiningSpeedFactor": 1
+  },
+  {
+    "Reference": "Stone",
+    "Name": "Stone",
+    "Color": {
+      "Red": 0.718,
+      "Green": 0.69,
+      "Blue": 0.612
+    },
+    "SpawnRange": {
+      "Min": 0,
+      "Max": -1
+    },
+    "Weight": 2.5,
+    "MiningSpeedFactor": 1.1
+  },
+  {
+    "Reference": "Copper",
+    "Name": "Copper",
+    "Color": {
+      "Red": 0.722,
+      "Green": 0.451,
+      "Blue": 0.2
+    },
+    "SpawnRange": {
+      "Min": 5,
+      "Max": -1
+    },
+    "Weight": 8.9,
+    "MiningSpeedFactor": 1.1
+  },
+  {
+    "Reference": "Gold",
+    "Name": "Gold",
+    "Color": {
+      "Red": 1,
+      "Green": 0.843,
+      "Blue": 0
+    },
+    "SpawnRange": {
+      "Min": 15,
+      "Max": -1
+    },
+    "Weight": 19.3,
+    "MiningSpeedFactor": 1.2
+  },
+  {
+    "Reference": "Iron",
+    "Name": "Iron",
+    "Color": {
+      "Red": 0.63,
+      "Green": 0.61,
+      "Blue": 0.58
+    },
+    "SpawnRange": {
+      "Min": 5,
+      "Max": -1
+    },
+    "Weight": 7.8,
+    "MiningSpeedFactor": 1.3
+  },
+  {
+    "Reference": "Lithium",
+    "Name": "Lithium",
+    "Color": {
+      "Red": 0.827,
+      "Green": 0.98,
+      "Blue": 0.251
+    },
+    "SpawnRange": {
+      "Min": 20,
+      "Max": -1
+    },
+    "Weight": 0.53,
+    "MiningSpeedFactor": 2
+  },
+  {
+    "Reference": "Crystals",
+    "Name": "Crystals",
+    "Color": {
+      "Red": 0.655,
+      "Green": 0.847,
+      "Blue": 0.871
+    },
+    "SpawnRange": {
+      "Min": 10,
+      "Max": -1
+    },
+    "Weight": 2.32,
+    "MiningSpeedFactor": 1.3
   }
 ]
