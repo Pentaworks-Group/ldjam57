@@ -194,7 +194,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private void GenerateWorld()
         {
             xOffset = widht / 2f;
-            var material = Base.Core.Game.State.GameMode.World.Materials[0];
+            var material = Base.Core.Game.State.GameMode.World.Minerals[0];
 
             for (int y = 0; y < depth; y++)
             {

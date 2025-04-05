@@ -72,16 +72,16 @@ namespace Assets.Scripts.Core
 
         protected override IEnumerator LoadDefintions()
         {
-            var materialCache = new DefinitionCache<MaterialDefinition>();
+            var mineralCache = new DefinitionCache<MineralDefinition>();
             var miningToolCache = new DefinitionCache<MiningToolDefinition>();
             var transportCache = new DefinitionCache<TransportDefinition>();
             var marketCache = new DefinitionCache<MarketDefinition>();
 
-            yield return new DefinitionLoader<MaterialDefinition>(materialCache).LoadDefinitions("Materials.json");
+            yield return new DefinitionLoader<MineralDefinition>(mineralCache).LoadDefinitions("Minerals.json");
             yield return new DefinitionLoader<MiningToolDefinition>(miningToolCache).LoadDefinitions("MiningTools.json");
             yield return new DefinitionLoader<TransportDefinition>(transportCache).LoadDefinitions("Transports.json");
-            yield return new MarketDefinitionLoader(marketCache, materialCache).LoadDefinitions("Markets.json");
-            yield return new GameModeLoader(this.gameModeCache, materialCache, miningToolCache, transportCache, marketCache).LoadDefinitions("GameModes.json");
+            yield return new MarketDefinitionLoader(marketCache, mineralCache).LoadDefinitions("Markets.json");
+            yield return new GameModeLoader(this.gameModeCache, mineralCache, miningToolCache, transportCache, marketCache).LoadDefinitions("GameModes.json");
             Debug.Log("loaded definitions");
         }
 
