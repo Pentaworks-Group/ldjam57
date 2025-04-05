@@ -33,7 +33,7 @@
           "Reference": "Crystals"
         }
       ],
-      "MaxWidth": 128,
+      "Width": 64,
       "Headquarters": {
         "Position": {
           "X": 0,

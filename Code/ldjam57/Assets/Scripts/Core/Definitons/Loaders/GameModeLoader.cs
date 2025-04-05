@@ -46,7 +46,7 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         newGameMode.World = new WorldDefinition()
                         {
                             Seed = loadedGameMode.World.Seed,
-                            MaxWidth = loadedGameMode.World.MaxWidth,
+                            Width = loadedGameMode.World.Width,
                             Materials = new List<MaterialDefinition>(),
                             Headquarters = loadedGameMode.World.Headquarters,
                             Depositories = new List<DepositoryDefinition>()

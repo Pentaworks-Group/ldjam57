@@ -90,7 +90,9 @@ namespace Assets.Scripts.Core
         {
             var world = new World()
             {
+                Definition = mode.World,
                 Tiles = new List<Tile>(),
+                Width = mode.World.Width.GetValueOrDefault(64),
                 Headquarters = ConvertHeadquarters(mode.World.Headquarters),
                 Depositories = new List<Depository>()
             };
@@ -103,6 +105,10 @@ namespace Assets.Scripts.Core
             {
                 world.Seed = new Random().NextDouble();
             }
+
+            var tileGenerator = new TileGenerator(world);
+
+            world.Tiles.AddRange(tileGenerator.GenerateRootTiles());
 
             ConvertDepositories(world.Depositories);
 
@@ -168,12 +174,12 @@ namespace Assets.Scripts.Core
                     Name = definition.Name,
                     Sprite = definition.Sprite,
                     Capacity = definition.Capacity.GetValueOrDefault(),
-                    SpeedFactor= definition.SpeedFactor.GetValueOrDefault(1),
-                    Size = definition.Size.GetValueOrDefault(new GameFrame.Core.Math.Vector2(1,1)),
+                    SpeedFactor = definition.SpeedFactor.GetValueOrDefault(1),
+                    Size = definition.Size.GetValueOrDefault(new GameFrame.Core.Math.Vector2(1, 1)),
                     IsUnlocked = definition.IsUnlocked.GetValueOrDefault(),
                     IsUnlockable = definition.IsUnlockable.GetValueOrDefault(),
-                    UnlockCost= definition.UnlockCost.GetValueOrDefault(),
-                    PurchaseCost= definition.PurchaseCost.GetValueOrDefault(),
+                    UnlockCost = definition.UnlockCost.GetValueOrDefault(),
+                    PurchaseCost = definition.PurchaseCost.GetValueOrDefault(),
                 };
 
                 gameState.AvailableMiningTools.Add(miningTool);
@@ -188,9 +194,9 @@ namespace Assets.Scripts.Core
                 {
                     Name = definition.Name,
                     Sprite = definition.Sprite,
-                    Speed  = definition.Speed.GetValueOrDefault(1),
+                    Speed = definition.Speed.GetValueOrDefault(1),
                     Capacity = definition.Capacity.GetValueOrDefault(),
-                    Size = definition.Size.GetValueOrDefault(new GameFrame.Core.Math.Vector2(1,1)),
+                    Size = definition.Size.GetValueOrDefault(new GameFrame.Core.Math.Vector2(1, 1)),
                     IsUnlocked = definition.IsUnlocked.GetValueOrDefault(),
                     IsUnlockable = definition.IsUnlockable.GetValueOrDefault(),
                     UnlockCost = definition.UnlockCost.GetValueOrDefault(),

@@ -5,8 +5,10 @@ namespace Assets.Scripts.Core.Model
 {
     public class World
     {
-        public List<Tile> Tiles { get; set; }
+        public Definitons.WorldDefinition Definition { get; set; }
+        public Int32 Width { get; set; }
         public Double Seed { get; set; }
+        public List<Tile> Tiles { get; set; }
         public List<Depository> Depositories { get; set; }
         public Headquarters Headquarters { get; set; }
     }
