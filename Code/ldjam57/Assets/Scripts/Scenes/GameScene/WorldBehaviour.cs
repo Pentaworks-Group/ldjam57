@@ -11,10 +11,6 @@ namespace Assets.Scripts.Scenes.GameScene
 {
     public class WorldBehaviour : MonoBehaviour
     {
-
-
-        public int widht;
-        public int depth;
         private float xOffset;
 
         [SerializeField]
@@ -43,6 +39,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private List<SiteBehaviour> Sites = new();
 
 
+        private TileGenerator tileGenerator;
 
         private void Awake()
         {
@@ -97,7 +94,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     }
                 }
             }
-            for (var x = 0; x < widht; x++)
+            for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
             {
                 if (tileMap[x, 0].IsDigable())
                 {
@@ -193,21 +190,12 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateWorld()
         {
-            xOffset = widht / 2f;
-            var material = Base.Core.Game.State.GameMode.World.Materials[0];
+            tileGenerator = new TileGenerator(Base.Core.Game.State.World);
+            xOffset = Base.Core.Game.State.World.Width / 2f;
 
-            for (int y = 0; y < depth; y++)
+            foreach (var tile in Base.Core.Game.State.World.Tiles)
             {
-                for (int x = 0; x < widht; x++)
-                {
-                    UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + x, -y, TileTemplate.transform.position.z);
-                    var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
-                    var pos = new Point2(x, y);
-                    groundTile.name = "Tile_" + pos;
-                    groundTile.Init(this, pos, material);
-                    groundTile.gameObject.SetActive(true);
-                    tileMap[x, y] = groundTile;
-                }
+
             }
         }
 
@@ -220,7 +208,7 @@ namespace Assets.Scripts.Scenes.GameScene
             int oldY = pos.Y;
 
             outX = x + oldX;
-            if (outX < 0 || outX > widht)
+            if (outX < 0 || outX > Base.Core.Game.State.World.Width)
             {
                 outX = 0;
                 outY = 0;
@@ -228,7 +216,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             outY = y + oldY;
-            if (outY < 0 || outY > depth)
+            if (outY < 0)
             {
                 outX = 0;
                 outY = 0;
