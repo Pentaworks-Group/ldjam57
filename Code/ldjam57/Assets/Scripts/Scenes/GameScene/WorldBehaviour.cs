@@ -1,6 +1,7 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,19 +47,6 @@ namespace Assets.Scripts.Scenes.GameScene
             Base.Core.Game.ExecuteAfterInstantation(GenerateWorld);
         }
 
-
-        public void ReplaceTile(TileBehaviour tile)
-        {
-            var newTile = GameObject.Instantiate(ShaftTemplate, tile.transform.position, tile.transform.rotation, TilesParent.transform);
-            Point2 pos = tile.GetPosition();
-            newTile.name = "Shaft_" + pos;
-            var shaftBehaviour = newTile.GetComponent<ShaftBehaviour>();
-            shaftBehaviour.Init(this, pos);
-            Shafts.Add(shaftBehaviour);
-            newTile.SetActive(true);
-            tileMap[pos.X, pos.Y] = shaftBehaviour;
-            GameObject.Destroy(tile.gameObject);
-        }
 
         public void DisplayPosibleDigSites()
         {
@@ -195,12 +183,42 @@ namespace Assets.Scripts.Scenes.GameScene
 
             foreach (var tile in Base.Core.Game.State.World.Tiles)
             {
+                if (tile.DigingProgress >= 1)
+                {
+                    ShaftBehaviour shaftBehaviour = new();
 
+                }
+                else
+                {
+                    var pos = tile.Position;
+                    UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + pos.X, -pos.Y, TileTemplate.transform.position.z);
+                    var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
+                    groundTile.name = "Tile_" + pos;
+                    groundTile.Init(this, tile);
+                    groundTile.gameObject.SetActive(true);
+                    tileMap[pos.X, pos.Y] = groundTile;
+                }
             }
         }
 
 
+        public void ReplaceTile(TileBehaviour tile)
+        {
+            CreateShaft(tile.GetPosition());
+            GameObject.Destroy(tile.gameObject);
+        }
 
+        private void CreateShaft(Point2 pos)
+        {
+            UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + pos.X, -pos.Y, TileTemplate.transform.position.z);
+            var newTile = GameObject.Instantiate(ShaftTemplate, position, ShaftTemplate.transform.rotation, TilesParent.transform);
+            newTile.name = "Shaft_" + pos;
+            var shaftBehaviour = newTile.GetComponent<ShaftBehaviour>();
+            shaftBehaviour.Init(this, pos);
+            Shafts.Add(shaftBehaviour);
+            newTile.SetActive(true);
+            tileMap[pos.X, pos.Y] = shaftBehaviour;
+        }
 
         public bool GetRelativePosition(Point2 pos, int x, int y, out int outX, out int outY)
         {
@@ -246,6 +264,10 @@ namespace Assets.Scripts.Scenes.GameScene
             return tileMap[newX, newY];
         }
 
+        internal void DiggerMoved(ToolBehaviour toolBehaviour)
+        {
+            var dir = toolBehaviour.GetDirection();
 
+        }
     }
 }
