@@ -47,11 +47,29 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         {
                             Seed = loadedGameMode.World.Seed,
                             MaxWidth = loadedGameMode.World.MaxWidth,
+                            Materials = new List<MaterialDefinition>(),
                             Headquarters = loadedGameMode.World.Headquarters,
-                            Materials = new List<MaterialDefinition>()
+                            Depositories = new List<DepositoryDefinition>()
                         };
 
                         CheckItems(loadedGameMode.World.Materials, newGameMode.World.Materials, this.materialCache);
+
+                        if (loadedGameMode.World.Depositories != default)
+                        {
+                            foreach (var loadedDepository in loadedGameMode.World.Depositories)
+                            {
+                                var newDepository = new DepositoryDefinition()
+                                {
+                                    Material = CheckItem(loadedDepository.Material, this.materialCache),
+                                    Capacity = loadedDepository.Capacity,
+                                    Poition = loadedDepository.Poition,
+                                    Reference = loadedDepository.Reference,
+                                    Sprite = loadedDepository.Sprite,
+                                };
+
+                                newGameMode.World.Depositories.Add(newDepository);
+                            }
+                        }
                     }
 
                     if (loadedGameMode.Bank != default)

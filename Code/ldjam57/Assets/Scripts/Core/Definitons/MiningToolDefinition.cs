@@ -12,6 +12,7 @@ namespace Assets.Scripts.Core.Definitons
         public Double? SpeedFactor { get; set; }
         public Double? Capacity { get; set; }
         public Boolean? IsUnlockable { get; set; }
+        public Boolean? IsUnlocked { get; set; }
         public Decimal? UnlockCost { get; set; }
         public Decimal? PurchaseCost { get; set; }
     }

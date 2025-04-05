@@ -9,7 +9,6 @@ namespace Assets.Scripts.Core
         public Assets.Scripts.Core.Definitons.GameMode GameMode { get; set; }
         public Bank Bank { get; set; }
         public Market Market { get; set; }
-        public Headquarters Headquarters { get; set; }
         public World World { get; set; }
         public Inventory Inventory { get; set; }
         public List<MiningTool> AvailableMiningTools { get; set; }

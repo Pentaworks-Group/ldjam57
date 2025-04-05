@@ -38,8 +38,23 @@
         "Position": {
           "X": 0,
           "Y": 0
+        },
+        "AvailableSprites": []
+      },
+      "Depositories": [
+        {
+          "Material": {
+            "IsReferenced": true,
+            "Reference": "Dirt"
+          },
+          "Position": {
+            "X": 1,
+            "y": 0
+          },
+          "Sprite": "",
+          "Capacity": -1
         }
-      }
+      ]
     },
     "Bank": {
       "Credits": 1000000

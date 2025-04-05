@@ -122,14 +122,26 @@ namespace Assets.Scripts.Core
 
         private void ConvertDepositories(List<Depository> depositoryList)
         {
-            //if (mode.World.Depositories?.Count > 0)
-            //{
-            //}
+            if (mode.World.Depositories?.Count > 0)
+            {
+                foreach (var definition in mode.World.Depositories)
+                {
+                    var depository = new Depository()
+                    {
+                        Definition = definition
+                    };
+
+                    depositoryList.Add(depository);
+                }
+            }
         }
 
         private Market ConvertMarket()
         {
-            var market = new Market();
+            var market = new Market()
+            {
+                MaterialValues = new List<MarketValue>()
+            };
 
             foreach (var materialValue in mode.Market.MaterialValues)
             {
@@ -149,11 +161,19 @@ namespace Assets.Scripts.Core
         {
             gameState.AvailableMiningTools = new List<MiningTool>();
 
-            foreach (var tool in mode.AvailableMiningTools)
+            foreach (var definition in mode.AvailableMiningTools)
             {
                 var miningTool = new MiningTool()
                 {
-                    Definition = tool
+                    Name = definition.Name,
+                    Sprite = definition.Sprite,
+                    Capacity = definition.Capacity.GetValueOrDefault(),
+                    SpeedFactor= definition.SpeedFactor.GetValueOrDefault(1),
+                    Size = definition.Size.GetValueOrDefault(new GameFrame.Core.Math.Vector2(1,1)),
+                    IsUnlocked = definition.IsUnlocked.GetValueOrDefault(),
+                    IsUnlockable = definition.IsUnlockable.GetValueOrDefault(),
+                    UnlockCost= definition.UnlockCost.GetValueOrDefault(),
+                    PurchaseCost= definition.PurchaseCost.GetValueOrDefault(),
                 };
 
                 gameState.AvailableMiningTools.Add(miningTool);
