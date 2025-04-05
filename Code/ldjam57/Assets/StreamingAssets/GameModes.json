@@ -3,19 +3,67 @@
     "Reference": "Default",
     "Name": "Default",
     "World": {
-
+      "Materials": [
+        {
+          "IsReferenced": true,
+          "Reference": "Dirt"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Stone"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Copper"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Iron"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Gold"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Lithium"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Crystals"
+        }
+      ],
+      "MaxWidth": 128,
+      "Headquarters": {
+        "Position": {
+          "X": 0,
+          "Y": 0
+        }
+      }
     },
     "Bank": {
-
+      "Credits": 1000000
     },
     "Market": {
-
+      "Reference": "Default",
+      "IsReferenced": true
     },
-    "AvailableTools": [
+    "AvailableMiningTools": [
       {
-
+        "Reference": "Pickaxe",
+        "IsReferenced" :  true
       }
     ],
-    "Inventory": {}
+    "AvailableTransports": [
+      {
+        "Reference": "Bag",
+        "IsReferenced": true
+      }
+    ],
+    "Inventory": {
+      "MiningTools": [],
+      "VerticalTransports": [],
+      "HorizontalTransports": []
+    }
   }
 ]

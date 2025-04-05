@@ -32,7 +32,9 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         Reference = loadedGameMode.Reference,
                         Name = loadedGameMode.Name,
                         Market = CheckItem(loadedGameMode.Market, marketCache),
-                    };
+                        AvailableMiningTools = new List<MiningToolDefinition>(),
+                        AvailableTransports = new List<TransportDefinition>()
+                    };                        
 
                     CheckItems(loadedGameMode.AvailableMiningTools, newGameMode.AvailableMiningTools, miningToolCache);
                     CheckItems(loadedGameMode.AvailableTransports, newGameMode.AvailableTransports, transportCache);
@@ -44,6 +46,7 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                             Seed = loadedGameMode.World.Seed,
                             MaxWidth = loadedGameMode.World.MaxWidth,
                             Headquarters = loadedGameMode.World.Headquarters,
+                            Materials = new List<MaterialDefinition>()
                         };
 
                         CheckItems(loadedGameMode.World.Materials, newGameMode.World.Materials, this.materialCache);
@@ -59,9 +62,14 @@ namespace Assets.Scripts.Core.Definitons.Loaders
 
                     if (loadedGameMode.Inventory != default)
                     {
-                        newGameMode.Inventory = new InventoryDefinition();
+                        newGameMode.Inventory = new InventoryDefinition()
+                        {
+                            MiningTools = new List<MiningToolDefinition>(),
+                            HorizontalTransports = new List<TransportDefinition>(),
+                            VerticalTransports = new List<TransportDefinition>(),
+                        };
 
-                        CheckItems(loadedGameMode.Inventory.Tools, newGameMode.Inventory.Tools, this.miningToolCache);
+                        CheckItems(loadedGameMode.Inventory.MiningTools, newGameMode.Inventory.MiningTools, this.miningToolCache);
                         CheckItems(loadedGameMode.Inventory.HorizontalTransports, newGameMode.Inventory.HorizontalTransports, this.transportCache);
                         CheckItems(loadedGameMode.Inventory.VerticalTransports, newGameMode.Inventory.VerticalTransports, this.transportCache);
                     }

@@ -8,6 +8,7 @@
     },
     "AvailableSprints": [ "" ],
     "Speed": 123.1,
-    "Capacity": 22
+    "Capacity": 22,
+    "MiningSpeedFactor": 1
   }
 ]
