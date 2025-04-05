@@ -2,6 +2,7 @@
   {
     "Reference": "Dirt",
     "Name": "Dirt",
+    "IsDefault": true,
     "Color": {
       "Red": 0.5,
       "Green": 0.3,
@@ -21,6 +22,10 @@
       "Green": 0.69,
       "Blue": 0.612
     },
+    "SeedRange": {
+      "Min": 12500,
+      "Max": 15000
+    },
     "SpawnRange": {
       "Min": 0
     },
@@ -34,6 +39,10 @@
       "Red": 0.722,
       "Green": 0.451,
       "Blue": 0.2
+    },
+    "SeedRange": {
+      "Min": 10000,
+      "Max": 12500
     },
     "SpawnRange": {
       "Min": 5
@@ -49,6 +58,10 @@
       "Green": 0.843,
       "Blue": 0
     },
+    "SeedRange": {
+      "Min": 7500,
+      "Max": 10000
+    },
     "SpawnRange": {
       "Min": 15
     },
@@ -62,6 +75,10 @@
       "Red": 0.63,
       "Green": 0.61,
       "Blue": 0.58
+    },
+    "SeedRange": {
+      "Min": 5000,
+      "Max": 7500
     },
     "SpawnRange": {
       "Min": 5
@@ -77,6 +94,10 @@
       "Green": 0.98,
       "Blue": 0.251
     },
+    "SeedRange": {
+      "Min": 2500,
+      "Max": 5000
+    },
     "SpawnRange": {
       "Min": 20
     },
@@ -90,6 +111,10 @@
       "Red": 0.655,
       "Green": 0.847,
       "Blue": 0.871
+    },
+    "SeedRange": {
+      "Min": 0,
+      "Max": 2500
     },
     "SpawnRange": {
       "Min": 10
