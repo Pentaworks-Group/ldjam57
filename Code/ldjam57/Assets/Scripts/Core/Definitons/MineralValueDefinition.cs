@@ -2,9 +2,9 @@
 
 namespace Assets.Scripts.Core.Definitons
 {
-    public class MaterialValueDefinition
+    public class MineralValueDefinition
     {
-        public MineralDefinition Material { get; set; }
+        public MineralDefinition Mineral { get; set; }
         public Double? Value { get; set; }
     }
 }

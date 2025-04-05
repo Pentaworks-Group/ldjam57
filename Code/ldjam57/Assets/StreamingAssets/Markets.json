@@ -3,9 +3,9 @@
     "Reference": "Default",
     "Name": "Default",
     "Factor": 0.1,
-    "MaterialValues": [
+    "MineralValues": [
       {
-        "Material": {
+        "Mineral": {
           "Reference": "Copper",
           "IsReferenced": true
         },

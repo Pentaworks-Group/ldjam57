@@ -9,6 +9,6 @@ namespace Assets.Scripts.Core.Definitons
     {
         public String Name { get; set; }
         public Double? Factor { get; set; }
-        public List<MaterialValueDefinition> MaterialValues { get; set; }
+        public List<MineralValueDefinition> MineralValues { get; set; }
     }
 }

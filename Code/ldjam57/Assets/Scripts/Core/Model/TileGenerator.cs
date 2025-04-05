@@ -28,18 +28,18 @@ namespace Assets.Scripts.Core.Model
             return tiles;
         }
 
-        public Tile GenerateTile(Int32 x, Int32 y, List<Mineral> possibleMaterials)
+        public Tile GenerateTile(Int32 x, Int32 y, List<Mineral> possibleMinerals)
         {
             var tile = new Tile()
             {
                 Position = new GameFrame.Core.Math.Point2(x, y),
-                MaterialAmounts = GenerateMineralAmounts(x, y, possibleMaterials)
+                MineralAmounts = GenerateMineralAmounts(x, y, possibleMinerals)
             };
 
             return tile;
         }
 
-        private Dictionary<String, Double> GenerateMineralAmounts(Int32 x, Int32 y, List<Mineral> possibleMaterials)
+        private Dictionary<String, Double> GenerateMineralAmounts(Int32 x, Int32 y, List<Mineral> possibleMinerals)
         {
             var mineralAmounts = new Dictionary<String, Double>();
 
@@ -48,14 +48,14 @@ namespace Assets.Scripts.Core.Model
                 mineralAmounts[mineral.Reference] = 0;
             }
 
-            var possibleMaterialValues = new Dictionary<String, Double>();
+            var possibleMineralvalues = new Dictionary<String, Double>();
 
-            foreach (var possibleMaterial in possibleMaterials)
+            foreach (var possibleMineral in possibleMinerals)
             {
-                var materialX = x + possibleMaterial.Seed;
-                var materialY = y + possibleMaterial.Seed;
+                var mineralX = x + possibleMineral.Seed;
+                var mineralY = y + possibleMineral.Seed;
 
-                var perlinValue = UnityEngine.Mathf.PerlinNoise(x, y);
+                var perlinValue = UnityEngine.Mathf.PerlinNoise(mineralX, mineralY);
             }
 
             return mineralAmounts;
@@ -63,17 +63,17 @@ namespace Assets.Scripts.Core.Model
 
         private List<Mineral> GetMatchingMinerals(Int32 y)
         {
-            var materialList = new List<Mineral>();
+            var mineralList = new List<Mineral>();
 
-            foreach (var material in world.Minerals)
+            foreach (var mineral in world.Minerals)
             {
-                if (material.SpawnRange == default || material.SpawnRange.Contains(y))
+                if (mineral.SpawnRange == default || mineral.SpawnRange.Contains(y))
                 {
-                    materialList.Add(material);
+                    mineralList.Add(mineral);
                 }
             }
 
-            return materialList;
+            return mineralList;
         }
     }
 }

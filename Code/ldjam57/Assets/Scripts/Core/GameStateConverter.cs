@@ -13,6 +13,8 @@ namespace Assets.Scripts.Core
     {
         private readonly GameMode mode;
 
+        private IDictionary<String, Mineral> mineralMap;
+
         public GameStateConverter(GameMode mode)
         {
             this.mode = mode;
@@ -20,6 +22,8 @@ namespace Assets.Scripts.Core
 
         public GameState Convert()
         {
+            mineralMap = new Dictionary<String, Mineral>();
+
             var gameState = new GameState()
             {
                 GameMode = mode,
@@ -43,7 +47,7 @@ namespace Assets.Scripts.Core
 
             if (mode.Market != default)
             {
-                gameState.Market = ConvertMarket();
+                gameState.Market = ConvertMarket(gameState.World);
             }
             else
             {
@@ -126,6 +130,8 @@ namespace Assets.Scripts.Core
                         Weight = mineralDefinition.Weight.GetValueOrDefault(1),                        
                     };
 
+                    mineralMap[mineralDefinition.Reference] = mineral;
+
                     minerals.Add(mineral);
                 }
 
@@ -162,22 +168,22 @@ namespace Assets.Scripts.Core
             }
         }
 
-        private Market ConvertMarket()
+        private Market ConvertMarket(World world)
         {
             var market = new Market()
             {
-                MaterialValues = new List<MarketValue>()
+                MineralValues = new List<MineralMarketValue>()
             };
 
-            foreach (var materialValue in mode.Market.MaterialValues)
+            foreach (var mineralMarketValue in mode.Market.MineralValues)
             {
-                var newMarketValue = new MarketValue()
+                var newMarketValue = new MineralMarketValue()
                 {
-                    Material = materialValue.Material,
-                    Value = materialValue.Value.GetValueOrDefault(),
+                    Mineral = mineralMap[mineralMarketValue.Mineral.Reference],
+                    Value = mineralMarketValue.Value.GetValueOrDefault(),
                 };
 
-                market.MaterialValues.Add(newMarketValue);
+                market.MineralValues.Add(newMarketValue);
             }
 
             return market;

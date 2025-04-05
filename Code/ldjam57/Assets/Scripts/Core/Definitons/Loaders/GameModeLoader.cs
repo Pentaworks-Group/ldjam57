@@ -60,7 +60,7 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                             {
                                 var newDepository = new DepositoryDefinition()
                                 {
-                                    Material = CheckItem(loadedDepository.Material, this.mineralCache),
+                                    Mineral = CheckItem(loadedDepository.Mineral, this.mineralCache),
                                     Capacity = loadedDepository.Capacity,
                                     Position = loadedDepository.Position,
                                     Reference = loadedDepository.Reference,
