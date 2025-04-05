@@ -5,5 +5,6 @@ namespace Assets.Scripts.Core
     public class GameState : GameFrame.Core.GameState
     {
         public GameMode GameMode { get; set; }
+        public Bank Bank { get; set; }
     }
 }
