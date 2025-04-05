@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Assets.Scripts.Core
+namespace Assets.Scripts.Core.Model
 {
-    public class Deposit
+    public class Depository
     {
         public Assets.Scripts.Core.Definitons.Storage Storage { get; set; }
         public Double Value { get; set; }

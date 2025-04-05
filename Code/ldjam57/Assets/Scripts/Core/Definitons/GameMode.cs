@@ -12,7 +12,8 @@ namespace Assets.Scripts.Core.Definitons
         public BankDefinition Bank { get; set; }
         public MarketDefinition Market { get; set; }
         public List<MiningToolDefinition> AvailableMiningTools { get; set; }
-        public List<TransportDefinition> AvailableTransports { get; set; }
+        public List<TransportDefinition> AvailableVerticalTransports { get; set; }
+        public List<TransportDefinition> AvailableHorizontalTransports { get; set; }
         public InventoryDefinition Inventory { get; set; }
     }
 }

@@ -6,9 +6,39 @@
       "X": 1,
       "Y": 1
     },
-    "AvailableSprints": [ "" ],
-    "Speed": 123.1,
-    "Capacity": 22,
-    "MiningSpeedFactor": 1
+    "Sprite": "",
+    "Capacity": 100,
+    "SpeedFactor": 1,
+    "IsUnlockable": true,
+    "UnlockCost": 0,
+    "PurchaseCost": 1000
+  },
+  {
+    "Reference": "Drill",
+    "Name": "Drill",
+    "Size": {
+      "X": 1,
+      "Y": 1
+    },
+    "Sprite": "",
+    "Capacity": 100,
+    "SpeedFactor": 2,
+    "IsUnlockable": true,
+    "UnlockCost": 100000,
+    "PurchaseCost": 1000
+  },
+  {
+    "Reference": "Digger",
+    "Name": "Digger",
+    "Size": {
+      "X": 3,
+      "Y": 1
+    },
+    "Sprite": "",
+    "Capacity": 100,
+    "SpeedFactor": 5,
+    "IsUnlockable": true,
+    "UnlockCost": 100000,
+    "PurchaseCost": 1000
   }
 ]

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using GameFrame.Core.Definitions;
 
@@ -9,8 +8,11 @@ namespace Assets.Scripts.Core.Definitons
     {
         public String Name { get; set; }
         public GameFrame.Core.Math.Vector2? Size { get; set; }
-        public List<String> AvailableSprites { get; set; }
-        public Double? MiningSpeedFactor { get; set; }
+        public String Sprite { get; set; }
+        public Double? SpeedFactor { get; set; }
         public Double? Capacity { get; set; }
+        public Boolean? IsUnlockable { get; set; }
+        public Decimal? UnlockCost { get; set; }
+        public Decimal? PurchaseCost { get; set; }
     }
 }

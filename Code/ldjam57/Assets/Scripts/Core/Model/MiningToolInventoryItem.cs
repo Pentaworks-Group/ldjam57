@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.Scripts.Core
+namespace Assets.Scripts.Core.Model
 {
-    public class World
+    public class MiningToolInventoryItem
     {
-        public List<Tile> Tiles { get; set; }
+        public MiningTool Tool { get; set; }
     }
 }

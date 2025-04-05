@@ -2,7 +2,7 @@
 
 using GameFrame.Core.Math;
 
-namespace Assets.Scripts.Core
+namespace Assets.Scripts.Core.Model
 {
     public class Headquarters
     {

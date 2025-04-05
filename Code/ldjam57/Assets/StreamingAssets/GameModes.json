@@ -51,12 +51,26 @@
     "AvailableMiningTools": [
       {
         "Reference": "Pickaxe",
-        "IsReferenced" :  true
+        "IsReferenced": true
       }
     ],
-    "AvailableTransports": [
+    "AvailableHorizontalTransports": [
       {
         "Reference": "Bag",
+        "IsReferenced": true
+      },
+      {
+        "Reference": "Cart",
+        "IsReferenced": true
+      }
+    ],
+    "AvailableVerticalTransports": [
+      {
+        "Reference": "Ladder",
+        "IsReferenced": true
+      },
+      {
+        "Reference": "Elevator",
         "IsReferenced": true
       }
     ],

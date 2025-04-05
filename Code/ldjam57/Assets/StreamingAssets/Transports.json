@@ -6,8 +6,53 @@
       "X": 1,
       "Y": 1
     },
-    "AvailableSprints": [ "" ],
-    "Speed": 123.1,
-    "Capacity": 22
+    "Sprite": "",
+    "Speed": 1,
+    "Capacity": 22,
+    "IsUnlockable": true,
+    "UnlockCost": 100000,
+    "PurchaseCost": 1000
+  },
+  {
+    "Reference": "Cart",
+    "Name": "Cart",
+    "Size": {
+      "X": 1,
+      "Y": 1
+    },
+    "Sprite": "Cart",
+    "Speed": 50,
+    "Capacity": 2000,
+    "IsUnlockable": true,
+    "UnlockCost": 100000,
+    "PurchaseCost": 1000
+  },
+  {
+    "Reference": "Ladder",
+    "Name": "Ladder",
+    "Size": {
+      "X": 1,
+      "Y": 1
+    },
+    "Sprite": "Ladder",
+    "Speed": 0.5,
+    "Capacity": 22,
+    "IsUnlockable": true,
+    "UnlockCost": 100000,
+    "PurchaseCost": 1000
+  },
+  {
+    "Reference": "Elevator",
+    "Name": "Elevator",
+    "Size": {
+      "X": 1,
+      "Y": 1
+    },
+    "Sprite": "Elevator",
+    "Speed": 5,
+    "Capacity": 10000,
+    "IsUnlockable": true,
+    "UnlockCost": 100000,
+    "PurchaseCost": 1000
   }
 ]

@@ -33,11 +33,13 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         Name = loadedGameMode.Name,
                         Market = CheckItem(loadedGameMode.Market, marketCache),
                         AvailableMiningTools = new List<MiningToolDefinition>(),
-                        AvailableTransports = new List<TransportDefinition>()
+                        AvailableVerticalTransports = new List<TransportDefinition>(),
+                        AvailableHorizontalTransports = new List<TransportDefinition>()
                     };                        
 
                     CheckItems(loadedGameMode.AvailableMiningTools, newGameMode.AvailableMiningTools, miningToolCache);
-                    CheckItems(loadedGameMode.AvailableTransports, newGameMode.AvailableTransports, transportCache);
+                    CheckItems(loadedGameMode.AvailableVerticalTransports, newGameMode.AvailableVerticalTransports, transportCache);
+                    CheckItems(loadedGameMode.AvailableHorizontalTransports, newGameMode.AvailableHorizontalTransports, transportCache);
 
                     if (loadedGameMode.World != default)
                     {
