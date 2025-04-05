@@ -6,9 +6,9 @@ namespace Assets.Scripts.Core.Definitons.Loaders
 {
     public class MarketDefinitionLoader : BaseLoader<MarketDefinition>
     {
-        private readonly DefinitionCache<MaterialDefinition> materialCache;
+        private readonly DefinitionCache<MineralDefinition> materialCache;
 
-        public MarketDefinitionLoader(DefinitionCache<MarketDefinition> targetCache, DefinitionCache<MaterialDefinition> materialCache) : base(targetCache)
+        public MarketDefinitionLoader(DefinitionCache<MarketDefinition> targetCache, DefinitionCache<MineralDefinition> materialCache) : base(targetCache)
         {
             this.materialCache = materialCache;
         }

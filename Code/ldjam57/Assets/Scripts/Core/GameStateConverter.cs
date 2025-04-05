@@ -91,20 +91,12 @@ namespace Assets.Scripts.Core
             var world = new World()
             {
                 Definition = mode.World,
+                Minerals = ConvertMinerals(),
                 Tiles = new List<Tile>(),
                 Width = mode.World.Width.GetValueOrDefault(64),
                 Headquarters = ConvertHeadquarters(mode.World.Headquarters),
                 Depositories = new List<Depository>()
             };
-
-            if (mode.World.Seed.HasValue)
-            {
-                world.Seed = mode.World.Seed.Value;
-            }
-            else
-            {
-                world.Seed = new Random().NextDouble();
-            }
 
             var tileGenerator = new TileGenerator(world);
 
@@ -113,6 +105,34 @@ namespace Assets.Scripts.Core
             ConvertDepositories(world.Depositories);
 
             return world;
+        }
+
+        private List<Mineral> ConvertMinerals()
+        {
+            if (mode.World.Minerals.Count> 0)
+            {
+                var minerals = new List<Mineral>();
+
+                foreach (var mineralDefinition in mode.World.Minerals)
+                {
+                    var mineral = new Mineral()
+                    {
+                        Reference = mineralDefinition.Reference,
+                        Name = mineralDefinition.Name,
+                        MiningSpeedFactor = mineralDefinition.MiningSpeedFactor.GetValueOrDefault(1),
+                        Seed = mineralDefinition.SeedRange.GetRandomInt(),
+                        Color = mineralDefinition.Color.GetValueOrDefault(new GameFrame.Core.Media.Color(1, 1, 1)),
+                        SpawnRange = mineralDefinition.SpawnRange?.Copy(),
+                        Weight = mineralDefinition.Weight.GetValueOrDefault(1),                        
+                    };
+
+                    minerals.Add(mineral);
+                }
+
+                return minerals;
+            }
+
+            throw new ArgumentNullException(nameof(mode.World.Minerals), "Minerals may not be empty!");
         }
 
         private Headquarters ConvertHeadquarters(Definitons.HeadquartersDefinition headquartersDefinition)

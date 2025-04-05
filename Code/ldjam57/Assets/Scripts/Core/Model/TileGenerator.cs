@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.Core.Model
 {
@@ -19,67 +16,58 @@ namespace Assets.Scripts.Core.Model
         {
             var tiles = new List<Tile>();
 
+            var possibleMineralsLevel0 = GetMatchingMinerals(0);
+            var possibleMineralsLevel1 = GetMatchingMinerals(1);
+
             for (int i = 0; i < world.Width; i++)
             {
-                tiles.Add(GenerateTile(i, 0));
-                tiles.Add(GenerateTile(i, 1));
+                tiles.Add(GenerateTile(i, 0, possibleMineralsLevel0));
+                tiles.Add(GenerateTile(i, 1, possibleMineralsLevel1));
             }
 
             return tiles;
         }
 
-        public Tile GenerateTile(Int32 x, Int32 y)
+        public Tile GenerateTile(Int32 x, Int32 y, List<Mineral> possibleMaterials)
         {
             var tile = new Tile()
             {
                 Position = new GameFrame.Core.Math.Point2(x, y),
-                MaterialAmounts = GenerateMaterialAmounts(x, y)
+                MaterialAmounts = GenerateMineralAmounts(x, y, possibleMaterials)
             };
 
             return tile;
         }
 
-        private Dictionary<String, Double> GenerateMaterialAmounts(Int32 x, Int32 y)
+        private Dictionary<String, Double> GenerateMineralAmounts(Int32 x, Int32 y, List<Mineral> possibleMaterials)
         {
-            var materialAmounts = new Dictionary<String, Double>();
+            var mineralAmounts = new Dictionary<String, Double>();
 
-            var matchingMaterials = GetMatchingMaterials(y);
-
-            if (matchingMaterials.Count == 1)
+            foreach (var mineral in world.Minerals)
             {
-                var material = matchingMaterials[0];
-
-                materialAmounts[material.Reference] = 1; // Amount To be calculated or taken from NoiseMap
-            }
-            else if (matchingMaterials.Count > 1)
-            {
-                foreach (var material in matchingMaterials)
-                {
-                    materialAmounts[material.Reference] = 1; // Amount To be calculated or taken from NoiseMap
-                }
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(matchingMaterials), "For some reason, no matching Material was found");
+                mineralAmounts[mineral.Reference] = 0;
             }
 
-            return materialAmounts;
+            var possibleMaterialValues = new Dictionary<String, Double>();
+
+            foreach (var possibleMaterial in possibleMaterials)
+            {
+                var materialX = x + possibleMaterial.Seed;
+                var materialY = y + possibleMaterial.Seed;
+
+                var perlinValue = UnityEngine.Mathf.PerlinNoise(x, y);
+            }
+
+            return mineralAmounts;
         }
 
-        private List<Assets.Scripts.Core.Definitons.MaterialDefinition> GetMatchingMaterials(Int32 y)
+        private List<Mineral> GetMatchingMinerals(Int32 y)
         {
-            var materialList = new List<Definitons.MaterialDefinition>();
+            var materialList = new List<Mineral>();
 
-            foreach (var material in world.Definition.Materials)
+            foreach (var material in world.Minerals)
             {
-                if (material.SpawnRange !=default)
-                {                    
-                    if (material.SpawnRange.Contains(y))
-                    {
-                        materialList.Add(material);
-                    }
-                }
-                else
+                if (material.SpawnRange == default || material.SpawnRange.Contains(y))
                 {
                     materialList.Add(material);
                 }

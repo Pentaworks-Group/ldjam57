@@ -7,14 +7,14 @@ namespace Assets.Scripts.Core.Definitons.Loaders
     public class GameModeLoader : BaseLoader<GameMode>
     {
         private readonly DefinitionCache<MarketDefinition> marketCache;
-        private readonly DefinitionCache<MaterialDefinition> materialCache;
+        private readonly DefinitionCache<MineralDefinition> mineralCache;
         private readonly DefinitionCache<TransportDefinition> transportCache;
         private readonly DefinitionCache<MiningToolDefinition> miningToolCache;
 
-        public GameModeLoader(DefinitionCache<GameMode> targetCache, DefinitionCache<MaterialDefinition> materialCache, DefinitionCache<MiningToolDefinition> miningToolCache, DefinitionCache<TransportDefinition> transportCache, DefinitionCache<MarketDefinition> marketCache) : base(targetCache)
+        public GameModeLoader(DefinitionCache<GameMode> targetCache, DefinitionCache<MineralDefinition> mineralCache, DefinitionCache<MiningToolDefinition> miningToolCache, DefinitionCache<TransportDefinition> transportCache, DefinitionCache<MarketDefinition> marketCache) : base(targetCache)
         {
             this.marketCache = marketCache;
-            this.materialCache = materialCache;
+            this.mineralCache = mineralCache;
             this.transportCache = transportCache;
             this.miningToolCache = miningToolCache;
         }
@@ -47,12 +47,12 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         {
                             Seed = loadedGameMode.World.Seed,
                             Width = loadedGameMode.World.Width,
-                            Materials = new List<MaterialDefinition>(),
+                            Minerals = new List<MineralDefinition>(),
                             Headquarters = loadedGameMode.World.Headquarters,
                             Depositories = new List<DepositoryDefinition>()
                         };
 
-                        CheckItems(loadedGameMode.World.Materials, newGameMode.World.Materials, this.materialCache);
+                        CheckItems(loadedGameMode.World.Minerals, newGameMode.World.Minerals, this.mineralCache);
 
                         if (loadedGameMode.World.Depositories != default)
                         {
@@ -60,7 +60,7 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                             {
                                 var newDepository = new DepositoryDefinition()
                                 {
-                                    Material = CheckItem(loadedDepository.Material, this.materialCache),
+                                    Material = CheckItem(loadedDepository.Material, this.mineralCache),
                                     Capacity = loadedDepository.Capacity,
                                     Position = loadedDepository.Position,
                                     Reference = loadedDepository.Reference,
