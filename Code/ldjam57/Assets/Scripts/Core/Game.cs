@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Assets.Scripts.Core.Definitons;
+using Assets.Scripts.Core.Definitons.Loaders;
 
 using GameFrame.Core.Definitions.Loaders;
 using GameFrame.Core.Extensions;
@@ -71,16 +72,16 @@ namespace Assets.Scripts.Core
 
         protected override IEnumerator LoadDefintions()
         {
-            //var marketCache = new DefinitionCache<MarketDefinition>();
-            //var entityCache = new DefinitionCache<EntityDefinition>();
-            //var biomeCache = new DefinitionCache<BiomeDefinition>();
+            var materialCache = new DefinitionCache<MaterialDefinition>();
+            var miningToolCache = new DefinitionCache<MiningToolDefinition>();
+            var transportCache = new DefinitionCache<TransportDefinition>();
+            var marketCache = new DefinitionCache<MarketDefinition>();
 
-            //yield return new DefinitionLoader<BeeDefinition>(beeCache).LoadDefinitions("Bees.json");
-            //yield return new DefinitionLoader<EntityDefinition>(entityCache).LoadDefinitions("Entities.json");
-            //yield return new BiomesLoader(biomeCache, entityCache).LoadDefinitions("Biomes.json");
-            //yield return new GameModeLoader(this.gameModeCache, beeCache, biomeCache, entityCache).LoadDefinitions("GameModes.json");
-
-            yield return null;
+            yield return new DefinitionLoader<MaterialDefinition>(materialCache).LoadDefinitions("Materials.json");
+            yield return new DefinitionLoader<MiningToolDefinition>(miningToolCache).LoadDefinitions("MiningTools.json");
+            yield return new DefinitionLoader<TransportDefinition>(transportCache).LoadDefinitions("Transports.json");
+            yield return new MarketDefinitionLoader(marketCache, materialCache).LoadDefinitions("Markets.json");
+            yield return new GameModeLoader(this.gameModeCache, materialCache, miningToolCache, transportCache, marketCache).LoadDefinitions("GameModes.json");
             Debug.Log("loaded definitions");
         }
 

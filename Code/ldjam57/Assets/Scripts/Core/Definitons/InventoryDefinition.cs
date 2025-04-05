@@ -8,8 +8,8 @@ namespace Assets.Scripts.Core.Definitons
 {
     public class InventoryDefinition
     {
-        public List<MiningTool> Tools { get; set; }
-        public List<Transport> VerticalTransports { get; set; }
-        public List<Transport> HorizontalTransports { get; set; }
+        public List<MiningToolDefinition> Tools { get; set; }
+        public List<TransportDefinition> VerticalTransports { get; set; }
+        public List<TransportDefinition> HorizontalTransports { get; set; }
     }
 }

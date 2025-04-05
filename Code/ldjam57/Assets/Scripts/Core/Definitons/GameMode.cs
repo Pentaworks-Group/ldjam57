@@ -10,8 +10,9 @@ namespace Assets.Scripts.Core.Definitons
         public String Name { get; set; }
         public WorldDefinition World { get; set; }
         public BankDefinition Bank { get; set; }
-        public Market Market { get; set; }
-        public List<MiningTool> AvailableTools { get; set; }
+        public MarketDefinition Market { get; set; }
+        public List<MiningToolDefinition> AvailableMiningTools { get; set; }
+        public List<TransportDefinition> AvailableTransports { get; set; }
         public InventoryDefinition Inventory { get; set; }
     }
 }

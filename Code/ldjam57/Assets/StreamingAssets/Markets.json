@@ -1,0 +1,16 @@
+[
+  {
+    "Reference": "Default",
+    "Name": "Default",
+    "Factor": 0.1,
+    "MaterialValues": [
+      {
+        "Material": {
+          "Reference": "Copper",
+          "IsReferenced": true
+        },
+        "Value": 100.5
+      }
+    ]
+  }
+]

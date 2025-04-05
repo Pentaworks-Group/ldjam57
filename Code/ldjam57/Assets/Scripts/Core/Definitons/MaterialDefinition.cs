@@ -4,7 +4,7 @@ using GameFrame.Core.Definitions;
 
 namespace Assets.Scripts.Core.Definitons
 {
-    public class Material : BaseDefinition
+    public class MaterialDefinition : BaseDefinition
     {
         public String Name { get; set; }
         public GameFrame.Core.Math.Range SpawnRange { get; set; }
