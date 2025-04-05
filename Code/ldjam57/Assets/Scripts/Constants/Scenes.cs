@@ -36,10 +36,9 @@ namespace Assets.Scripts.Constants
                     credits = new Scene()
                     {
                         Name = CreditsName,
-                        AmbienceClips = new List<String>()
-                        {
-                            "WoodSound"
-                        },
+                        //AmbienceClips = new List<String>()
+                        //{
+                        //},
                     };
                 }
 
@@ -76,36 +75,18 @@ namespace Assets.Scripts.Constants
                     game = new Scene()
                     {
                         Name = GameName,
-                        AmbienceClips = new List<String>()
-                        {
-                            "WoodSound"
-                        },
-                        BackgroundClips = new List<String>()
-                        {
-                            "Background"
-                        }
+                        //AmbienceClips = new List<String>()
+                        //{
+                        //    "WoodSound"
+                        //},
+                        //BackgroundClips = new List<String>()
+                        //{
+                        //    "Background"
+                        //}
                     };
                 }
 
                 return game;
-            }
-        }
-
-        public const String MovementTestName = "MovementTestScene";
-        private static Scene movementTest;
-        public static Scene MovementTest
-        {
-            get
-            {
-                if (movementTest == default)
-                {
-                    movementTest = new Scene()
-                    {
-                        Name = MovementTestName
-                    };
-                }
-
-                return movementTest;
             }
         }
 
@@ -135,7 +116,6 @@ namespace Assets.Scripts.Constants
                 Credits,
                 Options,
                 Game,
-                MovementTest,
                 TerrainTest
             };
         }
