@@ -7,18 +7,18 @@ namespace Assets.Scripts.Scenes.GameScene
 {
     public class GroundBehaviour : TileBehaviour
     {
-        private MineralDefinition material;
+        private MineralDefinition mineral;
         private double miningProgress = 0;
 
-        public void Init(WorldBehaviour worldBehaviour, Point2 pos, MineralDefinition material)
+        public void Init(WorldBehaviour worldBehaviour, Point2 pos, MineralDefinition mineral)
         {
             base.Init(worldBehaviour, pos);
-            this.material = material;
+            this.mineral = mineral;
         }
 
         public bool UpdateProgress(MiningTool miningTool)
         {
-            var progress = miningTool.SpeedFactor / material.MiningSpeedFactor.GetValueOrDefault(1);
+            var progress = miningTool.SpeedFactor / mineral.MiningSpeedFactor.GetValueOrDefault(1);
             miningProgress += progress;
             var finished = IsMined();
             if (finished)

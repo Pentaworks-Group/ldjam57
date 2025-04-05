@@ -6,11 +6,11 @@ namespace Assets.Scripts.Core.Definitons.Loaders
 {
     public class MarketDefinitionLoader : BaseLoader<MarketDefinition>
     {
-        private readonly DefinitionCache<MineralDefinition> materialCache;
+        private readonly DefinitionCache<MineralDefinition> mineralCache;
 
-        public MarketDefinitionLoader(DefinitionCache<MarketDefinition> targetCache, DefinitionCache<MineralDefinition> materialCache) : base(targetCache)
+        public MarketDefinitionLoader(DefinitionCache<MarketDefinition> targetCache, DefinitionCache<MineralDefinition> mineralCache) : base(targetCache)
         {
-            this.materialCache = materialCache;
+            this.mineralCache = mineralCache;
         }
 
         protected override void OnDefinitionsLoaded(List<MarketDefinition> definitions)
@@ -24,20 +24,20 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         Reference = loadedMarketDefinition.Reference,
                         Name = loadedMarketDefinition.Name,
                         Factor = loadedMarketDefinition.Factor,
-                        MaterialValues = new List<MaterialValueDefinition>()
+                        MineralValues = new List<MineralValueDefinition>()
                     };
 
-                    if (loadedMarketDefinition.MaterialValues?.Count > 0)
+                    if (loadedMarketDefinition.MineralValues?.Count > 0)
                     {
-                        foreach (var marketValue in loadedMarketDefinition.MaterialValues)
+                        foreach (var marketValue in loadedMarketDefinition.MineralValues)
                         {
-                            var newMaterialValueDefinition = new MaterialValueDefinition()
+                            var newMineralValueDefinition = new MineralValueDefinition()
                             {
-                                Material = CheckItem(marketValue.Material, this.materialCache),
+                                Mineral = CheckItem(marketValue.Mineral, this.mineralCache),
                                 Value = marketValue.Value
                             };
 
-                            marketDefinition.MaterialValues.Add(newMaterialValueDefinition);
+                            marketDefinition.MineralValues.Add(newMineralValueDefinition);
                         }
                     }
 

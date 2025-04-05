@@ -8,6 +8,6 @@ namespace Assets.Scripts.Core.Model
 {
     public class Market
     {
-        public List<MarketValue> MaterialValues { get; set; }
+        public List<MineralMarketValue> MineralValues { get; set; }
     }
 }

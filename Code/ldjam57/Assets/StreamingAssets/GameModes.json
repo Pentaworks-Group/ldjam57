@@ -3,7 +3,7 @@
     "Reference": "Default",
     "Name": "Default",
     "World": {
-      "Materials": [
+      "Minerals": [
         {
           "IsReferenced": true,
           "Reference": "Dirt"
@@ -43,7 +43,7 @@
       },
       "Depositories": [
         {
-          "Material": {
+          "Mineral": {
             "IsReferenced": true,
             "Reference": "Dirt"
           },
