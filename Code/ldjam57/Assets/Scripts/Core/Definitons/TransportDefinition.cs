@@ -10,9 +10,10 @@ namespace Assets.Scripts.Core.Definitons
         public String Sprite { get; set; }
         public Double? Speed { get; set; }
         public Double? Capacity { get; set; }
-        public GameFrame.Core.Math.Vector2? Size { get; set; }
+        public Boolean? IsUnlocked { get; set; }
         public Boolean? IsUnlockable { get; set; }
         public Decimal? UnlockCost { get; set; }
         public Decimal? PurchaseCost { get; set; }
+        public GameFrame.Core.Math.Vector2? Size { get; set; }
     }
 }

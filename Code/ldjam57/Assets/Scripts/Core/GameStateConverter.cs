@@ -186,8 +186,15 @@ namespace Assets.Scripts.Core
             {
                 var transport = new Transport()
                 {
-                    Definition = definition,
-
+                    Name = definition.Name,
+                    Sprite = definition.Sprite,
+                    Speed  = definition.Speed.GetValueOrDefault(1),
+                    Capacity = definition.Capacity.GetValueOrDefault(),
+                    Size = definition.Size.GetValueOrDefault(new GameFrame.Core.Math.Vector2(1,1)),
+                    IsUnlocked = definition.IsUnlocked.GetValueOrDefault(),
+                    IsUnlockable = definition.IsUnlockable.GetValueOrDefault(),
+                    UnlockCost = definition.UnlockCost.GetValueOrDefault(),
+                    PurchaseCost = definition.PurchaseCost.GetValueOrDefault(),
                 };
 
                 targetList.Add(transport);
