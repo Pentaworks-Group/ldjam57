@@ -16,6 +16,11 @@ namespace Assets.Scripts.Scenes.GameScene
         private float tick = 0f;
 
 
+        public Direction GetDirection()
+        {
+            return direction;
+        }
+
 
         private void Awake()
         {
@@ -93,6 +98,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 transform.position = new UnityEngine.Vector3(p.x, p.y - 1, p.z);
                 pos = newPoint;
             }
+            worldBehaviour.DiggerMoved(this);
         }
 
         private bool SetTargets()
