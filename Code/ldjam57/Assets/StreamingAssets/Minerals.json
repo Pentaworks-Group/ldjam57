@@ -7,7 +7,8 @@
     "Color": {
       "Red": 0.5,
       "Green": 0.3,
-      "Blue": 0.1
+      "Blue": 0.1,
+      "Alpha": 1
     },
     "SpawnRange": {
       "Min": 0
@@ -22,7 +23,8 @@
     "Color": {
       "Red": 0.718,
       "Green": 0.69,
-      "Blue": 0.612
+      "Blue": 0.612,
+      "Alpha": 1
     },
     "SeedRange": {
       "Min": 12500,
@@ -41,7 +43,8 @@
     "Color": {
       "Red": 0.722,
       "Green": 0.451,
-      "Blue": 0.2
+      "Blue": 0.2,
+      "Alpha": 1
     },
     "SeedRange": {
       "Min": 10000,
@@ -60,7 +63,8 @@
     "Color": {
       "Red": 1,
       "Green": 0.843,
-      "Blue": 0
+      "Blue": 0,
+      "Alpha": 1
     },
     "SeedRange": {
       "Min": 7500,
@@ -79,7 +83,8 @@
     "Color": {
       "Red": 0.63,
       "Green": 0.61,
-      "Blue": 0.58
+      "Blue": 0.58,
+      "Alpha": 1
     },
     "SeedRange": {
       "Min": 5000,
@@ -97,7 +102,8 @@
     "Color": {
       "Red": 0.827,
       "Green": 0.98,
-      "Blue": 0.251
+      "Blue": 0.251,
+      "Alpha": 1
     },
     "SeedRange": {
       "Min": 2500,
@@ -115,7 +121,8 @@
     "Color": {
       "Red": 0.655,
       "Green": 0.847,
-      "Blue": 0.871
+      "Blue": 0.871,
+      "Alpha": 1
     },
     "SeedRange": {
       "Min": 0,

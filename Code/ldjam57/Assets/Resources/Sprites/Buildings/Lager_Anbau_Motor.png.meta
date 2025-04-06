@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 2d37a58a85366984d94112dd3ba2f15b
+<<<<<<<< HEAD:Code/ldjam57/Assets/Resources/Sprites/Transport/Elevater.png.meta
+guid: 9430729f10d8294438a012c785fc36db
+========
+guid: 269acfb4204b4284c8b0f631b77a21c1
+>>>>>>>> 848b6efb6974f310c884fb421fa644906d53239a:Code/ldjam57/Assets/Resources/Sprites/Buildings/Lager_Anbau_Motor.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

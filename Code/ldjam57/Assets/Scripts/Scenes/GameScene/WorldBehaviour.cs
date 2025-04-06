@@ -51,7 +51,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private List<SiteBehaviour> Sites = new();
         private List<TransportSiteBehaviour> TransportSites = new();
-        private readonly List<DepositoryBehaviour> depositories = new List<DepositoryBehaviour>();
+        private readonly Dictionary<String, DepositoryBehaviour> depositories = new Dictionary<String, DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
         private Transport selectedTransport;
@@ -302,7 +302,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             tileGenerator = new TileGenerator(world);
 
-            Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3();
+            Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3(Headquarters.transform.position.z);
 
             foreach (var tile in world.Tiles)
             {
@@ -367,13 +367,17 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateDepository(Depository depository)
         {
-            var depositoryGameObject = Instantiate(DepositoryTemplate, depository.Position.ToUnityVector3(), Quaternion.identity, DepositoryContainer.transform);
+            var position = depository.Position.ToUnityVector3();
+
+            position.z = DepositoryTemplate.transform.position.z;
+
+            var depositoryGameObject = Instantiate(DepositoryTemplate, position, DepositoryTemplate.transform.rotation, DepositoryContainer.transform);
 
             var depositoryBehaviour = depositoryGameObject.GetComponent<DepositoryBehaviour>();
 
             depositoryBehaviour.Init(this, depository);
 
-            depositories.Add(depositoryBehaviour);
+            depositories[depository.Mineral.Reference] = depositoryBehaviour;
 
             depositoryGameObject.SetActive(true);
         }

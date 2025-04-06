@@ -61,14 +61,19 @@ namespace Assets.Scripts.Core.Model
 
             var total = 0d;
 
+            //var densityscaling = 0.69f;
+            //var cutoffscaling = 0.35;
+            var cutoffscaling = 0.5;
+
             foreach (var possibleMineral in possibleMinerals)
             {
                 var mineralX = (x + world.Seed + possibleMineral.Seed);
                 var mineralY = (y + world.Seed + possibleMineral.Seed);
 
+                //var perlinValue = UnityEngine.Mathf.PerlinNoise(mineralX, mineralY) * densityscaling;
                 var perlinValue = UnityEngine.Mathf.PerlinNoise(mineralX, mineralY);
 
-                if (perlinValue > 0.5)
+                if (perlinValue > cutoffscaling)
                 {
                     possibleMineralValues[possibleMineral.Reference] = perlinValue;
 
