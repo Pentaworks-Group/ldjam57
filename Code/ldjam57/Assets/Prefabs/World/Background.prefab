@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 8153109087913911269}
   - component: {fileID: 703323680849192900}
   m_Layer: 0
-  m_Name: Mountains
+  m_Name: Mountain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,11 +246,11 @@ Transform:
   m_GameObject: {fileID: 4140980277819432813}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 97.3, y: 6, z: 51.6}
-  m_LocalScale: {x: -8, y: 1, z: 1.5000002}
+  m_LocalPosition: {x: 83.3, y: 4.77, z: 51.6}
+  m_LocalScale: {x: -7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8756461311983303451}
+  m_Father: {fileID: 4946926335442736651}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!33 &8234960164643136944
 MeshFilter:
@@ -327,6 +327,39 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &5425450204629480220
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4946926335442736651}
+  m_Layer: 0
+  m_Name: Mountains
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4946926335442736651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5425450204629480220}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 32256365661049246}
+  - {fileID: 1985657580152159907}
+  m_Father: {fileID: 8756461311983303451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6511665532147011711
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +373,7 @@ GameObject:
   - component: {fileID: 9034258082820156367}
   - component: {fileID: 2542633645565612094}
   m_Layer: 0
-  m_Name: Mountains
+  m_Name: Mountain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -354,12 +387,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6511665532147011711}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 17.3, y: 6, z: 51.6}
-  m_LocalScale: {x: 8, y: 1, z: 1.5}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalPosition: {x: 13.38, y: 4.77, z: 51.6}
+  m_LocalScale: {x: 7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8756461311983303451}
+  m_Father: {fileID: 4946926335442736651}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!33 &5343051128873546082
 MeshFilter:
@@ -467,7 +500,6 @@ Transform:
   m_Children:
   - {fileID: 5720738560584364248}
   - {fileID: 4003998944923172376}
-  - {fileID: 32256365661049246}
-  - {fileID: 1985657580152159907}
+  - {fileID: 4946926335442736651}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
