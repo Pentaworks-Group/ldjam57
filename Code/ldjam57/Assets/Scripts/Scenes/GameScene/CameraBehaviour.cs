@@ -19,7 +19,12 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField] private float mouseDragSensitivity = 0.01f;
         [SerializeField] private bool invertMouseDrag = true;
 
+        [Header("Zoom Settings")]
+        [SerializeField] private float minZoom = 2f;  // Minimum orthographic size (maximum zoom in)
+        [SerializeField] private float maxZoom = 10f;
+
         private Rect cameraBounds = new Rect(0, -10f, 20f, 10f);
+        private float maxHeight = 1.0f;
 
         private bool isKeyboardMoving = false;
         private Vector2 keyboardMoveDirection = Vector2.zero;
@@ -30,6 +35,19 @@ namespace Assets.Scripts.Scenes.GameScene
         // Mouse drag variables
         private bool isMouseDragging = false;
         private Vector3 lastMousePosition;
+
+        private Camera mainCamera;
+
+        private void Awake()
+        {
+            // Get the Camera component from this GameObject
+            mainCamera = GetComponent<Camera>();
+
+            if (mainCamera == null)
+            {
+                Debug.LogError("No Camera component found on this GameObject!");
+            }
+        }
 
         private void OnEnable()
         {
@@ -96,7 +114,11 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void OnZoom(InputAction.CallbackContext context)
         {
-            ZoomCamera(context.ReadValue<Vector2>());
+            float scrollInput = Input.mouseScrollDelta.y;
+            if (scrollInput != 0)
+            {
+                ZoomCamera(scrollInput);
+            }
         }
 
         private void HandleMouseDrag()
@@ -162,7 +184,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 if (isTouching)
                 {
                     // Apply zoom (negative value to match mouse wheel behavior)
-                    ZoomCamera(new Vector2(0, -zoomDelta * pinchZoomSensitivity));
+                    ZoomCamera(-zoomDelta * pinchZoomSensitivity);
                 }
 
                 lastTouchDistance = currentTouchDistance;
@@ -222,16 +244,35 @@ namespace Assets.Scripts.Scenes.GameScene
             transform.position = newPosition;
         }
 
-        private void ZoomCamera(Vector2 zoomInput)
+        private void ZoomCamera(float zoomInput)
         {
             var sensitivity = Base.Core.Game.Options.ZoomSensivity;
-            var p = transform.position;
-            transform.position = new Vector3(p.x, p.y, p.z + sensitivity * zoomInput.y);
+
+            // Skip if no camera component
+            if (mainCamera == null)
+                return;
+
+            // Make sure the camera is in orthographic mode
+            if (!mainCamera.orthographic)
+            {
+                Debug.LogWarning("Camera is not in orthographic mode");
+                return;
+            }
+
+            // Calculate new zoom level
+            float currentSize = mainCamera.orthographicSize;
+            float targetSize = currentSize;
+
+            targetSize -= zoomInput * sensitivity;
+            Debug.Log(targetSize+", "+sensitivity+", "+zoomInput);
+            targetSize = Mathf.Clamp(targetSize, minZoom, maxZoom);
+
+            mainCamera.orthographicSize = targetSize;
         }
 
         public void OnBoundariesChanged(Int32 width, Int32 maxDepth)
         {
-            cameraBounds = new Rect(0, -maxDepth, width, maxDepth);
+            cameraBounds = new Rect(0, -maxDepth, width, maxDepth + maxHeight);
         }
     }
 }
