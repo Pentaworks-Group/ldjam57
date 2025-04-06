@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
-    public class DiggerBehaviour : TileBehaviour, IClickable
+    public class DiggerBehaviour : TileBehaviour, IClickable, IStorage
     {
         private Digger digger;
         private List<GroundBehaviour> targets = new List<GroundBehaviour>();
@@ -16,6 +17,9 @@ namespace Assets.Scripts.Scenes.GameScene
         private float tickInterval = 1f;
         private float xOffset;
         private float yOffset;
+        private double usedCapacity = 0;
+
+        private ShaftBehaviour shaft;
 
         private Animator _animator;
 
@@ -62,47 +66,55 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var posi = worldBehaviour.GetUnityVector(digger.Position, -0.01f, xOffset, yOffset);
             transform.position = posi;
-        }
-
-
-        private void CalculateOffsetsAndRotation()
-        {
-            if (digger.Direction == Direction.Down)
+            if (shaft != null)
             {
-                xOffset = 0;
-                yOffset = 1 - transform.localScale.y;
+                shaft.SetDigger(null);
             }
-            else if (digger.Direction == Direction.Left)
+            ShaftBehaviour newShaft = (ShaftBehaviour)worldBehaviour.GetTileRelative(digger.Position, 0, 0);
+            if (newShaft != null)
             {
-                xOffset = transform.localScale.y - 1;
-                yOffset = 0;
-                transform.rotation *= Quaternion.Euler(0, 0, -90);
-            }
-            else if (digger.Direction == Direction.Right)
-            {
-                xOffset = 1 - transform.localScale.y;
-                yOffset = 0;
-                transform.rotation *= Quaternion.Euler(0, 0, 90);
-            }
-            else
-            {
-                return;
+                newShaft.SetDigger(this);
             }
         }
+
 
         private void MineTargets()
         {
-            for (int i = targets.Count - 1; i >= 0; i--)
+            if (usedCapacity < digger.MiningTool.Capacity)
             {
-                if (targets[i].UpdateProgress(digger.MiningTool))
+                for (int i = targets.Count - 1; i >= 0; i--)
                 {
-                    targets.RemoveAt(i);
+                    if (targets[i].UpdateProgress(digger.MiningTool, out List<MineralAmount> mined))
+                    {
+                        targets.RemoveAt(i);
+                    }
+                    StoreMinerals(mined);
+                }
+                if (targets.Count == 0)
+                {
+                    MoveDigger();
+                    SetTargets();
                 }
             }
-            if (targets.Count == 0)
+        }
+
+        private void StoreMinerals(List<MineralAmount> mined)
+        {
+            foreach (MineralAmount mineralA in mined)
             {
-                MoveDigger();
-                SetTargets();
+                if (digger.MinedAmount.ContainsKey(mineralA.Mineral))
+                {
+                    digger.MinedAmount[mineralA.Mineral] += mineralA.Amount;
+                }
+                else
+                {
+                    digger.MinedAmount[mineralA.Mineral] = mineralA.Amount;
+                }
+            }
+            usedCapacity = 0;
+            foreach (var pair in digger.MinedAmount)
+            {
+                usedCapacity += pair.Value * pair.Key.Weight;
             }
         }
 
@@ -222,6 +234,11 @@ namespace Assets.Scripts.Scenes.GameScene
         public override Point2 GetPosition()
         {
             return digger.Position;
+        }
+
+        public Dictionary<Mineral, double> GetStorage()
+        {
+            return digger.MinedAmount;
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public bool UpdateProgress(MiningTool miningTool)
+        public bool UpdateProgress(MiningTool miningTool, out List<MineralAmount> amountMined)
         {
             float progress = (float)(miningTool.SpeedFactor / tile.SpeedFactor);
 
@@ -51,9 +51,20 @@ namespace Assets.Scripts.Scenes.GameScene
 
             if (finished)
             {
+                amountMined = tile.MineralAmounts;
                 worldBehaviour.ReplaceTile(this);
             }
-
+            else
+            {
+                amountMined = new();
+                foreach (var mineralAmount in tile.MineralAmounts)
+                {
+                    var newMineralAmount = new MineralAmount(
+                        mineralAmount.Mineral,
+                        mineralAmount.Amount * progress);
+                    amountMined.Add(newMineralAmount);
+                }
+            }
             return finished;
         }
 

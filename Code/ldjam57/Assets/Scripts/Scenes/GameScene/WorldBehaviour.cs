@@ -219,13 +219,18 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     continue;
                 }
-                var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-                newSite.Init(this, transport, shaft, false);
-                newSite.gameObject.SetActive(true);
-                TransportSites.Add(newSite);
+                var direction = Direction.Left;
+                GenerateTransportSite(transport, shaft, direction, false);
             }
         }
 
+        private void GenerateTransportSite(Transport transport, ShaftBehaviour shaft, Direction direction, bool vertical)
+        {
+            var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
+            newSite.Init(this, transport, shaft, vertical, direction);
+            newSite.gameObject.SetActive(true);
+            TransportSites.Add(newSite);
+        }
 
         public void DisplayPossibleVerticalTransportSites()
         {
@@ -251,19 +256,17 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     continue;
                 }
-                var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-                newSite.Init(this, transport, shaft, true);
-                newSite.gameObject.SetActive(true);
-                TransportSites.Add(newSite);
+                var direction = Direction.Down;
+                GenerateTransportSite(transport, shaft, direction, true);
             }
         }
 
-        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transport transport)
+        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transport transport, Direction direction)
         {
             var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
             var p = shaftBehaviour.transform.position;
             transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
-            transportBehaviour.Init(shaftBehaviour, transport);
+            transportBehaviour.Init(this, shaftBehaviour, transport, direction);
             transportBehaviour.gameObject.SetActive(true);
             return transportBehaviour;
         }
@@ -425,6 +428,16 @@ namespace Assets.Scripts.Scenes.GameScene
                 return null;
             }
             return tileMap[newX, newY];
+        }
+
+        internal T GetTilerRelativeOfType<T>(Point2 pos, int x, int y) 
+        {
+            var tile = GetTileRelative(pos, x, y);
+            if (tile is T typedTile)
+            {
+                return typedTile;
+            }
+            return default;
         }
 
         internal void DiggerMoved(DiggerBehaviour toolBehaviour)
