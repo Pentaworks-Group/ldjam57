@@ -3,6 +3,7 @@ using System;
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
+using GameFrame.Core.Math;
 
 using UnityEngine;
 
