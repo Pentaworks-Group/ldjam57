@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Assets.Scripts.Constants;
 using Assets.Scripts.Core.Definitons;
@@ -114,7 +115,10 @@ namespace Assets.Scripts.Core
 
             var tileGenerator = new TileGenerator(world);
 
-            world.Tiles.AddRange(tileGenerator.GenerateRootTiles());
+            var initialDepth = 2;
+
+            world.Tiles.AddRange(tileGenerator.GenerateRootTiles(initialDepth));
+            world.MaxDepth = initialDepth;
 
             ConvertDepositories(world.Depositories);
 

@@ -13,11 +13,11 @@ namespace Assets.Scripts.Core.Model
             this.world = world;
         }
 
-        public List<Tile> GenerateRootTiles()
+        public List<Tile> GenerateRootTiles(Int32 initialDepth)
         {
             var tiles = new List<Tile>();
 
-            for (int y = 0; y < 2; y++)
+            for (int y = 0; y < initialDepth; y++)
             {
                 var possibleMinerals = GetMatchingMinerals(y);
 
@@ -59,9 +59,6 @@ namespace Assets.Scripts.Core.Model
 
             var possibleMineralValues = new Dictionary<String, Double>();
 
-            var minValue = Single.MaxValue;
-            var maxValue = Single.MinValue;
-
             var total = 0d;
 
             foreach (var possibleMineral in possibleMinerals)
@@ -74,16 +71,6 @@ namespace Assets.Scripts.Core.Model
                 if (perlinValue > 0.5)
                 {
                     possibleMineralValues[possibleMineral.Reference] = perlinValue;
-
-                    if (perlinValue > maxValue)
-                    {
-                        maxValue = perlinValue;
-                    }
-
-                    if (perlinValue < minValue)
-                    {
-                        minValue = perlinValue;
-                    }
 
                     total += perlinValue;
                 }
@@ -108,8 +95,7 @@ namespace Assets.Scripts.Core.Model
                 mineralAmounts[world.DefaultMineral.Reference].Amount = 1 - total;
             }
 
-            return mineralAmounts.Values.ToList()
-                ;
+            return mineralAmounts.Values.ToList();
         }
 
         private List<Mineral> GetMatchingMinerals(Int32 y)
