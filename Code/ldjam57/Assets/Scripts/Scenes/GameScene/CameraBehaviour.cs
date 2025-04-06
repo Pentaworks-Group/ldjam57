@@ -231,6 +231,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void OnBoundariesChanged(Int32 width, Int32 maxDepth)
         {
+            cameraBounds = new Rect(0, -maxDepth, width, maxDepth);
         }
     }
 }
