@@ -4,6 +4,9 @@ using GameFrame.Core.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -21,6 +24,10 @@ namespace Assets.Scripts.Scenes.GameScene
 
         [SerializeField]
         private GroundBehaviour TileTemplate;
+        
+        [SerializeField]
+        private CameraBehaviour CameraBehaviour;
+        
         [SerializeField]
         private GameObject ShaftTemplate;
         [SerializeField]
@@ -275,6 +282,8 @@ namespace Assets.Scripts.Scenes.GameScene
                     GenerateGround(tile);
                 }
             }
+
+            CameraBehaviour.OnBoundariesChanged(Base.Core.Game.State.World.Width, Base.Core.Game.State.World.MaxDepth);
         }
 
         private void GenerateGround(Tile tile)
@@ -374,8 +383,6 @@ namespace Assets.Scripts.Scenes.GameScene
 
         internal void DiggerMoved(DiggerBehaviour toolBehaviour)
         {
-
-
             var dir = toolBehaviour.GetDirection();
             var size = toolBehaviour.GetSize();
             List<(int x, int y)> pointList = new List<(int x, int y)>();
@@ -414,10 +421,18 @@ namespace Assets.Scripts.Scenes.GameScene
             foreach (var point in pointList)
             {
                 var validPosition = GetRelativePosition(pos, point.x, point.y, out int x, out int y);
+
                 if (validPosition && !tileMap.TryGetValue(x, y, out _))
                 {
                     var tile = tileGenerator.GenerateTile(x, y);
+                    
                     GenerateGround(tile);
+                }
+
+                if (y > Base.Core.Game.State.World.MaxDepth)
+                {
+                    Base.Core.Game.State.World.MaxDepth = y;
+                    CameraBehaviour.OnBoundariesChanged(Base.Core.Game.State.World.Width, y);
                 }
             }
         }

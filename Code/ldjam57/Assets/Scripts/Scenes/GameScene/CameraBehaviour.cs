@@ -1,7 +1,8 @@
+using System;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -216,6 +217,10 @@ namespace Assets.Scripts.Scenes.GameScene
             var sensitivity = Base.Core.Game.Options.ZoomSensivity;
             var p = transform.position;
             transform.position = new Vector3(p.x, p.y, p.z + sensitivity * zoomInput.y);
+        }
+
+        public void OnBoundariesChanged(Int32 width, Int32 maxDepth)
+        {
         }
     }
 }

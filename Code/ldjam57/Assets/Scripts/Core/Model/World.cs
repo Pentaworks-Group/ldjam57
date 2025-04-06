@@ -13,5 +13,6 @@ namespace Assets.Scripts.Core.Model
         public List<Tile> Tiles { get; set; } = new List<Tile>();
         public List<Depository> Depositories { get; set; } = new List<Depository>();
         public Headquarters Headquarters { get; set; }
+        public Int32 MaxDepth { get; set; }
     }
 }

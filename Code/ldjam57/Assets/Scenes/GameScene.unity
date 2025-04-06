@@ -1735,6 +1735,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 1328617117}
   TileTemplate: {fileID: 1181462744}
+  CameraBehaviour: {fileID: 1328617120}
   ShaftTemplate: {fileID: 1518904647}
   SiteTemplate: {fileID: 385290567}
   DiggerTemplate: {fileID: 1570910106}
