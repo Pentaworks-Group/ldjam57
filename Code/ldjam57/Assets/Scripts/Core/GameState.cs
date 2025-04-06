@@ -11,9 +11,9 @@ namespace Assets.Scripts.Core
         public Market Market { get; set; }
         public World World { get; set; }
         public Inventory Inventory { get; set; }
-        public List<MiningTool> AvailableMiningTools { get; set; }
-        public List<Transport> AvailableHorizontalTransports { get; set; }
-        public List<Transport> AvailableVerticalTransports { get; set; }
-        public List<Digger> ActiveDiggers { get; set; }
+        public List<MiningTool> AvailableMiningTools { get; set; } = new List<MiningTool>();
+        public List<Transport> AvailableHorizontalTransports { get; set; } = new List<Transport>();
+        public List<Transport> AvailableVerticalTransports { get; set; } = new List<Transport>();
+        public List<Digger> ActiveDiggers { get; set; } = new List<Digger>();
     }
 }

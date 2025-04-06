@@ -55,14 +55,57 @@ namespace Assets.Scripts.Core.Model
                 mineralAmounts[mineral.Reference] = 0;
             }
 
-            var possibleMineralvalues = new Dictionary<String, Double>();
+            var possibleMineralValues = new Dictionary<String, Double>();
+
+            var minValue = Single.MaxValue;
+            var maxValue = Single.MinValue;
+
+            var total = 0d;
 
             foreach (var possibleMineral in possibleMinerals)
             {
-                var mineralX = x + possibleMineral.Seed;
-                var mineralY = y + possibleMineral.Seed;
+                var mineralX = (x + world.Seed + possibleMineral.Seed);
+                var mineralY = (y + world.Seed + possibleMineral.Seed);
 
                 var perlinValue = UnityEngine.Mathf.PerlinNoise(mineralX, mineralY);
+
+                UnityEngine.Debug.Log(String.Format("{0};{1} - {2}", x, y, perlinValue));
+
+                if (perlinValue > 0.5)
+                {
+                    possibleMineralValues[possibleMineral.Reference] = perlinValue;
+
+                    if (perlinValue > maxValue)
+                    {
+                        maxValue = perlinValue;
+                    }
+
+                    if (perlinValue < minValue)
+                    {
+                        minValue = perlinValue;
+                    }
+
+                    total += perlinValue;
+                }
+            }
+
+            if (total > 1)
+            {
+                var scale = 1.0d / total;
+
+                foreach (var layer in possibleMineralValues)
+                {
+                    mineralAmounts[layer.Key] = layer.Value * scale;
+                }
+            }
+            else
+            {
+                foreach (var layer in possibleMineralValues)
+                {
+                    mineralAmounts[layer.Key] = layer.Value;
+                }
+
+                mineralAmounts[world.DefaultMineral.Reference] = 1 - total;
             }
 
             return mineralAmounts;
@@ -74,9 +117,12 @@ namespace Assets.Scripts.Core.Model
 
             foreach (var mineral in world.Minerals)
             {
-                if (mineral.SpawnRange == default || mineral.SpawnRange.Contains(y))
+                if (!mineral.IsDefault)
                 {
-                    mineralList.Add(mineral);
+                    if (mineral.SpawnRange == default || mineral.SpawnRange.Contains(y))
+                    {
+                        mineralList.Add(mineral);
+                    }
                 }
             }
 
