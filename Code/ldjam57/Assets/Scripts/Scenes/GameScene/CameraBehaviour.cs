@@ -19,6 +19,8 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField] private float mouseDragSensitivity = 0.01f;
         [SerializeField] private bool invertMouseDrag = true;
 
+        private Rect cameraBounds = new Rect(0, -10f, 20f, 10f);
+
         private bool isKeyboardMoving = false;
         private Vector2 keyboardMoveDirection = Vector2.zero;
         private Vector2 lastTouchDelta;
@@ -191,11 +193,12 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var sensitivity = Base.Core.Game.Options.ScrollSensivity;
             var p = transform.position;
+            Vector3 newPosition;
 
             // For keyboard input, use deltaTime to ensure smooth movement regardless of framerate
             if (isKeyboardMoving)
             {
-                transform.position = new Vector3(
+                newPosition = new Vector3(
                     p.x + sensitivity * moveInput.x * keyboardMoveSpeed * Time.deltaTime,
                     p.y + sensitivity * moveInput.y * keyboardMoveSpeed * Time.deltaTime,
                     p.z
@@ -204,12 +207,19 @@ namespace Assets.Scripts.Scenes.GameScene
             // For touch input, apply directly (as deltaPosition is already frame-independent)
             else
             {
-                transform.position = new Vector3(
+                newPosition = new Vector3(
                     p.x + sensitivity * moveInput.x,
                     p.y + sensitivity * moveInput.y,
                     p.z
                 );
             }
+
+            // Apply camera boundaries using the rectangle
+            newPosition.x = Mathf.Clamp(newPosition.x, cameraBounds.xMin, cameraBounds.xMax);
+            newPosition.y = Mathf.Clamp(newPosition.y, cameraBounds.yMin, cameraBounds.yMax);
+
+            // Apply the clamped position
+            transform.position = newPosition;
         }
 
         private void ZoomCamera(Vector2 zoomInput)
