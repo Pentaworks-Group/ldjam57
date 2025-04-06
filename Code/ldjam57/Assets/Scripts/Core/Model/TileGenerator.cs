@@ -28,7 +28,7 @@ namespace Assets.Scripts.Core.Model
             return tiles;
         }
 
-        private Tile GenerateTile(Int32 x, Int32 y)
+        public Tile GenerateTile(Int32 x, Int32 y)
         {
             var possibleMinerals = GetMatchingMinerals(y);
 
