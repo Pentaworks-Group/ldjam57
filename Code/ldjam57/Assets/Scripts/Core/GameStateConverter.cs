@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 using Assets.Scripts.Constants;
 using Assets.Scripts.Core.Definitons;
+using Assets.Scripts.Core.Definitons.Inventories;
 using Assets.Scripts.Core.Model;
+using Assets.Scripts.Core.Model.Inventories;
 
 using GameFrame.Core.Extensions;
 
@@ -14,6 +16,8 @@ namespace Assets.Scripts.Core
         private readonly GameMode mode;
 
         private IDictionary<String, Mineral> mineralMap;
+        private IDictionary<String, MiningTool> miningToolMap;
+        private IDictionary<String, Transport> transportMap;
 
         public GameStateConverter(GameMode mode)
         {
@@ -23,6 +27,8 @@ namespace Assets.Scripts.Core
         public GameState Convert()
         {
             mineralMap = new Dictionary<String, Mineral>();
+            transportMap = new Dictionary<String, Transport>();
+            miningToolMap = new Dictionary<String, MiningTool>();
 
             var gameState = new GameState()
             {
@@ -125,6 +131,7 @@ namespace Assets.Scripts.Core
                     {
                         Reference = mineralDefinition.Reference,
                         Name = mineralDefinition.Name,
+                        IsMetallic = mineralDefinition.IsMetallic.GetValueOrDefault(),
                         IsDefault = mineralDefinition.IsDefault.GetValueOrDefault(),
                         MiningSpeedFactor = mineralDefinition.MiningSpeedFactor.GetValueOrDefault(1),
                         Seed = mineralDefinition.SeedRange.GetRandomInt(),
@@ -227,6 +234,7 @@ namespace Assets.Scripts.Core
             {
                 var transport = new Transport()
                 {
+                    Reference = definition.Reference,
                     Name = definition.Name,
                     Sprite = definition.Sprite,
                     Speed = definition.Speed.GetValueOrDefault(1),
@@ -238,6 +246,8 @@ namespace Assets.Scripts.Core
                     PurchaseCost = definition.PurchaseCost.GetValueOrDefault(),
                 };
 
+                transportMap[transport.Reference] = transport;
+
                 targetList.Add(transport);
             }
         }
@@ -246,14 +256,49 @@ namespace Assets.Scripts.Core
         {
             var inventory = new Inventory();
 
+            if (mode.Inventory != default)
+            {
+                ConvertInventoryMiningTool(mode.Inventory.MiningTools, inventory.MiningTools);
+                ConvertInventoryTransport(mode.Inventory.VerticalTransports, inventory.VerticalTransports);
+                ConvertInventoryTransport(mode.Inventory.HorizontalTransports, inventory.HorizontalTransports);
+            }
+
+
             return inventory;
         }
 
-        private List<Digger> ConvertDiggers()
+        private void ConvertInventoryMiningTool(List<MiningToolDefinitionInventoryItem> miningToolDefinitionInventoryItems, List<MiningToolInventoryItem> miningToolInventoryItems)
         {
-            var diggers = new List<Digger>();
+            if (miningToolDefinitionInventoryItems?.Count > 0)
+            {
+                foreach (var miningToolDefinitionItem in miningToolDefinitionInventoryItems)
+                {
+                    var miningToolInventoryItem = new MiningToolInventoryItem()
+                    {
+                        MiningTool = this.miningToolMap[miningToolDefinitionItem.MiningTool.Reference],
+                        Amount = miningToolDefinitionItem.Amount.GetValueOrDefault()
+                    };
 
-            return diggers;
+                    miningToolInventoryItems.Add(miningToolInventoryItem);
+                }
+            }
+        }
+
+        private void ConvertInventoryTransport(List<TransportDefinitionInventoryItem> transportDefinitions, List<TransportInventoryItem> transportInventoryItems)
+        {
+            if (transportDefinitions?.Count > 0)
+            {
+                foreach (var transportDefinition in transportDefinitions)
+                {
+                    var transportInventoryItem = new TransportInventoryItem()
+                    {
+                        Transport = this.transportMap[transportDefinition.Transport.Reference],
+                        Amount = transportDefinition.Amount.GetValueOrDefault()
+                    };
+
+                    transportInventoryItems.Add(transportInventoryItem);
+                }
+            }
         }
     }
 }

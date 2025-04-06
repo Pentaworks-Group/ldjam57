@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
+using Assets.Scripts.Core.Definitons.Inventories;
 
 namespace Assets.Scripts.Core.Definitons
 {
     public class InventoryDefinition
     {
-        public List<MiningToolDefinition> MiningTools { get; set; }
-        public List<TransportDefinition> VerticalTransports { get; set; }
-        public List<TransportDefinition> HorizontalTransports { get; set; }
+        public List<MiningToolDefinitionInventoryItem> MiningTools { get; set; }
+        public List<TransportDefinitionInventoryItem> VerticalTransports { get; set; }
+        public List<TransportDefinitionInventoryItem> HorizontalTransports { get; set; }
     }
 }

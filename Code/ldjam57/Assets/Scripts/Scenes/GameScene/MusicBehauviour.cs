@@ -45,7 +45,7 @@ public class MusicBehauviour : MonoBehaviour
             GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
         };
 
-
+        nextEnergySwitchTime = getNextEnergySwitchTime();
     }
 
     // Update is called once per frame
@@ -64,16 +64,12 @@ public class MusicBehauviour : MonoBehaviour
             {
                 changeMusicEnergyUp();
 
-                double randomNumber = UnityEngine.Random.value;
-                nextEnergySwitchTime = (float)(randomNumber * maxMusicTransitionTime + minMusicTransitionTime + Core.Game.State.TimeElapsed);
-            }
-            else if (Core.Game.State.TimeElapsed > nextEnergySwitchTime)
-            {
-                changeMusicEnergyDown();
+            nextEnergySwitchTime = getNextEnergySwitchTime();
+        }
+        else if (Core.Game.State.TimeElapsed > nextEnergySwitchTime) {
+            changeMusicEnergyDown();
 
-                double randomNumber = UnityEngine.Random.value;
-                nextEnergySwitchTime = (float)(randomNumber * maxMusicTransitionTime + minMusicTransitionTime + Core.Game.State.TimeElapsed);
-            }
+            nextEnergySwitchTime = getNextEnergySwitchTime();
         }
     }
 
@@ -97,11 +93,19 @@ public class MusicBehauviour : MonoBehaviour
     private void changeMusicEnergyUp()
     {
         GameFrame.Base.Audio.Background.PlayTransition(transitionUp, highEnergyAudioClips);
+        isHighEnergy = true;
     }
 
     private void changeMusicEnergyDown()
     {
         GameFrame.Base.Audio.Background.PlayTransition(transitionDown, lowEnergyAudioClips);
+        isHighEnergy = false;
+    }
+
+    private float getNextEnergySwitchTime()
+    {
+        double randomNumber = UnityEngine.Random.value;
+        return (float)(randomNumber * maxMusicTransitionTime + minMusicTransitionTime + Core.Game.State.TimeElapsed);
     }
 
 }
