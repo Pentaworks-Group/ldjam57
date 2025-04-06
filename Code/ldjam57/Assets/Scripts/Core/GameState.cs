@@ -16,7 +16,7 @@ namespace Assets.Scripts.Core
         public List<Transport> AvailableHorizontalTransports { get; set; } = new List<Transport>();
         public List<Transport> AvailableVerticalTransports { get; set; } = new List<Transport>();
         public List<Digger> ActiveDiggers { get; set; } = new List<Digger>();
-        public Double TimeElapsed { get; set; }
+        public Double TimeElapsed { get; set; } = 0.0;
 
     }
 }

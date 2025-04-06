@@ -5,23 +5,12 @@ using GameFrame.Core.Extensions;
 
 public class MusicBehauviour : MonoBehaviour
 {
-    private AudioClip transitionUp = GameFrame.Base.Resources.Manager.Audio.Get("Transition_Up");
-    private AudioClip transitionDown = GameFrame.Base.Resources.Manager.Audio.Get("Transition_Down");
+    private AudioClip transitionUp;
+    private AudioClip transitionDown;
 
-    private List<AudioClip> lowEnergyAudioClips = new List<AudioClip>()
-    {
-        GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
-        GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
-        GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
-        GameFrame.Base.Resources.Manager.Audio.Get("Menu_1"),
-        GameFrame.Base.Resources.Manager.Audio.Get("Menu_2")
-    };
+    private List<AudioClip> lowEnergyAudioClips;
 
-    private List<AudioClip> highEnergyAudioClips = new List<AudioClip>()
-    {
-        GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
-        GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
-    };
+    private List<AudioClip> highEnergyAudioClips;
 
     private List<AudioClip> effectsClipList = new List<AudioClip>();
 
@@ -35,6 +24,27 @@ public class MusicBehauviour : MonoBehaviour
 
     //Random Ambient Sounds
     private float nextSoundEffectTime = 0;
+
+    private void Awake()
+    {
+        transitionUp = GameFrame.Base.Resources.Manager.Audio.Get("Transition_Up");
+        transitionDown = GameFrame.Base.Resources.Manager.Audio.Get("Transition_Down");
+
+        lowEnergyAudioClips = new List<AudioClip>()
+        {
+            GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Menu_1"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Menu_2")
+        };
+
+        highEnergyAudioClips = new List<AudioClip>()
+        {
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
+        };
+    }
 
     // Update is called once per frame
     void Update()
