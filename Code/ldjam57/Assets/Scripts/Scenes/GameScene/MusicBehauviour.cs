@@ -20,8 +20,10 @@ public class MusicBehauviour : MonoBehaviour
     //Next high energy Music Time
     private float nextEnergySwitchTime = 0;
 
-    private const double maxMusicTransitionTime = 120.0;
-    private const double minMusicTransitionTime = 30.0;
+    private const double maxMusicTransitionUpTime = 240.0;
+    private const double maxMusicTransitionDownTime = 120.0;
+    private const double minMusicTransitionUpTime = 60.0;
+    private const double minMusicTransitionDownTime = 30.0;
 
     //Random Ambient Sounds
     private float nextSoundEffectTime = 0;
@@ -120,8 +122,15 @@ public class MusicBehauviour : MonoBehaviour
 
     private float getNextEnergySwitchTime(double elapsedTime)
     {
+        double minTransitionTime = minMusicTransitionUpTime;
+        double maxTransitionTime = maxMusicTransitionUpTime;
+        if (isHighEnergy)
+        {
+            minTransitionTime = minMusicTransitionDownTime;
+            maxTransitionTime = maxMusicTransitionDownTime;
+        }
         double randomNumber = UnityEngine.Random.value;
-        return (float)(randomNumber * maxMusicTransitionTime + minMusicTransitionTime + elapsedTime);
+        return (float)(randomNumber * maxTransitionTime + minTransitionTime + elapsedTime);
     }
 
 }
