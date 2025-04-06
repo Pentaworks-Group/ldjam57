@@ -18,8 +18,6 @@ namespace Assets.Scripts.Core
 
         private readonly List<UnityEngine.AudioClip> buttonAudioClips = new List<AudioClip>();
 
-        public bool isRunning = false;
-
         public override void PlayButtonSound()
         {
             GameFrame.Base.Audio.Effects.Play(this.buttonAudioClips.GetRandomEntry());

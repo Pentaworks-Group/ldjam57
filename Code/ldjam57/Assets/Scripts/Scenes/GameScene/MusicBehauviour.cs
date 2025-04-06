@@ -30,15 +30,33 @@ public class MusicBehauviour : MonoBehaviour
     //Next high energy Music Time
     private float nextEnergySwitchTime = 0;
 
+    private const double maxMusicTransitionTime = 30.0;
+    private const double minMusicTransitionTime = 30.0;
+
     //Random Ambient Sounds
     private float nextSoundEffectTime = 0;
 
     // Update is called once per frame
     void Update()
     {
-        if (Core.Game.isRunning)
+        if (Core.Game.IsRunning)
         {
             PlayRandomEffectSound();
+
+            Core.Game.State.TimeElapsed += Time.deltaTime;
+        }
+
+        if (Core.Game.State.TimeElapsed > nextEnergySwitchTime && !isHighEnergy) {
+            changeMusicEnergyUp();
+
+            double randomNumber = UnityEngine.Random.value;
+            nextEnergySwitchTime = (float)(randomNumber * maxMusicTransitionTime + minMusicTransitionTime + Core.Game.State.TimeElapsed);
+        }
+        else if (Core.Game.State.TimeElapsed > nextEnergySwitchTime) {
+            changeMusicEnergyDown();
+
+            double randomNumber = UnityEngine.Random.value;
+            nextEnergySwitchTime = (float)(randomNumber * maxMusicTransitionTime + minMusicTransitionTime + Core.Game.State.TimeElapsed);
         }
     }
 
