@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -26,6 +27,8 @@ namespace Assets.Scripts.Scenes.GameScene
         private SiteBehaviour SiteTemplate;
         [SerializeField]
         private DiggerBehaviour DiggerTemplate;
+        [SerializeField]
+        private TransportSiteBehaviour TransportSiteTemplate;
         [SerializeField]
         private GameObject TilesParent;
 
@@ -173,7 +176,69 @@ namespace Assets.Scripts.Scenes.GameScene
         }
 
 
+        public void DisplayPossibleVerticalTransportSites()
+        {
+            var transport = Base.Core.Game.State.AvailableVerticalTransports.First<Transport>();
+            DisplayPossibleVerticalTransportSites(transport);
+        }
 
+        private void DisplayPossibleVerticalTransportSites(Transport transport)
+        {
+            var usedShafts = new HashSet<ShaftBehaviour>();
+            var transportBehaviours = new List<TransportBehaviour>();
+            foreach (var shaft in Shafts)
+            {
+                if (usedShafts.Contains(shaft))
+                {
+                    continue;
+                }
+
+                var points = new List<ShaftBehaviour>();
+                points.Add(shaft);
+
+                usedShafts.Add(shaft);
+                GetValidShaftUp(shaft, points, usedShafts);
+                GetValidShaftDown(shaft, points, usedShafts);
+
+                foreach (var point in points)
+                {
+                    var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
+                    newSite.Init(this, transport, points, point);
+                    newSite.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        private void GetValidShaftUp(ShaftBehaviour shaft, List<ShaftBehaviour> points, HashSet<ShaftBehaviour> usedShafts)
+        {
+            var tile = GetTileRelative(shaft.GetPosition(), 0, -1);
+            if (tile is ShaftBehaviour)
+            {
+                ShaftBehaviour nextShaft = (ShaftBehaviour)tile;
+                if (usedShafts.Contains(nextShaft))
+                {
+                    return;
+                }
+                usedShafts.Add(nextShaft);
+                points.Add(nextShaft);
+                GetValidShaftUp(nextShaft, points, usedShafts);
+            }
+        }
+
+        private void GetValidShaftDown(ShaftBehaviour shaft, List<ShaftBehaviour> points, HashSet<ShaftBehaviour> usedShafts)
+        {
+            var tile = GetTileRelative(shaft.GetPosition(), 0, 1);
+            if (tile is ShaftBehaviour)
+            {
+                ShaftBehaviour nextShaft = (ShaftBehaviour)tile; if (usedShafts.Contains(nextShaft))
+                {
+                    return;
+                }
+                usedShafts.Add(nextShaft);
+                points.Add(nextShaft);
+                GetValidShaftDown(nextShaft, points, usedShafts);
+            }
+        }
 
         private void OnClick(InputAction.CallbackContext context)
         {
