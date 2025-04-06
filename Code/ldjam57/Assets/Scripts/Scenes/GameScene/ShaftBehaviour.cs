@@ -6,33 +6,23 @@ namespace Assets.Scripts.Scenes.GameScene
     public class ShaftBehaviour : TileBehaviour, IClickable
     {
         private Point2 pos;
-        private TransportBehaviour transportBehaviour;
-        private DiggerBehaviour diggerBehaviour;
+        public TransportBehaviour TransportBehaviour { get; set; }
+        public DiggerBehaviour DiggerBehaviour { get; set; }
 
         private void Awake()
         {
             this.digable = false;
         }
-
+              
         public void Init(WorldBehaviour worldBehaviour, Point2 pos)
         {
             base.Init(worldBehaviour);
             this.pos = pos;
         }
 
-        public void SetTransport(TransportBehaviour transportBehaviour)
-        {
-            this.transportBehaviour = transportBehaviour;
-        }
-
-        public void SetDigger(DiggerBehaviour diggerBehaviour)
-        {
-            this.diggerBehaviour = diggerBehaviour;
-        }
-
         public bool HasTransport()
         {
-            return this.transportBehaviour != null;
+            return this.TransportBehaviour != null;
         }
 
         public void OnClicked()

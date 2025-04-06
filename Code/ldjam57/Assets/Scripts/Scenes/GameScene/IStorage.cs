@@ -8,5 +8,6 @@ namespace Assets.Scripts.Scenes.GameScene
     public interface IStorage
     {
         Dictionary<Mineral, Double> GetStorage();
+
     }
 }

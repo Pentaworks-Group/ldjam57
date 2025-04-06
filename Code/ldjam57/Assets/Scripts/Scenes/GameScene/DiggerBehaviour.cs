@@ -6,6 +6,7 @@ using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
 
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -17,11 +18,12 @@ namespace Assets.Scripts.Scenes.GameScene
         private float tickInterval = 1f;
         private float xOffset;
         private float yOffset;
-        private double usedCapacity = 0;
 
         private ShaftBehaviour shaft;
 
         private Animator _animator;
+
+        public UnityEvent<DiggerBehaviour> OnDiggerMoved { get; set; } = new UnityEvent<DiggerBehaviour>();
 
         public Direction GetDirection()
         {
@@ -62,25 +64,27 @@ namespace Assets.Scripts.Scenes.GameScene
             StartMining();
         }
 
+
         public void UpdatePosition()
         {
             var posi = worldBehaviour.GetUnityVector(digger.Position, -0.01f, xOffset, yOffset);
             transform.position = posi;
             if (shaft != null)
             {
-                shaft.SetDigger(null);
+                shaft.DiggerBehaviour = null;
             }
             ShaftBehaviour newShaft = (ShaftBehaviour)worldBehaviour.GetTileRelative(digger.Position, 0, 0);
             if (newShaft != null)
             {
-                newShaft.SetDigger(this);
+                newShaft.DiggerBehaviour = this;
+                shaft = newShaft;
             }
         }
 
 
         private void MineTargets()
         {
-            if (usedCapacity < digger.MiningTool.Capacity)
+            if (StorageHelper.GetStoredAmount(this) < digger.MiningTool.Capacity)
             {
                 for (int i = targets.Count - 1; i >= 0; i--)
                 {
@@ -110,11 +114,6 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     digger.MinedAmount[mineralA.Mineral] = mineralA.Amount;
                 }
-            }
-            usedCapacity = 0;
-            foreach (var pair in digger.MinedAmount)
-            {
-                usedCapacity += pair.Value * pair.Key.Weight;
             }
         }
 
@@ -153,6 +152,8 @@ namespace Assets.Scripts.Scenes.GameScene
             }
             UpdatePosition();
             worldBehaviour.DiggerMoved(this);
+            OnDiggerMoved.Invoke(this);
+
         }
 
         private bool SetTargets()
@@ -240,5 +241,6 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MinedAmount;
         }
+
     }
 }

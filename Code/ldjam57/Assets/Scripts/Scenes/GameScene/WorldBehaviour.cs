@@ -11,6 +11,7 @@ using GameFrame.Core.Math;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -92,7 +93,11 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void DisplayPosibleDigSites(MiningTool miningTool)
         {
-            ClearDigSites();
+            if (Sites.Count > 0)
+            {
+                ClearDigSites();
+                return;
+            }
 
             Map<int, Digger> diggerMap = GenerateDiggerMap();
 
@@ -219,8 +224,8 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     continue;
                 }
-                var direction = Direction.Left;
-                GenerateTransportSite(transport, shaft, direction, false);
+                GenerateTransportSite(transport, shaft, Direction.Left, false);
+                GenerateTransportSite(transport, shaft, Direction.Right, false);
             }
         }
 

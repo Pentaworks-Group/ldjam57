@@ -8,7 +8,7 @@
     },
     "Sprite": "Wood_cart",
     "Speed": 1,
-    "Capacity": 22,
+    "Capacity": 2,
     "IsUnlockable": true,
     "UnlockCost": 100000,
     "PurchaseCost": 1000
@@ -36,7 +36,7 @@
     },
     "Sprite": "Ladder",
     "Speed": 0.5,
-    "Capacity": 22,
+    "Capacity": 2,
     "IsUnlockable": true,
     "UnlockCost": 100000,
     "PurchaseCost": 1000

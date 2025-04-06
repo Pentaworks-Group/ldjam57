@@ -2,6 +2,7 @@
 using Assets.Scripts.Core.Model;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -27,31 +28,38 @@ namespace Assets.Scripts.Scenes.GameScene
             double storedAmount = StorageHelper.GetStoredAmount(from);
             if (amountToMove < storedAmount)
             {
+                var toStorage = to.GetStorage();
                 var percentage = amountToMove / storedAmount;
-                foreach (var pair in from.GetStorage())
+                percentage = Math.Min(percentage, 1);
+                foreach (var pair in from.GetStorage().ToList())
                 {
-                    var storage = to.GetStorage();
-                    if (storage.ContainsKey(pair.Key))
+                    if (toStorage.ContainsKey(pair.Key))
                     {
-                        storage[pair.Key] += pair.Value * percentage;
+                        var transferedAmount = pair.Value * percentage;
+                        toStorage[pair.Key] += transferedAmount;
+                        from.GetStorage()[pair.Key] -= transferedAmount;
                     }
                     else
                     {
-                        storage[pair.Key] = pair.Value * percentage;
+                        var transferedAmount = pair.Value * percentage;
+                        toStorage[pair.Key] = transferedAmount;
+                        from.GetStorage()[pair.Key] -= transferedAmount;
                     }
                 }
                 return amountToMove;
             }
-            foreach (var pair in from.GetStorage())
+            foreach (var pair in from.GetStorage().ToList())
             {
                 var storage = to.GetStorage();
                 if (storage.ContainsKey(pair.Key))
                 {
                     storage[pair.Key] += pair.Value;
+                    from.GetStorage().Remove(pair.Key);
                 }
                 else
                 {
                     storage[pair.Key] = pair.Value;
+                    from.GetStorage().Remove(pair.Key);
                 }
             }
             return amountToMove - storedAmount;

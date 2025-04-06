@@ -15,7 +15,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private float tickInterval = 1f;
         private IStorage from;
         private IStorage to;
-
+        private Direction direction;
 
         private void Update()
         {
@@ -33,6 +33,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             this.shaftBehaviour = shaftBehaviour;
             this.worldBehaviour = worldBehaviour;
+            this.direction = direction;
 
             Renderer renderer = gameObject.GetComponent<Renderer>();
             Texture2D texture2D = GameFrame.Base.Resources.Manager.Textures.Get(transport.Sprite);
@@ -44,27 +45,58 @@ namespace Assets.Scripts.Scenes.GameScene
                 Position = shaftBehaviour.GetPosition()
             };
             Base.Core.Game.State.ActiveTransporters.Add(transporter);
+            SetStorages();
+        }
+
+        private void SetStorages()
+        {
             if (direction == Direction.Left)
             {
-                from = worldBehaviour.GetTilerRelativeOfType<IStorage>(transporter.Position, -1, 0);
-                to = worldBehaviour.GetTilerRelativeOfType<IStorage>(transporter.Position, 1, 0);
+                from = GetStorage(-1, 0);
+                to = GetStorage(1, 0);
             }
             else if (direction == Direction.Right)
             {
-                from = worldBehaviour.GetTilerRelativeOfType<IStorage>(transporter.Position, 1, 0);
-                to = worldBehaviour.GetTilerRelativeOfType<IStorage>(transporter.Position, -1, 0);
+                from = GetStorage(1, 0);
+                to = GetStorage(-1, 0);
             }
             else if (direction == Direction.Down)
             {
-                from = worldBehaviour.GetTilerRelativeOfType<IStorage>(transporter.Position, 0, 1);
-                to = worldBehaviour.GetTilerRelativeOfType<IStorage>(transporter.Position, 0, -1);
+                from = GetStorage(0, 1);
+                to = GetStorage(0, -1);
             }
+        }
+
+        private void UpdateDigger(DiggerBehaviour digger)
+        {
+            SetStorages();
+            digger.OnDiggerMoved.RemoveListener(UpdateDigger);
+        }
+
+        private IStorage GetStorage(int x, int y)
+        {
+            var shaft = worldBehaviour.GetTilerRelativeOfType<ShaftBehaviour>(transporter.Position, x, y);
+            if (shaft == null)
+            {
+                return null;
+            }
+            if (shaft.DiggerBehaviour != null)
+            {
+                shaft.DiggerBehaviour.OnDiggerMoved.AddListener(UpdateDigger);
+                return shaft.DiggerBehaviour;
+            }
+            if (shaft.TransportBehaviour != null)
+            {
+                return shaft.TransportBehaviour;
+            }
+            return null;
         }
 
         private void MoveStuff()
         {
             double amountToMove = transporter.Transport.Speed;
-            if (from != null && to != null) {
+            if (from != null && to != null)
+            {
                 var movedAmount = StorageHelper.MoveStuff(from, to, amountToMove);
                 amountToMove -= movedAmount;
                 if (amountToMove <= 0)
@@ -92,7 +124,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        
+
 
         public void OnClicked()
         {

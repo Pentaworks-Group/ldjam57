@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
+using UnityEngine.UIElements;
+using UnityEngine.WSA;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -28,8 +32,35 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void UpdatePosition()
         {
-            var vect = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z);
-            transform.position = vect;
+            if (direction == Direction.Left)
+            {
+                var lScale = transform.localScale;
+                var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: -(1 - scale.y ) / 2);
+                var rotation = transform.rotation;
+                rotation *= Quaternion.Euler(0, 0, -90);
+                transform.rotation = rotation;
+                transform.position = position;
+                transform.localScale = scale;
+            }
+            else if (direction == Direction.Right)
+            {
+                var lScale = transform.localScale;
+                var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
+
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (1 - scale.y) / 2);
+                var rotation = transform.rotation;
+                rotation *= Quaternion.Euler(0, 0, 90);
+                transform.rotation = rotation;
+                transform.position = position;
+                transform.localScale = scale;
+            }
+            else
+            {
+                var vect = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z);
+                transform.position = vect;
+            }
+                
         }
 
 
@@ -40,7 +71,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private TransportBehaviour GetTransportBehaviour() {
             var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport, direction);
-            shaft.SetTransport(transB);
+            shaft.TransportBehaviour  = transB;
             return transB;
         }
 
