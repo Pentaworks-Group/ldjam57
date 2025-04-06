@@ -69,8 +69,6 @@ namespace Assets.Scripts.Core.Model
 
                 var perlinValue = UnityEngine.Mathf.PerlinNoise(mineralX, mineralY);
 
-                UnityEngine.Debug.Log(String.Format("{0};{1} - {2}", x, y, perlinValue));
-
                 if (perlinValue > 0.5)
                 {
                     possibleMineralValues[possibleMineral.Reference] = perlinValue;
@@ -106,6 +104,20 @@ namespace Assets.Scripts.Core.Model
                 }
 
                 mineralAmounts[world.DefaultMineral.Reference] = 1 - total;
+            }
+
+            if (true)
+            {
+                var builder = new StringBuilder();
+
+                builder.AppendFormat("Tile: {0};{1}", x, y);
+
+                foreach (var mineral in mineralAmounts)
+                {
+                    builder.AppendLine(String.Format("{0}: {1}", mineral.Key, mineral.Value));
+                }
+
+                UnityEngine.Debug.Log(builder.ToString());
             }
 
             return mineralAmounts;
