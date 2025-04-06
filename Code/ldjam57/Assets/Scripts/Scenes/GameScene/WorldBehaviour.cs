@@ -294,7 +294,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             tileGenerator = new TileGenerator(world);
 
-            Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3();
+            Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3(Headquarters.transform.position.z);
 
             foreach (var tile in world.Tiles)
             {
@@ -359,7 +359,11 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateDepository(Depository depository)
         {
-            var depositoryGameObject = Instantiate(DepositoryTemplate, depository.Position.ToUnityVector3(), Quaternion.identity, DepositoryContainer.transform);
+            var position = depository.Position.ToUnityVector3();
+
+            position.z = DepositoryTemplate.transform.position.z;
+
+            var depositoryGameObject = Instantiate(DepositoryTemplate, position, DepositoryTemplate.transform.rotation, DepositoryContainer.transform);
 
             var depositoryBehaviour = depositoryGameObject.GetComponent<DepositoryBehaviour>();
 
