@@ -41,11 +41,22 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private TileGenerator tileGenerator;
 
+
         private void Awake()
         {
             Base.Core.Game.ExecuteAfterInstantation(GenerateWorld);
         }
+        private void OnEnable()
+        {
+            var clickAction = InputSystem.actions.FindAction("Click");
+            clickAction.performed += OnClick;
+        }
 
+        private void OnDisable()
+        {
+            var clickAction = InputSystem.actions.FindAction("Click");
+            clickAction.performed -= OnClick;
+        }
 
         public void DisplayPosibleDigSites()
         {
@@ -151,17 +162,7 @@ namespace Assets.Scripts.Scenes.GameScene
         }
 
 
-        private void OnEnable()
-        {
-            var clickAction = InputSystem.actions.FindAction("Click");
-            clickAction.performed += OnClick;
-        }
 
-        private void OnDisable()
-        {
-            var clickAction = InputSystem.actions.FindAction("Click");
-            clickAction.performed -= OnClick;
-        }
 
         private void OnClick(InputAction.CallbackContext context)
         {
