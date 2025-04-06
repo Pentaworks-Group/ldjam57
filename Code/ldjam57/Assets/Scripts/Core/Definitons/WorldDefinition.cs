@@ -5,7 +5,7 @@ namespace Assets.Scripts.Core.Definitons
 {
     public class WorldDefinition
     {
-        public Double? Seed { get; set; }
+        public Single? Seed { get; set; }
         public Int32? Width { get; set; }
         public HeadquartersDefinition Headquarters { get; set; }
         public List<MineralDefinition> Minerals { get; set; }
