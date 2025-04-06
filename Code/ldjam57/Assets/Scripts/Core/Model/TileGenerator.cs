@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Assets.Scripts.Core.Model
 {
     public class TileGenerator
     {
+        private const Boolean LOGMINERALS = true;
+
         private readonly World world;
 
         public TileGenerator(World world)
@@ -106,7 +109,7 @@ namespace Assets.Scripts.Core.Model
                 mineralAmounts[world.DefaultMineral.Reference] = 1 - total;
             }
 
-            if (true)
+            if (LOGMINERALS)
             {
                 var builder = new StringBuilder();
 
