@@ -49,6 +49,16 @@ namespace Assets.Scripts.Core
             return false;
         }
 
+        public Boolean Remove(TKey key1, TKey key2)
+        { 
+            if (map.TryGetValue(key1, out var innerMap))
+            {
+                return innerMap.Remove(key2);
+            }
+
+            return false;
+        }
+
         public IEnumerable<TValue> GetAll()
         {
             foreach (var innerMap in map.Values)
