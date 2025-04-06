@@ -30,6 +30,8 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private TransportSiteBehaviour TransportSiteTemplate;
         [SerializeField]
+        private TransportBehaviour TransportTemplate;
+        [SerializeField]
         private GameObject TilesParent;
 
         [SerializeField]
@@ -217,10 +219,18 @@ namespace Assets.Scripts.Scenes.GameScene
                 foreach (var point in points)
                 {
                     var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-                    newSite.Init(this, transport, points, point.GetPosition());
+                    newSite.Init(this, transport, points, point.GetPosition(), true);
                     newSite.gameObject.SetActive(true);
                 }
             }
+        }
+
+        public TransportBehaviour GenerateTransportBehaviour(TransportRoute transportRoute, ShaftBehaviour shaftBehaviour)
+        {
+            var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
+            transportBehaviour.Init(transportRoute, shaftBehaviour);
+            transportBehaviour.gameObject.SetActive(true);
+            return transportBehaviour;
         }
 
         private void GetValidShaftUp(ShaftBehaviour shaft, List<ShaftBehaviour> points, HashSet<ShaftBehaviour> usedShafts)

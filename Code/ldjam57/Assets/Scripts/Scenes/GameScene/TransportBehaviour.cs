@@ -1,34 +1,34 @@
 using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
-using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
-    public class TransportBehaviour : IClickable
+    public class TransportBehaviour : MonoBehaviour, IClickable
     {
-        private WorldBehaviour worldBehaviour;
-        private Transport transport;
-        private Point2 startPos;
-        private Point2 endPos;
-        private List<Point2> points = new List<Point2>();
 
+        private TransportRoute transportRoute;
+        private ShaftBehaviour shaftBehaviour;
 
-        public void Init(WorldBehaviour worldBehaviour, Transport transport)
+        public void Init(TransportRoute transportRoute, ShaftBehaviour shaftBehaviour)
         {
-            this.worldBehaviour = worldBehaviour;
-            this.transport = transport;
-        }
+            this.transportRoute = transportRoute;
+            this.shaftBehaviour = shaftBehaviour;
 
-        public void AddPoint(Point2 point)
-        {
-            points.Add(point);
-        }
+            Renderer renderer = gameObject.GetComponent<Renderer>();
 
+            renderer.material.mainTexture = transportRoute.GetTexture();
+        }
 
         public void OnClicked()
         {
+            transportRoute.OnClicked();
+        }
 
+        public Point2 GetPosition()
+        {
+            return shaftBehaviour.GetPosition();
         }
 
     }
