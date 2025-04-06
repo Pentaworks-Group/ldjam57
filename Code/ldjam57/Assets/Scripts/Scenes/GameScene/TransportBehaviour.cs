@@ -14,13 +14,13 @@ namespace Assets.Scripts.Scenes.GameScene
             this.shaftBehaviour = shaftBehaviour;
 
             Renderer renderer = gameObject.GetComponent<Renderer>();
-            var tt = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
-            renderer.material.mainTexture = GameFrame.Base.Resources.Manager.Textures.Get(transport.Sprite);
+            Texture2D texture2D = GameFrame.Base.Resources.Manager.Textures.Get(transport.Sprite);
+            renderer.material.mainTexture = texture2D;
         }
 
         public void OnClicked()
         {
-            transportRoute.OnClicked();
+
         }
 
         public Point2 GetPosition()
