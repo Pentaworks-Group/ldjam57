@@ -2,6 +2,7 @@ using Assets.Scripts.Base;
 using System.Collections.Generic;
 using UnityEngine;
 using GameFrame.Core.Extensions;
+using UnityEngine.Rendering;
 
 public class MusicBehauviour : MonoBehaviour
 {
@@ -72,17 +73,20 @@ public class MusicBehauviour : MonoBehaviour
 
         if (Core.Game.IsLoaded)
         {
-            if (Core.Game.State.TimeElapsed > nextEnergySwitchTime && !isHighEnergy)
+            if (Core.Game.State != default)
             {
-                changeMusicEnergyUp();
+                if (Core.Game.State.TimeElapsed > nextEnergySwitchTime && !isHighEnergy)
+                {
+                    changeMusicEnergyUp();
 
-                nextEnergySwitchTime = getNextEnergySwitchTime(Core.Game.State.TimeElapsed);
-            }
-            else if (Core.Game.State.TimeElapsed > nextEnergySwitchTime)
-            {
-                changeMusicEnergyDown();
+                    nextEnergySwitchTime = getNextEnergySwitchTime(Core.Game.State.TimeElapsed);
+                }
+                else if (Core.Game.State.TimeElapsed > nextEnergySwitchTime)
+                {
+                    changeMusicEnergyDown();
 
-                nextEnergySwitchTime = getNextEnergySwitchTime(Core.Game.State.TimeElapsed);
+                    nextEnergySwitchTime = getNextEnergySwitchTime(Core.Game.State.TimeElapsed);
+                }
             }
         }
     }
