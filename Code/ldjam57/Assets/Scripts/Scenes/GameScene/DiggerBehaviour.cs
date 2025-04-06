@@ -2,8 +2,6 @@ using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.WSA;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
