@@ -1627,8 +1627,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28e2bb1a079da8f40a3da135c1f4b061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  widht: 10
-  depth: 20
   mainCamera: {fileID: 1328617117}
   TileTemplate: {fileID: 1181462744}
   ShaftTemplate: {fileID: 1518904647}

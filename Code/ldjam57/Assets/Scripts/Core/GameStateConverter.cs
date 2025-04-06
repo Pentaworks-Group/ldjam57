@@ -87,6 +87,9 @@ namespace Assets.Scripts.Core
 
             gameState.Inventory = ConvertInventory();
 
+
+            gameState.ActiveDiggers = ConvertDiggers();
+
             return gameState;
         }
 
@@ -113,7 +116,7 @@ namespace Assets.Scripts.Core
 
         private List<Mineral> ConvertMinerals()
         {
-            if (mode.World.Minerals.Count> 0)
+            if (mode.World.Minerals.Count > 0)
             {
                 var minerals = new List<Mineral>();
 
@@ -127,7 +130,7 @@ namespace Assets.Scripts.Core
                         Seed = mineralDefinition.SeedRange.GetRandomInt(),
                         Color = mineralDefinition.Color.GetValueOrDefault(new GameFrame.Core.Media.Color(1, 1, 1)),
                         SpawnRange = mineralDefinition.SpawnRange?.Copy(),
-                        Weight = mineralDefinition.Weight.GetValueOrDefault(1),                        
+                        Weight = mineralDefinition.Weight.GetValueOrDefault(1),
                     };
 
                     mineralMap[mineralDefinition.Reference] = mineral;
@@ -238,6 +241,13 @@ namespace Assets.Scripts.Core
             var inventory = new Inventory();
 
             return inventory;
+        }
+
+        private List<Digger> ConvertDiggers()
+        {
+            var diggers = new List<Digger>();
+
+            return diggers;
         }
     }
 }

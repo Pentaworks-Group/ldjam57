@@ -1,7 +1,6 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,7 +24,7 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private SiteBehaviour SiteTemplate;
         [SerializeField]
-        private ToolBehaviour ToolTemplate;
+        private DiggerBehaviour ToolTemplate;
         [SerializeField]
         private GameObject TilesParent;
 
@@ -98,9 +97,16 @@ namespace Assets.Scripts.Scenes.GameScene
             var position = new UnityEngine.Vector3(p.x, p.y, ToolTemplate.transform.position.z);
             var newTool = GameObject.Instantiate(ToolTemplate, position, siteBehaviour.transform.rotation, TilesParent.transform);
             newTool.transform.localScale = siteBehaviour.transform.localScale;
-            newTool.Init(this, siteBehaviour.GetMiningTool(), siteBehaviour.GetDirection(), siteBehaviour.GetPosition());
+            var digger = new Digger()
+            {
+                Direction = siteBehaviour.GetDirection(),
+                MiningTool = siteBehaviour.GetMiningTool(),
+                Position = siteBehaviour.GetPosition()
+            };
+            newTool.Init(this, digger);
             newTool.gameObject.SetActive(true);
             ClearDigSites();
+            Base.Core.Game.State.ActiveDiggers.Add(digger);
         }
 
         private void ClearDigSites()
@@ -267,7 +273,7 @@ namespace Assets.Scripts.Scenes.GameScene
             return tileMap[newX, newY];
         }
 
-        internal void DiggerMoved(ToolBehaviour toolBehaviour)
+        internal void DiggerMoved(DiggerBehaviour toolBehaviour)
         {
             var dir = toolBehaviour.GetDirection();
             var size = toolBehaviour.GetSize();

@@ -14,5 +14,6 @@ namespace Assets.Scripts.Core
         public List<MiningTool> AvailableMiningTools { get; set; }
         public List<Transport> AvailableHorizontalTransports { get; set; }
         public List<Transport> AvailableVerticalTransports { get; set; }
+        public List<Digger> ActiveDiggers { get; set; }
     }
 }

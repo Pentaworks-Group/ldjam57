@@ -1,5 +1,5 @@
-using UnityEngine;
-namespace Assets.Scripts.Scenes.GameScene
+
+namespace Assets.Scripts.Core.Model
 {
     public enum Direction
     {
