@@ -20,7 +20,7 @@ namespace Assets.Scripts.Scenes.GameScene
             this.worldBehaviour = worldBehaviour;
             this.depository = depository;
 
-            levelRenderer = transform.Find("LevelRenderer").GetComponent<SpriteRenderer>();
+            levelRenderer = transform.Find("Stash").GetComponent<SpriteRenderer>();
 
             levelRenderer.color = depository.Mineral.Color.ToUnity();
         }
