@@ -4,6 +4,7 @@ namespace Assets.Scripts.Core.Model
 {
     public class Transport
     {
+        public String Reference { get; set; }
         public String Name { get; set; }
         public String Sprite { get; set; }
         public Double Speed { get; set; }

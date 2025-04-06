@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+
+using Assets.Scripts.Core.Definitons.Inventories;
+using Assets.Scripts.Core.Model.Inventories;
 
 using GameFrame.Core.Definitions.Loaders;
 
@@ -84,18 +88,57 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                     {
                         newGameMode.Inventory = new InventoryDefinition()
                         {
-                            MiningTools = new List<MiningToolDefinition>(),
-                            HorizontalTransports = new List<TransportDefinition>(),
-                            VerticalTransports = new List<TransportDefinition>(),
+                            MiningTools = new List<MiningToolDefinitionInventoryItem>(),
+                            HorizontalTransports = new List<TransportDefinitionInventoryItem>(),
+                            VerticalTransports = new List<TransportDefinitionInventoryItem>(),
                         };
 
-                        CheckItems(loadedGameMode.Inventory.MiningTools, newGameMode.Inventory.MiningTools, this.miningToolCache);
-                        CheckItems(loadedGameMode.Inventory.HorizontalTransports, newGameMode.Inventory.HorizontalTransports, this.transportCache);
-                        CheckItems(loadedGameMode.Inventory.VerticalTransports, newGameMode.Inventory.VerticalTransports, this.transportCache);
+                        if (loadedGameMode.Inventory.MiningTools != default)
+                        {
+                            CheckMiningToolInventoryItems(loadedGameMode.Inventory.MiningTools, newGameMode.Inventory.MiningTools, this.miningToolCache);
+                        }
+
+                        if (loadedGameMode.Inventory.HorizontalTransports != default)
+                        {
+                            CheckTransportInventoryItems(loadedGameMode.Inventory.HorizontalTransports, newGameMode.Inventory.HorizontalTransports, this.transportCache);
+                        }
+
+                        if (loadedGameMode.Inventory.VerticalTransports != default)
+                        {
+                            CheckTransportInventoryItems(loadedGameMode.Inventory.VerticalTransports, newGameMode.Inventory.VerticalTransports, this.transportCache);
+                        }
                     }
 
                     targetCache[loadedGameMode.Reference] = newGameMode;
                 }
+            }
+        }
+
+        private void CheckMiningToolInventoryItems(List<MiningToolDefinitionInventoryItem> loadedItems, List<MiningToolDefinitionInventoryItem> targetItems, DefinitionCache<MiningToolDefinition> cache)
+        {
+            foreach (var transportDefinitionInventoryItem in loadedItems)
+            {
+                var transportInventoryItem = new MiningToolDefinitionInventoryItem()
+                {
+                    MiningTool = CheckItem(transportDefinitionInventoryItem.MiningTool, cache),
+                    Amount = transportDefinitionInventoryItem.Amount
+                };
+
+                targetItems.Add(transportInventoryItem);
+            }
+        }
+
+        private void CheckTransportInventoryItems(List<TransportDefinitionInventoryItem> loadedItems, List<TransportDefinitionInventoryItem> targetItems, DefinitionCache<TransportDefinition> cache)
+        {
+            foreach (var loadedItem in loadedItems)
+            {
+                var targetItem = new TransportDefinitionInventoryItem()
+                {
+                    Transport = CheckItem(loadedItem.Transport, cache),
+                    Amount = loadedItem.Amount
+                };
+
+                targetItems.Add(targetItem);
             }
         }
     }
