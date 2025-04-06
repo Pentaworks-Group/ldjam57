@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
 
@@ -15,5 +16,7 @@ namespace Assets.Scripts.Core
         public List<Transport> AvailableHorizontalTransports { get; set; } = new List<Transport>();
         public List<Transport> AvailableVerticalTransports { get; set; } = new List<Transport>();
         public List<Digger> ActiveDiggers { get; set; } = new List<Digger>();
+        public Double TimeElapsed { get; set; }
+
     }
 }
