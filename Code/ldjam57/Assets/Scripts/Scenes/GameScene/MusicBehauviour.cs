@@ -19,7 +19,7 @@ public class MusicBehauviour : MonoBehaviour
     //Next high energy Music Time
     private float nextEnergySwitchTime = 0;
 
-    private const double maxMusicTransitionTime = 30.0;
+    private const double maxMusicTransitionTime = 120.0;
     private const double minMusicTransitionTime = 30.0;
 
     //Random Ambient Sounds
@@ -34,15 +34,27 @@ public class MusicBehauviour : MonoBehaviour
         {
             GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
             GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
-            GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
             GameFrame.Base.Resources.Manager.Audio.Get("Menu_1"),
-            GameFrame.Base.Resources.Manager.Audio.Get("Menu_2")
+            GameFrame.Base.Resources.Manager.Audio.Get("Menu_2"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_1"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_2"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_3"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
         };
 
         highEnergyAudioClips = new List<AudioClip>()
         {
             GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
             GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_1"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_2"),
+            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_3"),
         };
 
         nextEnergySwitchTime = getNextEnergySwitchTime(0);
