@@ -1,6 +1,7 @@
 using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEngine;
 
@@ -10,24 +11,22 @@ namespace Assets.Scripts.Scenes.GameScene
     {
         private WorldBehaviour worldBehaviour;
         private Transport transport;
-        private Point2 position;
-        private List<ShaftBehaviour> points = new ();
+        private ShaftBehaviour shaft;
         private bool vertical;
 
 
-        public void Init(WorldBehaviour worldBehaviour, Transport transport, List<ShaftBehaviour> points, Point2 position, bool vertical)
+        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft, bool vertical)
         {
             this.worldBehaviour = worldBehaviour;
             this.transport = transport;
-            this.points = points;
-            this.position = position;
+            this.shaft = shaft;
             this.vertical = vertical;
             UpdatePosition();
         }
 
         public void UpdatePosition()
         {
-            var vect = worldBehaviour.GetUnityVector(position, transform.position.z);
+            var vect = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z);
             transform.position = vect;
         }
 
@@ -37,17 +36,15 @@ namespace Assets.Scripts.Scenes.GameScene
             BuildSite();
         }
 
-        private TransportBehaviour GetTransportBehaviour(ShaftBehaviour shaft, TransportRoute transportRoute) {
-            var transB = worldBehaviour.GenerateTransportBehaviour(transportRoute, shaft);
-            shaft.SetTransportRoute(transportRoute);
+        private TransportBehaviour GetTransportBehaviour() {
+            var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport);
+            shaft.SetTransport(transB);
             return transB;
         }
 
         private void BuildSite()
         {
-            var transportRoute = new TransportRoute(worldBehaviour, vertical, transport);
-            var trans = points.Select(point => GetTransportBehaviour(point, transportRoute)).ToList();
-            transportRoute.SetPoints(trans);
+            GetTransportBehaviour();
             worldBehaviour.BuildTransporteSite(this);
         }
 

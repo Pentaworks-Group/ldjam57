@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 using Assets.Scripts.Core;
@@ -52,6 +53,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private readonly List<DepositoryBehaviour> depositories = new List<DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
+        private Transport selectedTransport;
 
         private void Awake()
         {
@@ -188,11 +190,42 @@ namespace Assets.Scripts.Scenes.GameScene
                 return;
             }
             var newSite = GameObject.Instantiate(SiteTemplate, position, rotation, TilesParent.transform);
-            //newSite.transform.localScale = new Vector3(miningTool.Size.X * 0.9f, miningTool.Size.Y * 0.9f, 1);
             newSite.Init(this, pos, miningTool, direction);
             newSite.gameObject.SetActive(true);
             Sites.Add(newSite);
         }
+
+        public void DisplayPossibleHorizontalTransportSites()
+        {
+            var transport = Base.Core.Game.State.AvailableHorizontalTransports.First<Transport>();
+            DisplayPossibleHorizontalTransportSites(transport);
+        }
+
+
+        private void DisplayPossibleHorizontalTransportSites(Transport transport)
+        {
+            if (TransportSites.Count > 0)
+            {
+                ClearTransportSites();
+                if (selectedTransport == transport)
+                {
+                    return;
+                }
+            }
+            selectedTransport = transport;
+            foreach (var shaft in Shafts)
+            {
+                if (shaft.HasTransport() || GetTileRelative(shaft.GetPosition(), 0, 1)?.IsDigable() == false)
+                {
+                    continue;
+                }
+                var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
+                newSite.Init(this, transport, shaft, false);
+                newSite.gameObject.SetActive(true);
+                TransportSites.Add(newSite);
+            }
+        }
+
 
         public void DisplayPossibleVerticalTransportSites()
         {
@@ -202,73 +235,39 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void DisplayPossibleVerticalTransportSites(Transport transport)
         {
-            ClearTransportSites();
-            var usedShafts = new HashSet<ShaftBehaviour>();
-            var transportBehaviours = new List<TransportBehaviour>();
+            if (TransportSites.Count > 0)
+            {
+                ClearTransportSites();
+                if (selectedTransport == transport)
+                {
+                    return;
+                }
+            }
+            selectedTransport = transport;
+
             foreach (var shaft in Shafts)
             {
-                if (usedShafts.Contains(shaft) || shaft.GetTransportRoute() != null)
+                if (shaft.HasTransport())
                 {
                     continue;
                 }
-
-                var points = new List<ShaftBehaviour>();
-                points.Add(shaft);
-
-                usedShafts.Add(shaft);
-                GetValidShaftUp(shaft, points, usedShafts);
-                GetValidShaftDown(shaft, points, usedShafts);
-
-                foreach (var point in points)
-                {
-                    var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-                    newSite.Init(this, transport, points, point.GetPosition(), true);
-                    newSite.gameObject.SetActive(true);
-                    TransportSites.Add(newSite);
-                }
+                var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
+                newSite.Init(this, transport, shaft, true);
+                newSite.gameObject.SetActive(true);
+                TransportSites.Add(newSite);
             }
         }
 
-        public TransportBehaviour GenerateTransportBehaviour(TransportRoute transportRoute, ShaftBehaviour shaftBehaviour)
+        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transport transport)
         {
             var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
             var p = shaftBehaviour.transform.position;
             transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
-            transportBehaviour.Init(transportRoute, shaftBehaviour);
+            transportBehaviour.Init(shaftBehaviour, transport);
             transportBehaviour.gameObject.SetActive(true);
             return transportBehaviour;
         }
 
-        private void GetValidShaftUp(ShaftBehaviour shaft, List<ShaftBehaviour> points, HashSet<ShaftBehaviour> usedShafts)
-        {
-            var tile = GetTileRelative(shaft.GetPosition(), 0, -1);
-            if (tile is ShaftBehaviour)
-            {
-                ShaftBehaviour nextShaft = (ShaftBehaviour)tile;
-                if (usedShafts.Contains(nextShaft))
-                {
-                    return;
-                }
-                usedShafts.Add(nextShaft);
-                points.Add(nextShaft);
-                GetValidShaftUp(nextShaft, points, usedShafts);
-            }
-        }
-
-        private void GetValidShaftDown(ShaftBehaviour shaft, List<ShaftBehaviour> points, HashSet<ShaftBehaviour> usedShafts)
-        {
-            var tile = GetTileRelative(shaft.GetPosition(), 0, 1);
-            if (tile is ShaftBehaviour)
-            {
-                ShaftBehaviour nextShaft = (ShaftBehaviour)tile; if (usedShafts.Contains(nextShaft))
-                {
-                    return;
-                }
-                usedShafts.Add(nextShaft);
-                points.Add(nextShaft);
-                GetValidShaftDown(nextShaft, points, usedShafts);
-            }
-        }
 
         private void OnClick(InputAction.CallbackContext context)
         {
@@ -480,7 +479,8 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        private void ClearTransportSites() {
+        private void ClearTransportSites()
+        {
             foreach (var site in TransportSites)
             {
                 GameObject.Destroy(site.gameObject);
@@ -490,7 +490,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
         {
-            ClearTransportSites();
+            Destroy(transportSiteBehaviour.gameObject);
+            TransportSites.Remove(transportSiteBehaviour);
         }
     }
 }

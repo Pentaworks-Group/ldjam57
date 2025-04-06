@@ -9,14 +9,13 @@ namespace Assets.Scripts.Scenes.GameScene
         private TransportRoute transportRoute;
         private ShaftBehaviour shaftBehaviour;
 
-        public void Init(TransportRoute transportRoute, ShaftBehaviour shaftBehaviour)
+        public void Init(ShaftBehaviour shaftBehaviour, Core.Model.Transport transport)
         {
-            this.transportRoute = transportRoute;
             this.shaftBehaviour = shaftBehaviour;
 
             Renderer renderer = gameObject.GetComponent<Renderer>();
-
-            renderer.material.mainTexture = transportRoute.GetTexture();
+            var tt = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
+            renderer.material.mainTexture = GameFrame.Base.Resources.Manager.Textures.Get(transport.Sprite);
         }
 
         public void OnClicked()

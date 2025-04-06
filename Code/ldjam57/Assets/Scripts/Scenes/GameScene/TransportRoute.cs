@@ -36,6 +36,10 @@ namespace Assets.Scripts.Scenes.GameScene
             return texture;
         }
 
+        public bool IsVertical()
+        {
+            return vertical;
+        }
 
         private void SetStartStop()
         {

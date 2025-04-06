@@ -6,7 +6,7 @@ namespace Assets.Scripts.Scenes.GameScene
     public class ShaftBehaviour : TileBehaviour, IClickable
     {
         private Point2 pos;
-        private TransportRoute route;
+        private TransportBehaviour transportBehaviour;
 
         private void Awake()
         {
@@ -19,14 +19,14 @@ namespace Assets.Scripts.Scenes.GameScene
             this.pos = pos;
         }
 
-        public void SetTransportRoute(TransportRoute route)
+        public void SetTransport(TransportBehaviour transportBehaviour)
         {
-            this.route = route;
+            this.transportBehaviour = transportBehaviour;
         }
 
-        public TransportRoute GetTransportRoute()
+        public bool HasTransport()
         {
-            return this.route;
+            return this.transportBehaviour != null;
         }
 
         public void OnClicked()
