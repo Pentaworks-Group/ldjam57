@@ -49,7 +49,7 @@ namespace Assets.Scripts.Core
             {
                 EffectsVolume = 0.9f,
                 AmbienceVolume = 0.1f,
-                BackgroundVolume = 0.05f,
+                BackgroundVolume = 0.5f,
                 ShowTouchPads = showTouchPads
             };
         }
