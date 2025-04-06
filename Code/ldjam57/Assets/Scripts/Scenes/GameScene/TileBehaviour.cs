@@ -1,4 +1,5 @@
 using GameFrame.Core.Math;
+
 using UnityEngine;
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -16,6 +17,5 @@ namespace Assets.Scripts.Scenes.GameScene
         public abstract Point2 GetPosition();
 
         public bool IsDigable() { return digable; }
-
     }
 }

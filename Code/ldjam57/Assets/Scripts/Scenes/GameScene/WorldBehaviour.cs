@@ -217,10 +217,15 @@ namespace Assets.Scripts.Scenes.GameScene
             var pos = tile.Position;
 
             var position = GetUnityVector(pos, TileTemplate.transform.position.z);
+
             var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
+
             groundTile.name = "Tile_" + pos;
+
             groundTile.Init(this, tile);
+
             groundTile.gameObject.SetActive(true);
+
             tileMap[pos.X, pos.Y] = groundTile;
         }
 
@@ -234,11 +239,17 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var position = GetUnityVector(pos, ShaftTemplate.transform.position.z);
             var newTile = GameObject.Instantiate(ShaftTemplate, position, ShaftTemplate.transform.rotation, TilesParent.transform);
+
             newTile.name = "Shaft_" + pos;
+
             var shaftBehaviour = newTile.GetComponent<ShaftBehaviour>();
+
             shaftBehaviour.Init(this, pos);
+
             Shafts.Add(shaftBehaviour);
+
             newTile.SetActive(true);
+
             tileMap[pos.X, pos.Y] = shaftBehaviour;
         }
 

@@ -1,6 +1,6 @@
 using Assets.Scripts.Core.Model;
+
 using GameFrame.Core.Math;
-using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -22,7 +22,6 @@ namespace Assets.Scripts.Scenes.GameScene
             this.direction = direction;
             this.pos = pos;
         }
-
 
         public void OnClicked()
         {

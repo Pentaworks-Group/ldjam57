@@ -12,5 +12,6 @@ namespace Assets.Scripts.Core.Model
         public Double MiningSpeedFactor { get; set; }
         public GameFrame.Core.Media.Color Color { get; set; }
         public GameFrame.Core.Math.Range SpawnRange { get; set; }
+        public Boolean IsMetallic { get; set; }
     }
 }

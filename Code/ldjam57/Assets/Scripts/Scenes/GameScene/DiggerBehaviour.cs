@@ -16,8 +16,6 @@ namespace Assets.Scripts.Scenes.GameScene
         private float xOffset;
         private float yOffset;
 
-        
-
         public Direction GetDirection()
         {
             return digger.Direction;
@@ -27,7 +25,6 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Size;
         }
-
 
         private void Awake()
         {

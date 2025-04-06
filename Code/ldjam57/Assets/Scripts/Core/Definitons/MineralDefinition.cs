@@ -8,6 +8,7 @@ namespace Assets.Scripts.Core.Definitons
     {
         public String Name { get; set; }
         public Boolean? IsDefault { get; set; }
+        public Boolean? IsMetallic { get; set; }
         public GameFrame.Core.Math.Range SpawnRange { get; set; }
         public GameFrame.Core.Math.Range SeedRange { get; set; }
         public GameFrame.Core.Media.Color? Color { get; set; }

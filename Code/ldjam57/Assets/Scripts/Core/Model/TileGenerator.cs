@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Assets.Scripts.Core.Model
 {
     public class TileGenerator
     {
-        private const Boolean LOGMINERALS = true;
-
         private readonly World world;
 
         public TileGenerator(World world)
@@ -19,13 +18,14 @@ namespace Assets.Scripts.Core.Model
         {
             var tiles = new List<Tile>();
 
-            var possibleMineralsLevel0 = GetMatchingMinerals(0);
-            var possibleMineralsLevel1 = GetMatchingMinerals(1);
-
-            for (int i = 0; i < world.Width; i++)
+            for (int y = 0; y < world.Width; y++)
             {
-                tiles.Add(GenerateTile(i, 0, possibleMineralsLevel0));
-                tiles.Add(GenerateTile(i, 1, possibleMineralsLevel1));
+                var possibleMinerals = GetMatchingMinerals(y);
+
+                for (int i = 0; i < world.Width; i++)
+                {
+                    tiles.Add(GenerateTile(i, y, possibleMinerals));
+                }
             }
 
             return tiles;
@@ -49,13 +49,13 @@ namespace Assets.Scripts.Core.Model
             return tile;
         }
 
-        private Dictionary<String, Double> GenerateMineralAmounts(Int32 x, Int32 y, List<Mineral> possibleMinerals)
+        private List<MineralAmount> GenerateMineralAmounts(Int32 x, Int32 y, List<Mineral> possibleMinerals)
         {
-            var mineralAmounts = new Dictionary<String, Double>();
+            var mineralAmounts = new Dictionary<String, MineralAmount>();
 
             foreach (var mineral in world.Minerals)
             {
-                mineralAmounts[mineral.Reference] = 0;
+                mineralAmounts[mineral.Reference] = new MineralAmount(mineral);
             }
 
             var possibleMineralValues = new Dictionary<String, Double>();
@@ -94,36 +94,23 @@ namespace Assets.Scripts.Core.Model
             {
                 var scale = 1.0d / total;
 
-                foreach (var layer in possibleMineralValues)
+                foreach (var mineralKeyValuePair in possibleMineralValues)
                 {
-                    mineralAmounts[layer.Key] = layer.Value * scale;
+                    mineralAmounts[mineralKeyValuePair.Key].Amount = mineralKeyValuePair.Value * scale;
                 }
             }
             else
             {
                 foreach (var layer in possibleMineralValues)
                 {
-                    mineralAmounts[layer.Key] = layer.Value;
+                    mineralAmounts[layer.Key].Amount = layer.Value;
                 }
 
-                mineralAmounts[world.DefaultMineral.Reference] = 1 - total;
+                mineralAmounts[world.DefaultMineral.Reference].Amount = 1 - total;
             }
 
-            if (LOGMINERALS)
-            {
-                var builder = new StringBuilder();
-
-                builder.AppendFormat("Tile: {0};{1}", x, y);
-
-                foreach (var mineral in mineralAmounts)
-                {
-                    builder.AppendLine(String.Format("{0}: {1}", mineral.Key, mineral.Value));
-                }
-
-                UnityEngine.Debug.Log(builder.ToString());
-            }
-
-            return mineralAmounts;
+            return mineralAmounts.Values.ToList()
+                ;
         }
 
         private List<Mineral> GetMatchingMinerals(Int32 y)
