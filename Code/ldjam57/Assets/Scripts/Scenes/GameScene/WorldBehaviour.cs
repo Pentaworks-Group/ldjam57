@@ -216,7 +216,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var pos = tile.Position;
 
-            var position = GetUnityVector(pos, SiteTemplate.transform.position.z);
+            var position = GetUnityVector(pos, TileTemplate.transform.position.z);
             var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
             groundTile.name = "Tile_" + pos;
             groundTile.Init(this, tile);

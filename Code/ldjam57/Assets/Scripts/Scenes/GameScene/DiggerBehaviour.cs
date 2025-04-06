@@ -58,7 +58,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void UpdatePosition()
         {
-            var posi = worldBehaviour.GetUnityVector(digger.Position, xOffset, yOffset);
+            var posi = worldBehaviour.GetUnityVector(digger.Position,transform.position.z, xOffset, yOffset);
             transform.position = posi;
         }
 
