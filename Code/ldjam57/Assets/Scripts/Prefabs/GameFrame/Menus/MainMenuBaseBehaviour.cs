@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using Assets.Scripts.Constants;
 using UnityEngine;
 
@@ -8,15 +9,9 @@ namespace Assets.Scripts.Scenes.Menues
     {
         private void Start()
         {
+            var introAudio = GameFrame.Base.Resources.Manager.Audio.Get("Intro");
+
             var backgroundAudioClips = new List<AudioClip>()
-            {
-                GameFrame.Base.Resources.Manager.Audio.Get("Intro")
-            };
-
-            GameFrame.Base.Audio.Background.ReplaceClips(backgroundAudioClips);
-            GameFrame.Base.Audio.Background.Play();
-
-            backgroundAudioClips = new List<AudioClip>()
             {
                 GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
                 GameFrame.Base.Resources.Manager.Audio.Get("Menu_empty"),
@@ -25,6 +20,7 @@ namespace Assets.Scripts.Scenes.Menues
                 GameFrame.Base.Resources.Manager.Audio.Get("Menu_2")
             };
             GameFrame.Base.Audio.Background.ReplaceClips(backgroundAudioClips);
+            GameFrame.Base.Audio.Background.PlayTransition(introAudio, backgroundAudioClips);
         }
 
         public void Play()

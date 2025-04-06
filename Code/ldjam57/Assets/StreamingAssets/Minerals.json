@@ -3,6 +3,7 @@
     "Reference": "Dirt",
     "Name": "Dirt",
     "IsDefault": true,
+    "IsMetallic": false,
     "Color": {
       "Red": 0.5,
       "Green": 0.3,
@@ -17,6 +18,7 @@
   {
     "Reference": "Stone",
     "Name": "Stone",
+    "IsMetallic": false,
     "Color": {
       "Red": 0.718,
       "Green": 0.69,
@@ -35,6 +37,7 @@
   {
     "Reference": "Copper",
     "Name": "Copper",
+    "IsMetallic": true,
     "Color": {
       "Red": 0.722,
       "Green": 0.451,
@@ -53,6 +56,7 @@
   {
     "Reference": "Gold",
     "Name": "Gold",
+    "IsMetallic": true,
     "Color": {
       "Red": 1,
       "Green": 0.843,
@@ -71,6 +75,7 @@
   {
     "Reference": "Iron",
     "Name": "Iron",
+    "IsMetallic": true,
     "Color": {
       "Red": 0.63,
       "Green": 0.61,
