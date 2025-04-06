@@ -15,6 +15,8 @@ namespace Assets.Scripts.Scenes.GameScene
         private float tickInterval = 1f;
         private float xOffset;
         private float yOffset;
+        
+        private Animator _animator;   
 
         public Direction GetDirection()
         {
@@ -25,6 +27,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Size;
         }
+
 
         private void Awake()
         {
@@ -49,13 +52,14 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             base.Init(worldBehaviour);
             this.digger = digger;
-            CalculateOffsetsAndRotation();
+            _animator = gameObject.GetComponent<Animator>();
+            _animator.gameObject.SetActive(true);
             StartMining();
         }
 
         public void UpdatePosition()
         {
-            var posi = worldBehaviour.GetUnityVector(digger.Position,transform.position.z, xOffset, yOffset);
+            var posi = worldBehaviour.GetUnityVector(digger.Position, -0.01f, xOffset, yOffset);
             transform.position = posi;
         }
 
@@ -187,12 +191,20 @@ namespace Assets.Scripts.Scenes.GameScene
             if (SetTargets())
             {
                 digger.IsMining = true;
+                _animator.SetBool("Mining", true);
+                int direction = 0;
+                if (digger.Direction == Direction.Left)
+                    direction = -1;
+                else if (digger.Direction == Direction.Right)
+                    direction = 1;
+                _animator.SetInteger("Direction", direction);
             }
         }
 
         public void StopMining()
         {
             digger.IsMining = false;
+            _animator.SetBool("Mining", false);
         }
 
         public void OnClicked()
