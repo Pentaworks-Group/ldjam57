@@ -44,12 +44,10 @@ public class MusicBehauviour : MonoBehaviour
             GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
             GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
             GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
-            GameFrame.Base.Resources.Manager.Audio.Get("Game_low_4"),
         };
 
         highEnergyAudioClips = new List<AudioClip>()
         {
-            GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
             GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
             GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
             GameFrame.Base.Resources.Manager.Audio.Get("Game_high_empty"),
