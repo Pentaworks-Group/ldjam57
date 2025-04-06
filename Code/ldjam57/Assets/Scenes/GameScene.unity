@@ -1035,6 +1035,8 @@ MonoBehaviour:
   touchMoveSensitivity: 0.01
   pinchZoomSensitivity: 0.1
   keyboardMoveSpeed: 10
+  mouseDragSensitivity: 0.03
+  invertMouseDrag: 1
 --- !u!1 &1337779617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1736,7 +1738,7 @@ MonoBehaviour:
   ShaftTemplate: {fileID: 1518904647}
   SiteTemplate: {fileID: 385290567}
   DiggerTemplate: {fileID: 1570910106}
-  TransportTemplate: {fileID: 862492928}
+  TransportSiteTemplate: {fileID: 0}
   TilesParent: {fileID: 1938564925}
 --- !u!1001 &2140853917
 PrefabInstance:
