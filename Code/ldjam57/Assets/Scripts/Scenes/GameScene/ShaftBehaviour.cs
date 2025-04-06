@@ -7,6 +7,7 @@ namespace Assets.Scripts.Scenes.GameScene
     {
         private Point2 pos;
         private TransportBehaviour transportBehaviour;
+        private DiggerBehaviour diggerBehaviour;
 
         private void Awake()
         {
@@ -22,6 +23,11 @@ namespace Assets.Scripts.Scenes.GameScene
         public void SetTransport(TransportBehaviour transportBehaviour)
         {
             this.transportBehaviour = transportBehaviour;
+        }
+
+        public void SetDigger(DiggerBehaviour diggerBehaviour)
+        {
+            this.diggerBehaviour = diggerBehaviour;
         }
 
         public bool HasTransport()

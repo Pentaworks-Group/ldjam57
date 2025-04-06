@@ -13,14 +13,16 @@ namespace Assets.Scripts.Scenes.GameScene
         private Transport transport;
         private ShaftBehaviour shaft;
         private bool vertical;
+        private Direction direction;
 
 
-        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft, bool vertical)
+        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft, bool vertical, Direction direction)
         {
             this.worldBehaviour = worldBehaviour;
             this.transport = transport;
             this.shaft = shaft;
             this.vertical = vertical;
+            this.direction = direction;
             UpdatePosition();
         }
 
@@ -37,7 +39,7 @@ namespace Assets.Scripts.Scenes.GameScene
         }
 
         private TransportBehaviour GetTransportBehaviour() {
-            var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport);
+            var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport, direction);
             shaft.SetTransport(transB);
             return transB;
         }

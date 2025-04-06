@@ -7,7 +7,7 @@
       "Y": 1
     },
     "Sprite": "",
-    "Capacity": 100,
+    "Capacity": 5,
     "SpeedFactor": 1,
     "IsUnlockable": true,
     "UnlockCost": 0,
