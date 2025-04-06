@@ -16,8 +16,6 @@ namespace Assets.Scripts.Scenes.GameScene
         private float xOffset;
         private float yOffset;
 
-        
-
         public Direction GetDirection()
         {
             return digger.Direction;
@@ -27,7 +25,6 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Size;
         }
-
 
         private void Awake()
         {
@@ -58,7 +55,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void UpdatePosition()
         {
-            var posi = worldBehaviour.GetUnityVector(digger.Position, xOffset, yOffset);
+            var posi = worldBehaviour.GetUnityVector(digger.Position,transform.position.z, xOffset, yOffset);
             transform.position = posi;
         }
 
