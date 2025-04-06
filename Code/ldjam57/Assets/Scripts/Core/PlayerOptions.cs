@@ -11,5 +11,8 @@ namespace Assets.Scripts.Core
         public bool ShowTouchPads { get; set; }
 
         public bool InvertAxis { get; set; }
+
+        public float ScrollSensivity { get; set; } = .5f;
+        public float ZoomSensivity { get; set; } = .5f;
     }
 }
