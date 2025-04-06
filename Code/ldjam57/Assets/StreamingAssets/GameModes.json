@@ -36,8 +36,8 @@
       "Width": 64,
       "Headquarters": {
         "Position": {
-          "X": 0,
-          "Y": 0
+          "X": 32,
+          "Y": 1
         },
         "AvailableSprites": []
       },
@@ -48,11 +48,76 @@
             "Reference": "Dirt"
           },
           "Position": {
-            "X": 1,
-            "y": 0
+            "X": 33,
+            "y": 1
           },
-          "Sprite": "",
-          "Capacity": -1
+          "Capacity": 100000
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Stone"
+          },
+          "Position": {
+            "X": 34,
+            "y": 1
+          },
+          "Capacity": 100000
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Copper"
+          },
+          "Position": {
+            "X": 35,
+            "y": 1
+          },
+          "Capacity": 100000
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Iron"
+          },
+          "Position": {
+            "X": 36,
+            "y": 1
+          },
+          "Capacity": 100000
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Gold"
+          },
+          "Position": {
+            "X": 37,
+            "y": 1
+          },
+          "Capacity": 100000
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Lithium"
+          },
+          "Position": {
+            "X": 38,
+            "y": 1
+          },
+          "Capacity": 100000
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Crystals"
+          },
+          "Position": {
+            "X": 39,
+            "y": 1
+          },
+          "Capacity": 100000
         }
       ]
     },

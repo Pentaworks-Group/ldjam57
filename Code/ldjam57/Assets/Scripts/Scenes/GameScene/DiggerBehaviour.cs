@@ -1,6 +1,9 @@
-using Assets.Scripts.Core.Model;
-using GameFrame.Core.Math;
 using System.Collections.Generic;
+
+using Assets.Scripts.Core.Model;
+
+using GameFrame.Core.Math;
+
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -13,8 +16,8 @@ namespace Assets.Scripts.Scenes.GameScene
         private float tickInterval = 1f;
         private float xOffset;
         private float yOffset;
-        
-        private Animator _animator;   
+
+        private Animator _animator;
 
         public Direction GetDirection()
         {
@@ -64,7 +67,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void CalculateOffsetsAndRotation()
         {
-            if(digger.Direction == Direction.Down)
+            if (digger.Direction == Direction.Down)
             {
                 xOffset = 0;
                 yOffset = 1 - transform.localScale.y;
@@ -218,7 +221,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public override Point2 GetPosition()
         {
-           return digger.Position;
+            return digger.Position;
         }
     }
 }

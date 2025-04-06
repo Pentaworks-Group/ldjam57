@@ -114,9 +114,12 @@ namespace Assets.Scripts.Core
 
             var tileGenerator = new TileGenerator(world);
 
-            world.Tiles.AddRange(tileGenerator.GenerateRootTiles());
+            var initialDepth = 2;
 
-            ConvertDepositories(world.Depositories);
+            world.Tiles.AddRange(tileGenerator.GenerateRootTiles(initialDepth));
+            world.MaxDepth = initialDepth;
+
+            ConvertDepositories(world);
 
             return world;
         }
@@ -170,7 +173,7 @@ namespace Assets.Scripts.Core
             return headquarters;
         }
 
-        private void ConvertDepositories(List<Depository> depositoryList)
+        private void ConvertDepositories(World world)
         {
             if (mode.World.Depositories?.Count > 0)
             {
@@ -178,10 +181,13 @@ namespace Assets.Scripts.Core
                 {
                     var depository = new Depository()
                     {
-                        Definition = definition
+                        Definition = definition,
+                        Capacity = definition.Capacity.GetValueOrDefault(),
+                        Mineral = mineralMap[definition.Mineral.Reference],
+                        Position = definition.Position.GetValueOrDefault(new GameFrame.Core.Math.Point2(world.Headquarters.Position.X + 1, world.Headquarters.Position.Y)),
                     };
 
-                    depositoryList.Add(depository);
+                    world.Depositories.Add(depository);
                 }
             }
         }
