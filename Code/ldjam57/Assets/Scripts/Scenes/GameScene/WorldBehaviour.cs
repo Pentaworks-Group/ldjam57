@@ -203,7 +203,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 foreach (var point in points)
                 {
                     var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-                    newSite.Init(this, transport, points, point);
+                    newSite.Init(this, transport, points, point.GetPosition());
                     newSite.gameObject.SetActive(true);
                 }
             }
