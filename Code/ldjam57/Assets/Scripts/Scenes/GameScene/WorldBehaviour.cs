@@ -59,22 +59,22 @@ namespace Assets.Scripts.Scenes.GameScene
             ClearDigSites();
             foreach (var shaft in Shafts)
             {
-                var beneath = GetTile(shaft.GetPosition(), 0, 1);
+                var beneath = GetTileRelative(shaft.GetPosition(), 0, 1);
                 if (beneath?.IsDigable() == true)
                 {
                     if (miningTool.Size.X < 2)
                     {
-                        var tile = GetTile(shaft.GetPosition(), -1, 0);
+                        var tile = GetTileRelative(shaft.GetPosition(), -1, 0);
                         if (tile?.IsDigable() == true)
                         {
                             CreateSite(shaft.GetPosition(), miningTool, Direction.Left);
                         }
-                        tile = GetTile(shaft.GetPosition(), 1, 0);
+                        tile = GetTileRelative(shaft.GetPosition(), 1, 0);
                         if (tile?.IsDigable() == true)
                         {
                             CreateSite(shaft.GetPosition(), miningTool, Direction.Right);
                         }
-                        tile = GetTile(shaft.GetPosition(), 0, 1);
+                        tile = GetTileRelative(shaft.GetPosition(), 0, 1);
                         if (tile?.IsDigable() == true)
                         {
                             CreateSite(shaft.GetPosition(), miningTool, Direction.Down);
@@ -185,22 +185,25 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 if (tile.DigingProgress >= 1)
                 {
-                    ShaftBehaviour shaftBehaviour = new();
-
+                    CreateShaft(tile.Position);
                 }
                 else
                 {
-                    var pos = tile.Position;
-                    UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + pos.X, -pos.Y, TileTemplate.transform.position.z);
-                    var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
-                    groundTile.name = "Tile_" + pos;
-                    groundTile.Init(this, tile);
-                    groundTile.gameObject.SetActive(true);
-                    tileMap[pos.X, pos.Y] = groundTile;
+                    GenerateGround(tile);
                 }
             }
         }
 
+        private void GenerateGround(Tile tile)
+        {
+            var pos = tile.Position;
+            UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + pos.X, -pos.Y, TileTemplate.transform.position.z);
+            var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
+            groundTile.name = "Tile_" + pos;
+            groundTile.Init(this, tile);
+            groundTile.gameObject.SetActive(true);
+            tileMap[pos.X, pos.Y] = groundTile;
+        }
 
         public void ReplaceTile(TileBehaviour tile)
         {
@@ -255,7 +258,7 @@ namespace Assets.Scripts.Scenes.GameScene
             return false;
         }
 
-        internal TileBehaviour GetTile(Point2 pos, int x, int y)
+        internal TileBehaviour GetTileRelative(Point2 pos, int x, int y)
         {
             if (!GetRelativePosition(pos, x, y, out int newX, out int newY))
             {
@@ -267,7 +270,49 @@ namespace Assets.Scripts.Scenes.GameScene
         internal void DiggerMoved(ToolBehaviour toolBehaviour)
         {
             var dir = toolBehaviour.GetDirection();
+            var size = toolBehaviour.GetSize();
+            List<(int x, int y)> pointList = new List<(int x, int y)>();
+            if (dir == Direction.Left)
+            {
+                var numPoints = size.Y + 2; //+4 for range -2 because we start lower
+                for (int i = -2; i < numPoints; i++)
+                {
+                    pointList.Add((-2, i));
+                }
 
+            }
+            else if (dir == Direction.Right)
+            {
+                var numPoints = size.Y + 2; //+4 for range -2 because we start lower
+                for (int i = -2; i < numPoints; i++)
+                {
+                    pointList.Add((2, i));
+                }
+            }
+            else if (dir == Direction.Down)
+            {
+                var numPoints = size.X + 2; //+4 for range -2 because we start lefter
+                for (int i = -2; i < numPoints; i++)
+                {
+                    pointList.Add((i, 2));
+                }
+            }
+            else
+            {
+                return;
+            }
+
+
+            var pos = toolBehaviour.GetPosition();
+            foreach (var point in pointList)
+            {
+                var validPosition = GetRelativePosition(pos, point.x, point.y, out int x, out int y);
+                if (validPosition && !tileMap.TryGetValue(x, y, out _))
+                {
+                    var tile = tileGenerator.GenerateTile(x, y);
+                    GenerateGround(tile);
+                }
+            }
         }
     }
 }

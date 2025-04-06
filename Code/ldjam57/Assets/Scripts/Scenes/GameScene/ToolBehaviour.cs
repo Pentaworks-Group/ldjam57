@@ -21,6 +21,11 @@ namespace Assets.Scripts.Scenes.GameScene
             return direction;
         }
 
+        public GameFrame.Core.Math.Vector2 GetSize()
+        {
+            return miningTool.Size;
+        }
+
 
         private void Awake()
         {
@@ -107,7 +112,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 for (int i = 0; i < miningTool.Size.Y; i++)
                 {
-                    var target = worldBehaviour.GetTile(pos, -1, i);
+                    var target = worldBehaviour.GetTileRelative(pos, -1, i);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
@@ -118,7 +123,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 for (int i = 0; i < miningTool.Size.Y; i++)
                 {
-                    var target = worldBehaviour.GetTile(pos, 1, i);
+                    var target = worldBehaviour.GetTileRelative(pos, 1, i);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
@@ -129,7 +134,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 for (int i = 0; i < miningTool.Size.X; i++)
                 {
-                    var target = worldBehaviour.GetTile(pos, i, 1);
+                    var target = worldBehaviour.GetTileRelative(pos, i, 1);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
