@@ -50,7 +50,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private List<SiteBehaviour> Sites = new();
         private List<TransportSiteBehaviour> TransportSites = new();
-        private readonly List<DepositoryBehaviour> depositories = new List<DepositoryBehaviour>();
+        private readonly Dictionary<String, DepositoryBehaviour> depositories = new Dictionary<String, DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
         private Transport selectedTransport;
@@ -372,7 +372,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             depositoryBehaviour.Init(this, depository);
 
-            depositories.Add(depositoryBehaviour);
+            depositories[depository.Mineral.Reference] = depositoryBehaviour;
 
             depositoryGameObject.SetActive(true);
         }
