@@ -11,8 +11,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void Init(WorldBehaviour worldBehaviour, Tile tile)
         {
-            pos = tile.Position;
-            base.Init(worldBehaviour, pos);
+            base.Init(worldBehaviour);
             this.tile = tile;
         }
 
@@ -33,5 +32,9 @@ namespace Assets.Scripts.Scenes.GameScene
             return tile.DigingProgress >= 1;
         }
 
+        public override Point2 GetPosition()
+        {
+            return tile.Position;
+        }
     }
 }

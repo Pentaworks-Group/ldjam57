@@ -2,20 +2,18 @@ using GameFrame.Core.Math;
 using UnityEngine;
 namespace Assets.Scripts.Scenes.GameScene
 {
-    public class TileBehaviour : MonoBehaviour
+    public abstract class TileBehaviour : MonoBehaviour
     {
         protected WorldBehaviour worldBehaviour;
-        protected Point2 pos;
         protected bool digable = true;
             
 
-        public void Init(WorldBehaviour worldBehaviour, Point2 pos)
+        public void Init(WorldBehaviour worldBehaviour)
         {
             this.worldBehaviour = worldBehaviour;
-            this.pos = pos;
         }
 
-        public Point2 GetPosition() { return pos; }
+        public abstract Point2 GetPosition();
 
         public bool IsDigable() { return digable; }
 

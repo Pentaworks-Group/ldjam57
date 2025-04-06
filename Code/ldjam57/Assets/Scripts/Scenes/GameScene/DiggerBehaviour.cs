@@ -2,6 +2,8 @@ using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.WSA;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -11,7 +13,10 @@ namespace Assets.Scripts.Scenes.GameScene
         private List<GroundBehaviour> targets = new List<GroundBehaviour>();
 
         private float tickInterval = 1f;
+        private float xOffset;
+        private float yOffset;
 
+        
 
         public Direction GetDirection()
         {
@@ -45,9 +50,42 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void Init(WorldBehaviour worldBehaviour, Digger digger)
         {
-            base.Init(worldBehaviour, digger.Position);
+            base.Init(worldBehaviour);
             this.digger = digger;
+            CalculateOffsetsAndRotation();
             StartMining();
+        }
+
+        public void UpdatePosition()
+        {
+            var posi = worldBehaviour.GetUnityVector(digger.Position, xOffset, yOffset);
+            transform.position = posi;
+        }
+
+
+        private void CalculateOffsetsAndRotation()
+        {
+            if(digger.Direction == Direction.Down)
+            {
+                xOffset = 0;
+                yOffset = 1 - transform.localScale.y;
+            }
+            else if (digger.Direction == Direction.Left)
+            {
+                xOffset = transform.localScale.y - 1;
+                yOffset = 0;
+                transform.rotation *= Quaternion.Euler(0, 0, -90);
+            }
+            else if (digger.Direction == Direction.Right)
+            {
+                xOffset = 1 - transform.localScale.y;
+                yOffset = 0;
+                transform.rotation *= Quaternion.Euler(0, 0, 90);
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void MineTargets()
@@ -61,46 +99,45 @@ namespace Assets.Scripts.Scenes.GameScene
             }
             if (targets.Count == 0)
             {
-                MoveMiningTool();
+                MoveDigger();
                 SetTargets();
             }
         }
 
-        private void MoveMiningTool()
+        private void MoveDigger()
         {
+
             if (digger.Direction == Direction.Left)
             {
-                var validPos = worldBehaviour.GetRelativePosition(pos, -1, 0, out Point2 newPoint);
+                var validPos = worldBehaviour.GetRelativePosition(digger.Position, -1, 0, out Point2 newPoint);
                 if (!validPos)
                 {
                     StopMining();
+                    return;
                 }
-                var p = transform.position;
-                transform.position = new UnityEngine.Vector3(p.x - 1, p.y, p.z);
-                pos = newPoint;
+                digger.Position = newPoint;
             }
             else if (digger.Direction == Direction.Right)
             {
-                var validPos = worldBehaviour.GetRelativePosition(pos, 1, 0, out Point2 newPoint);
+                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 1, 0, out Point2 newPoint);
                 if (!validPos)
                 {
                     StopMining();
+                    return;
                 }
-                var p = transform.position;
-                transform.position = new UnityEngine.Vector3(p.x + 1, p.y, p.z);
-                pos = newPoint;
+                digger.Position = newPoint;
             }
             else if (digger.Direction == Direction.Down)
             {
-                var validPos = worldBehaviour.GetRelativePosition(pos, 0, 1, out Point2 newPoint);
+                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 0, 1, out Point2 newPoint);
                 if (!validPos)
                 {
                     StopMining();
+                    return;
                 }
-                var p = transform.position;
-                transform.position = new UnityEngine.Vector3(p.x, p.y - 1, p.z);
-                pos = newPoint;
+                digger.Position = newPoint;
             }
+            UpdatePosition();
             worldBehaviour.DiggerMoved(this);
         }
 
@@ -110,7 +147,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 for (int i = 0; i < digger.MiningTool.Size.Y; i++)
                 {
-                    var target = worldBehaviour.GetTileRelative(pos, -1, i);
+                    var target = worldBehaviour.GetTileRelative(digger.Position, -1, i);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
@@ -121,7 +158,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 for (int i = 0; i < digger.MiningTool.Size.Y; i++)
                 {
-                    var target = worldBehaviour.GetTileRelative(pos, 1, i);
+                    var target = worldBehaviour.GetTileRelative(digger.Position, 1, i);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
@@ -132,7 +169,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 for (int i = 0; i < digger.MiningTool.Size.X; i++)
                 {
-                    var target = worldBehaviour.GetTileRelative(pos, i, 1);
+                    var target = worldBehaviour.GetTileRelative(digger.Position, i, 1);
                     if (target != null && target.IsDigable())
                     {
                         targets.Add((GroundBehaviour)target);
@@ -170,6 +207,11 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             Base.Core.Game.State.ActiveDiggers.Remove(digger);
             Destroy(gameObject);
+        }
+
+        public override Point2 GetPosition()
+        {
+           return digger.Position;
         }
     }
 }
