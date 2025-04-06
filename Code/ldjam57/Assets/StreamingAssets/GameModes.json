@@ -36,8 +36,8 @@
       "Width": 64,
       "Headquarters": {
         "Position": {
-          "X": 0,
-          "Y": 0
+          "X": 32,
+          "Y": 1
         },
         "AvailableSprites": []
       },
@@ -48,8 +48,8 @@
             "Reference": "Dirt"
           },
           "Position": {
-            "X": 1,
-            "y": 0
+            "X": 33,
+            "y": 1
           },
           "Sprite": "",
           "Capacity": -1

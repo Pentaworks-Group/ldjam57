@@ -1,33 +1,26 @@
-using Assets.Scripts.Core;
-using Assets.Scripts.Core.Model;
-using GameFrame.Core.Math;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Unity.VisualScripting;
+using Assets.Scripts.Core;
+using Assets.Scripts.Core.Model;
+
+using GameFrame.Core.Extensions;
+using GameFrame.Core.Math;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-
 
 namespace Assets.Scripts.Scenes.GameScene
 {
     public class WorldBehaviour : MonoBehaviour
     {
-        private float xOffset;
-
         [SerializeField]
         private Camera mainCamera;
-
+        [SerializeField]
+        private CameraBehaviour CameraBehaviour;
 
         [SerializeField]
         private GroundBehaviour TileTemplate;
-        
-        [SerializeField]
-        private CameraBehaviour CameraBehaviour;
-        
         [SerializeField]
         private GameObject ShaftTemplate;
         [SerializeField]
@@ -39,24 +32,28 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private GameObject TilesParent;
 
+        [SerializeField]
+        private GameObject Headquarters;
 
+        [SerializeField]
+        private GameObject DepositoryTemplate;
+        [SerializeField]
+        private GameObject DepositoryContainer;
 
-        //private List<TileBehaviour> Tiles = new();
         private Map<int, TileBehaviour> tileMap = new();
 
         private List<ShaftBehaviour> Shafts = new();
 
-
         private List<SiteBehaviour> Sites = new();
-
+        private readonly List<DepositoryBehaviour> depositories = new List<DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
-
 
         private void Awake()
         {
             Base.Core.Game.ExecuteAfterInstantation(GenerateWorld);
         }
+
         private void OnEnable()
         {
             var clickAction = InputSystem.actions.FindAction("Click");
@@ -78,20 +75,25 @@ namespace Assets.Scripts.Scenes.GameScene
         public Map<int, Digger> GenerateDiggerMap()
         {
             Map<int, Digger> diggerMap = new();
+
             foreach (var digger in Base.Core.Game.State.ActiveDiggers)
             {
                 diggerMap[digger.Position.X, digger.Position.Y] = digger;
             }
+
             return diggerMap;
         }
 
         public void DisplayPosibleDigSites(MiningTool miningTool)
         {
             ClearDigSites();
+
             Map<int, Digger> diggerMap = GenerateDiggerMap();
+
             foreach (var shaft in Shafts)
             {
                 var beneath = GetTileRelative(shaft.GetPosition(), 0, 1);
+
                 if (beneath?.IsDigable() == true && !diggerMap.TryGetValue(shaft.GetPosition().X, shaft.GetPosition().Y, out _))
                 {
                     if (miningTool.Size.X < 2)
@@ -114,6 +116,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     }
                 }
             }
+
             for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
             {
                 var tile = tileMap[x, 0];
@@ -128,16 +131,20 @@ namespace Assets.Scripts.Scenes.GameScene
         public void BuildDigSite(SiteBehaviour siteBehaviour)
         {
             var newDigger = GameObject.Instantiate(DiggerTemplate, TilesParent.transform);
+
             var digger = new Digger()
             {
                 Direction = siteBehaviour.GetDirection(),
                 MiningTool = siteBehaviour.GetMiningTool(),
                 Position = siteBehaviour.GetPosition()
             };
+
             newDigger.Init(this, digger);
             newDigger.UpdatePosition();
             newDigger.gameObject.SetActive(true);
+
             ClearDigSites();
+
             Base.Core.Game.State.ActiveDiggers.Add(digger);
         }
 
@@ -147,6 +154,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 GameObject.Destroy(site.gameObject);
             }
+
             Sites.Clear();
         }
 
@@ -181,7 +189,6 @@ namespace Assets.Scripts.Scenes.GameScene
             newSite.gameObject.SetActive(true);
             Sites.Add(newSite);
         }
-
 
         public void DisplayPossibleVerticalTransportSites()
         {
@@ -268,10 +275,13 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateWorld()
         {
-            tileGenerator = new TileGenerator(Base.Core.Game.State.World);
-            xOffset = Base.Core.Game.State.World.Width / 2f;
+            var world = Base.Core.Game.State.World;
 
-            foreach (var tile in Base.Core.Game.State.World.Tiles)
+            tileGenerator = new TileGenerator(world);
+
+            Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3();
+
+            foreach (var tile in world.Tiles)
             {
                 if (tile.DigingProgress >= 1)
                 {
@@ -283,7 +293,12 @@ namespace Assets.Scripts.Scenes.GameScene
                 }
             }
 
-            CameraBehaviour.OnBoundariesChanged(Base.Core.Game.State.World.Width, Base.Core.Game.State.World.MaxDepth);
+            CameraBehaviour.OnBoundariesChanged(world.Width, world.MaxDepth);
+
+            foreach (var depository in world.Depositories)
+            {
+                GenerateDepository(depository);
+            }
         }
 
         private void GenerateGround(Tile tile)
@@ -327,6 +342,19 @@ namespace Assets.Scripts.Scenes.GameScene
             tileMap[pos.X, pos.Y] = shaftBehaviour;
         }
 
+        private void GenerateDepository(Depository depository)
+        {
+            var depositoryGameObject = Instantiate(DepositoryTemplate, depository.Position.ToUnityVector3(), Quaternion.identity, DepositoryContainer.transform);
+
+            var depositoryBehaviour = depositoryGameObject.GetComponent<DepositoryBehaviour>();
+
+            depositoryBehaviour.Init(this, depository);
+
+            depositories.Add(depositoryBehaviour);
+
+            depositoryGameObject.SetActive(true);
+        }
+
         public bool GetRelativePosition(Point2 pos, int x, int y, out int outX, out int outY)
         {
             int oldX = pos.X;
@@ -349,7 +377,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
             return true;
         }
-
 
         public bool GetRelativePosition(Point2 pos, int x, int y, out Point2 newPos)
         {
@@ -425,7 +452,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 if (validPosition && !tileMap.TryGetValue(x, y, out _))
                 {
                     var tile = tileGenerator.GenerateTile(x, y);
-                    
+
                     GenerateGround(tile);
                 }
 
