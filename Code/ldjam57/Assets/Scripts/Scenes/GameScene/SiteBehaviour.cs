@@ -8,6 +8,7 @@ namespace Assets.Scripts.Scenes.GameScene
     {
         private MiningTool miningTool;
         private Direction direction;
+        private Point2 pos;
 
         private void Awake()
         {
@@ -16,9 +17,10 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void Init(WorldBehaviour worldBehaviour, Point2 pos, MiningTool miningTool, Direction direction)
         {
-            base.Init(worldBehaviour, pos);
+            base.Init(worldBehaviour);
             this.miningTool = miningTool;
             this.direction = direction;
+            this.pos = pos;
         }
 
 
@@ -37,5 +39,9 @@ namespace Assets.Scripts.Scenes.GameScene
             return direction;
         }
 
+        public override Point2 GetPosition()
+        {
+            return pos;
+        }
     }
 }

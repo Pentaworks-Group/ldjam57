@@ -1,6 +1,7 @@
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,7 +25,7 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private SiteBehaviour SiteTemplate;
         [SerializeField]
-        private DiggerBehaviour ToolTemplate;
+        private DiggerBehaviour DiggerTemplate;
         [SerializeField]
         private GameObject TilesParent;
 
@@ -64,13 +65,24 @@ namespace Assets.Scripts.Scenes.GameScene
             DisplayPosibleDigSites(miningTool);
         }
 
+        public Map<int, Digger> GenerateDiggerMap()
+        {
+            Map<int, Digger> diggerMap = new();
+            foreach (var digger in Base.Core.Game.State.ActiveDiggers)
+            {
+                diggerMap[digger.Position.X, digger.Position.Y] = digger;
+            }
+            return diggerMap;
+        }
+
         public void DisplayPosibleDigSites(MiningTool miningTool)
         {
             ClearDigSites();
+            Map<int, Digger> diggerMap = GenerateDiggerMap();
             foreach (var shaft in Shafts)
             {
                 var beneath = GetTileRelative(shaft.GetPosition(), 0, 1);
-                if (beneath?.IsDigable() == true)
+                if (beneath?.IsDigable() == true && !diggerMap.TryGetValue(shaft.GetPosition().X, shaft.GetPosition().Y, out _))
                 {
                     if (miningTool.Size.X < 2)
                     {
@@ -94,7 +106,8 @@ namespace Assets.Scripts.Scenes.GameScene
             }
             for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
             {
-                if (tileMap[x, 0].IsDigable())
+                var tile = tileMap[x, 0];
+                if (tile.IsDigable() && !diggerMap.TryGetValue(tile.GetPosition().X, tile.GetPosition().Y, out _))
                 {
                     Point2 pos = new Point2(x, -1);
                     CreateSite(pos, miningTool, Direction.Down);
@@ -104,18 +117,16 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void BuildDigSite(SiteBehaviour siteBehaviour)
         {
-            var p = siteBehaviour.transform.position;
-            var position = new UnityEngine.Vector3(p.x, p.y, ToolTemplate.transform.position.z);
-            var newTool = GameObject.Instantiate(ToolTemplate, position, siteBehaviour.transform.rotation, TilesParent.transform);
-            newTool.transform.localScale = siteBehaviour.transform.localScale;
+            var newDigger = GameObject.Instantiate(DiggerTemplate, TilesParent.transform);
             var digger = new Digger()
             {
                 Direction = siteBehaviour.GetDirection(),
                 MiningTool = siteBehaviour.GetMiningTool(),
                 Position = siteBehaviour.GetPosition()
             };
-            newTool.Init(this, digger);
-            newTool.gameObject.SetActive(true);
+            newDigger.Init(this, digger);
+            newDigger.UpdatePosition();
+            newDigger.gameObject.SetActive(true);
             ClearDigSites();
             Base.Core.Game.State.ActiveDiggers.Add(digger);
         }
@@ -135,18 +146,18 @@ namespace Assets.Scripts.Scenes.GameScene
             Quaternion rotation;
             if (direction == Direction.Down)
             {
-                position = new UnityEngine.Vector3(pos.X - xOffset, -pos.Y - (1 - SiteTemplate.transform.localScale.y) / 2, SiteTemplate.transform.position.z);
+                position = GetUnityVector(pos, SiteTemplate.transform.position.z, yOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
                 rotation = SiteTemplate.transform.rotation;
             }
             else if (direction == Direction.Left)
             {
-                position = new UnityEngine.Vector3(pos.X - (1 - SiteTemplate.transform.localScale.y) / 2 - xOffset, -pos.Y, SiteTemplate.transform.position.z);
+                position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: -(1 - SiteTemplate.transform.localScale.y) / 2);
                 rotation = SiteTemplate.transform.rotation;
                 rotation *= Quaternion.Euler(0, 0, -90);
             }
             else if (direction == Direction.Right)
             {
-                position = new UnityEngine.Vector3(pos.X + (1 - SiteTemplate.transform.localScale.y) / 2 - xOffset, -pos.Y, SiteTemplate.transform.position.z);
+                position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
                 rotation = SiteTemplate.transform.rotation;
                 rotation *= Quaternion.Euler(0, 0, 90);
             }
@@ -204,7 +215,8 @@ namespace Assets.Scripts.Scenes.GameScene
         private void GenerateGround(Tile tile)
         {
             var pos = tile.Position;
-            UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + pos.X, -pos.Y, TileTemplate.transform.position.z);
+
+            var position = GetUnityVector(pos, SiteTemplate.transform.position.z);
             var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
             groundTile.name = "Tile_" + pos;
             groundTile.Init(this, tile);
@@ -220,7 +232,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void CreateShaft(Point2 pos)
         {
-            UnityEngine.Vector3 position = new UnityEngine.Vector3(-xOffset + pos.X, -pos.Y, TileTemplate.transform.position.z);
+            var position = GetUnityVector(pos, ShaftTemplate.transform.position.z);
             var newTile = GameObject.Instantiate(ShaftTemplate, position, ShaftTemplate.transform.rotation, TilesParent.transform);
             newTile.name = "Shaft_" + pos;
             var shaftBehaviour = newTile.GetComponent<ShaftBehaviour>();
@@ -265,6 +277,16 @@ namespace Assets.Scripts.Scenes.GameScene
             return false;
         }
 
+        public UnityEngine.Vector3 GetUnityVector(Point2 position, float z, float xOffset = 0, float yOffset = 0)
+        {
+            return GetUnityVector(position.X, position.Y, z, xOffset, yOffset);
+        }
+
+        public UnityEngine.Vector3 GetUnityVector(float x, float y, float z, float xOffset = 0, float yOffset = 0)
+        {
+            return new UnityEngine.Vector3(x + xOffset, -(y + yOffset), z);
+        }
+
         internal TileBehaviour GetTileRelative(Point2 pos, int x, int y)
         {
             if (!GetRelativePosition(pos, x, y, out int newX, out int newY))
@@ -276,6 +298,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         internal void DiggerMoved(DiggerBehaviour toolBehaviour)
         {
+
+
             var dir = toolBehaviour.GetDirection();
             var size = toolBehaviour.GetSize();
             List<(int x, int y)> pointList = new List<(int x, int y)>();

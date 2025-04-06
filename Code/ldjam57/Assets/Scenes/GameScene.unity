@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 242875804}
   - component: {fileID: 242875803}
   m_Layer: 0
-  m_Name: Tool
+  m_Name: Digger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1644,7 +1644,7 @@ MonoBehaviour:
   TileTemplate: {fileID: 1181462744}
   ShaftTemplate: {fileID: 1518904647}
   SiteTemplate: {fileID: 385290567}
-  ToolTemplate: {fileID: 242875803}
+  DiggerTemplate: {fileID: 242875803}
   TilesParent: {fileID: 1938564925}
 --- !u!1001 &2140853917
 PrefabInstance:
