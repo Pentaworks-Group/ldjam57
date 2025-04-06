@@ -1,6 +1,4 @@
-using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene

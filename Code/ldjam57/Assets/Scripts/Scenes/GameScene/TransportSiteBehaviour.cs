@@ -39,6 +39,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private TransportBehaviour GetTransportBehaviour(ShaftBehaviour shaft, TransportRoute transportRoute) {
             var transB = worldBehaviour.GenerateTransportBehaviour(transportRoute, shaft);
+            shaft.SetTransportRoute(transportRoute);
             return transB;
         }
 
@@ -47,6 +48,7 @@ namespace Assets.Scripts.Scenes.GameScene
             var transportRoute = new TransportRoute(worldBehaviour, vertical, transport);
             var trans = points.Select(point => GetTransportBehaviour(point, transportRoute)).ToList();
             transportRoute.SetPoints(trans);
+            worldBehaviour.BuildTransporteSite(this);
         }
 
     }

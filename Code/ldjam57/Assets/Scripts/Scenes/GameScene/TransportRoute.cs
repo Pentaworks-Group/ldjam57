@@ -3,6 +3,7 @@ using Assets.Scripts.Core.Model;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -31,8 +32,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public Texture GetTexture()
         {
-            var sprite = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
-            return sprite.texture;
+            var texture = GameFrame.Base.Resources.Manager.Textures.Get(transport.Sprite);
+            return texture;
         }
 
 

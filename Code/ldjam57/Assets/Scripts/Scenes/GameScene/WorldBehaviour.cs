@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,6 +48,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private List<ShaftBehaviour> Shafts = new();
 
         private List<SiteBehaviour> Sites = new();
+        private List<TransportSiteBehaviour> TransportSites = new();
         private readonly List<DepositoryBehaviour> depositories = new List<DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
@@ -200,11 +202,12 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void DisplayPossibleVerticalTransportSites(Transport transport)
         {
+            ClearTransportSites();
             var usedShafts = new HashSet<ShaftBehaviour>();
             var transportBehaviours = new List<TransportBehaviour>();
             foreach (var shaft in Shafts)
             {
-                if (usedShafts.Contains(shaft))
+                if (usedShafts.Contains(shaft) || shaft.GetTransportRoute() != null)
                 {
                     continue;
                 }
@@ -221,6 +224,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
                     newSite.Init(this, transport, points, point.GetPosition(), true);
                     newSite.gameObject.SetActive(true);
+                    TransportSites.Add(newSite);
                 }
             }
         }
@@ -228,6 +232,8 @@ namespace Assets.Scripts.Scenes.GameScene
         public TransportBehaviour GenerateTransportBehaviour(TransportRoute transportRoute, ShaftBehaviour shaftBehaviour)
         {
             var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
+            var p = shaftBehaviour.transform.position;
+            transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
             transportBehaviour.Init(transportRoute, shaftBehaviour);
             transportBehaviour.gameObject.SetActive(true);
             return transportBehaviour;
@@ -472,6 +478,19 @@ namespace Assets.Scripts.Scenes.GameScene
                     CameraBehaviour.OnBoundariesChanged(Base.Core.Game.State.World.Width, y);
                 }
             }
+        }
+
+        private void ClearTransportSites() {
+            foreach (var site in TransportSites)
+            {
+                GameObject.Destroy(site.gameObject);
+            }
+            TransportSites.Clear();
+        }
+
+        internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
+        {
+            ClearTransportSites();
         }
     }
 }
