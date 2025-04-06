@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Assets.Scripts.Core.Model
 {
@@ -18,7 +17,7 @@ namespace Assets.Scripts.Core.Model
         {
             var tiles = new List<Tile>();
 
-            for (int y = 0; y < world.Width; y++)
+            for (int y = 0; y < 2; y++)
             {
                 var possibleMinerals = GetMatchingMinerals(y);
 
