@@ -128,6 +128,7 @@ namespace Assets.Scripts.Scenes.GameScene
             var totalValue = depository.Value * mineralPrice;
             Base.Core.Game.State.Bank.Credits += totalValue;
             depository.Value = 0;
+            storage[depository.Mineral] = depository.Value;
         }
         private void UpdateLevel()
         {
