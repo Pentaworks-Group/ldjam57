@@ -5,6 +5,7 @@ using System.Linq;
 
 using Assets.Scripts.Core;
 using Assets.Scripts.Core.Model;
+using Assets.Scripts.Prefabs.Menus;
 
 using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
@@ -46,6 +47,9 @@ namespace Assets.Scripts.Scenes.GameScene
         private GameObject DepositoryTemplate;
         [SerializeField]
         private GameObject DepositoryContainer;
+
+        [SerializeField]
+        private ShopMenuBehaviour shop;
 
         private Map<int, TileBehaviour> tileMap = new();
 
@@ -278,7 +282,6 @@ namespace Assets.Scripts.Scenes.GameScene
             return transportBehaviour;
         }
 
-
         private void OnClick(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
@@ -288,11 +291,17 @@ namespace Assets.Scripts.Scenes.GameScene
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     GameObject clickedObject = hit.collider.gameObject;
-                    IClickable clickable = clickedObject.GetComponent<IClickable>();
-                    Debug.Log("Clicked: " + clickedObject.name);
-                    if (clickable != null)
+
+                    if (clickedObject.TryGetComponent<IClickable>(out var clickable))
                     {
-                        clickable.OnClicked();
+                        if (clickable is DepositoryBehaviour test)
+                        {
+                            this.shop.ShowShop();
+                        }
+                        else
+                        {
+                            clickable?.OnClicked();
+                        }
                     }
                 }
             }
