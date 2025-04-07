@@ -38,6 +38,7 @@ namespace Assets.Scripts.Prefabs.Menus
                 item.Sprite = transport.Sprite;
                 item.Type = ShopItemType.Transport;
                 item.TransportDirection = TransportDirection.Horizontal;
+                list.Add(item);
             });
 
             Base.Core.Game.State.AvailableVerticalTransports.ForEach(transport =>
@@ -49,6 +50,7 @@ namespace Assets.Scripts.Prefabs.Menus
                 item.Sprite = transport.Sprite;
                 item.Type = ShopItemType.Transport;
                 item.TransportDirection = TransportDirection.Vertical;
+                list.Add(item);
             });
 
             SetContentList(list);
