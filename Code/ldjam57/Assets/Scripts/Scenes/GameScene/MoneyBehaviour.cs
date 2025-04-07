@@ -11,16 +11,16 @@ public class MoneyBehaviour : MonoBehaviour
 	TextMeshProUGUI cashLabel;
 
     [Header("Market Settings")]
-    public float updateInterval = 1.0f; // Time in seconds between price updates
-    public float marketVolatility = 1.0f; // Overall market volatility multiplier
+//    public float updateInterval = 1.0f; // Time in seconds between price updates
+//    public float marketVolatility = 1.0f; // Overall market volatility multiplier
     [Range(-1f, 1f)]
     public float marketTrend = 0.0f; // Overall market trend: -1 (bearish) to 1 (bullish)
 
-    [Header("Random Events")]
-    public bool enableRandomEvents = true;
-    [Range(0f, 1f)]
-    public float eventProbability = 0.05f; // Probability of random event per update
-    public float eventImpactMultiplier = 2.0f; // How strongly events affect prices
+//    [Header("Random Events")]
+//    public bool enableRandomEvents = true;
+//    [Range(0f, 1f)]
+//    public float eventProbability = 0.05f; // Probability of random event per update
+//    public float eventImpactMultiplier = 2.0f; // How strongly events affect prices
 
     // Internal variables
     private System.Random random;
@@ -35,7 +35,7 @@ public class MoneyBehaviour : MonoBehaviour
             isInited = true;
 
             random = new System.Random();
-            nextUpdateTime = Time.time + updateInterval;
+            nextUpdateTime = Time.time + (float)Core.Game.State.Market.UpdateInterval;
 
             // Initialize current prices
             foreach (var material in Core.Game.State.Market.MineralValues)
@@ -67,7 +67,7 @@ public class MoneyBehaviour : MonoBehaviour
             if (Time.time >= nextUpdateTime)
             {
                 UpdatePrices();
-                nextUpdateTime = Time.time + updateInterval;
+                nextUpdateTime = Time.time + (float)Core.Game.State.Market.UpdateInterval;
             }
         }
     }
@@ -104,7 +104,7 @@ public class MoneyBehaviour : MonoBehaviour
     private void UpdatePrices()
     {
         // Market-wide factor affecting all materials
-        float marketFactor = UnityEngine.Random.Range(-0.1f, 0.1f) * marketVolatility + marketTrend * 0.01f;
+        float marketFactor = UnityEngine.Random.Range(-0.1f, 0.1f) * (float)Core.Game.State.Market.Volatility + marketTrend * 0.01f;
 
         foreach (var material in Core.Game.State.Market.MineralValues)
         {
@@ -115,9 +115,9 @@ public class MoneyBehaviour : MonoBehaviour
             float priceChange = (float) (material.Value * (randomFactor + marketFactor * material.TrendStrength));
 
             // Apply random events
-            if (enableRandomEvents && UnityEngine.Random.value < eventProbability)
+            if (Core.Game.State.Market.EnableRandomEvents && UnityEngine.Random.value < Core.Game.State.Market.EventProbability)
             {
-                float eventImpact = UnityEngine.Random.Range(-0.2f, 0.2f) * eventImpactMultiplier;
+                float eventImpact = UnityEngine.Random.Range(-0.2f, 0.2f) * (float)Core.Game.State.Market.EventImpactMultiplier;
                 priceChange += (float)material.Value * eventImpact;
 
                 // Log event for debugging
