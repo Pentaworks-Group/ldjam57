@@ -67,9 +67,13 @@ namespace Assets.Scripts.Scenes.GameScene
         private TileGenerator tileGenerator;
         private TransportInventoryItem selectedTransport;
 
+        private InputAction touchPressed;
+
         private void Awake()
         {
             Base.Core.Game.ExecuteAfterInstantation(OnGameInitialized);
+
+            touchPressed = InputSystem.actions.FindAction("TouchPosition");
         }
 
         private void OnEnable()
@@ -326,7 +330,11 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 UnityEngine.Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-                Debug.Log("OnClick" + mousePosition);
+                if (mousePosition.x == 0 && mousePosition.y == 0)
+                {
+                    mousePosition = touchPressed.ReadValue<UnityEngine.Vector2>();
+                }
+
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
