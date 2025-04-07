@@ -228,6 +228,7 @@ namespace Assets.Scripts.Core
                     IsUnlockable = definition.IsUnlockable.GetValueOrDefault(),
                     UnlockCost = definition.UnlockCost.GetValueOrDefault(),
                     PurchaseCost = definition.PurchaseCost.GetValueOrDefault(),
+                    OperatingCost = definition.OperatingCost.GetValueOrDefault(),
                 };
 
                 gameState.AvailableMiningTools.Add(miningTool);
@@ -250,6 +251,7 @@ namespace Assets.Scripts.Core
                     IsUnlockable = definition.IsUnlockable.GetValueOrDefault(),
                     UnlockCost = definition.UnlockCost.GetValueOrDefault(),
                     PurchaseCost = definition.PurchaseCost.GetValueOrDefault(),
+                    OperatingCost = definition.OperatingCost.GetValueOrDefault(),
                 };
 
                 transportMap[transport.Reference] = transport;

@@ -15,5 +15,6 @@ namespace Assets.Scripts.Core.Definitons
         public Boolean? IsUnlocked { get; set; }
         public Decimal? UnlockCost { get; set; }
         public Decimal? PurchaseCost { get; set; }
+        public Decimal? OperatingCost { get; set; }
     }
 }
