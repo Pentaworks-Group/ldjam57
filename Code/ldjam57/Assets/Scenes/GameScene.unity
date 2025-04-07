@@ -375,6 +375,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &994023042 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6927256131127543367, guid: 4234531fe89a8ee47892f644cc2d0348, type: 3}
+  m_PrefabInstance: {fileID: 645036522}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4c373484a206c4fb5d54ab6088eef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1021000410 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 981731007390389069, guid: b40b02d27c44d8d41825a6c7337f75f1, type: 3}
@@ -1216,6 +1227,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3654858470771838888, guid: 2917c93857d228f4fa1aeee9f9939322, type: 3}
+      propertyPath: moneyBehaviour
+      value: 
+      objectReference: {fileID: 994023042}
     - target: {fileID: 3967575082487885011, guid: 2917c93857d228f4fa1aeee9f9939322, type: 3}
       propertyPath: m_Camera
       value: 

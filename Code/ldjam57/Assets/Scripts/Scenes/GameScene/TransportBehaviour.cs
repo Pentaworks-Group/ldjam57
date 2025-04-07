@@ -53,9 +53,13 @@ namespace Assets.Scripts.Scenes.GameScene
             this.worldBehaviour = worldBehaviour;
             this.direction = direction;
 
-            Renderer renderer = gameObject.GetComponent<Renderer>();
-            Texture2D texture2D = GameFrame.Base.Resources.Manager.Textures.Get(transport.Sprite);
-            renderer.material.mainTexture = texture2D;
+            SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
+            Sprite texture2D = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
+            renderer.sprite = texture2D;
+            if (direction == Direction.Right)
+            {
+                renderer.flipX = true;
+            }
             transporter = new Transporter()
             {
                 Transport = transport,
