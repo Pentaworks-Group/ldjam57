@@ -53,6 +53,12 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
             }
         }
 
+        public void Close()
+        {
+            Collapse();
+            this.isExpanded = false;
+        }
+
         public void Toggle()
         {
             if (this.isExpanded)
