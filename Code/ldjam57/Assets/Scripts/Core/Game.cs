@@ -67,8 +67,7 @@ namespace Assets.Scripts.Core
 
         private void InitializeButtonEffects()
         {
-            //this.buttonAudioClips.Add(GameFrame.Base.Resources.Manager.Audio.Get("Buzz_1"));
-            //this.buttonAudioClips.Add(GameFrame.Base.Resources.Manager.Audio.Get("Buzz_2"));
+            this.buttonAudioClips.Add(GameFrame.Base.Resources.Manager.Audio.Get("Button"));
         }
 
         protected override IEnumerator LoadDefintions()
