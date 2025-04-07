@@ -18,4 +18,9 @@ public class ProgressBarBehaviour : MonoBehaviour
     {
         fillAmount = Mathf.Clamp01(value);
     }
+
+    public void setColor(Color color)
+    {
+        fillImage.color = color;
+    }
 }

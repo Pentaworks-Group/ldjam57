@@ -41,6 +41,13 @@ namespace Assets.Scripts.Scenes.GameScene
 
             levelRenderer.color = depository.Mineral.Color.ToUnity();
 
+            if (fillAmountBehaviour != null )
+            {
+                Debug.Log(depository.Mineral.Color.ToUnity());
+                fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
+                fillAmountBehaviour.SetValue(0);
+            }
+
         }
 
         public void Update()
@@ -152,6 +159,11 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             this.levelRenderer.sprite = sprite;
+
+            if (fillAmountBehaviour != null)
+            {
+                fillAmountBehaviour.SetValue((float)level);
+            }
         }
 
         private void updatePopupUI()
