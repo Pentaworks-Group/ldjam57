@@ -593,9 +593,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce6ebe5503dff24b89757e3ce33f3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameField: {fileID: 0}
-  priceField: {fileID: 0}
-  sellButton: {fileID: 0}
+  nameField: {fileID: 3656370199165997726}
+  priceField: {fileID: 1284785048885855832}
+  sellButton: {fileID: 3978671387862331532}
 --- !u!1 &7545838385597357175
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,14 +608,13 @@ GameObject:
   - component: {fileID: 7741865885130580284}
   - component: {fileID: 9136211545510270588}
   - component: {fileID: 6663227970295162299}
-  - component: {fileID: 9217805849686398777}
   m_Layer: 0
   m_Name: PopupMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8034853359078983221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -699,21 +698,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &9217805849686398777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7545838385597357175}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ce6ebe5503dff24b89757e3ce33f3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameField: {fileID: 3656370199165997726}
-  priceField: {fileID: 1284785048885855832}
-  sellButton: {fileID: 3978671387862331532}
 --- !u!1001 &5618302878350457965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -756,7 +740,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -0.000000033527613
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_LocalPosition.x
