@@ -51,7 +51,7 @@
             "X": 33,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         },
         {
           "Mineral": {
@@ -62,7 +62,7 @@
             "X": 35,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         },
         {
           "Mineral": {
@@ -73,7 +73,7 @@
             "X": 37,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         },
         {
           "Mineral": {
@@ -84,7 +84,7 @@
             "X": 39,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         },
         {
           "Mineral": {
@@ -95,7 +95,7 @@
             "X": 41,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         },
         {
           "Mineral": {
@@ -106,7 +106,7 @@
             "X": 43,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         },
         {
           "Mineral": {
@@ -117,12 +117,12 @@
             "X": 45,
             "y": -1
           },
-          "Capacity": 100000
+          "Capacity": 100
         }
       ]
     },
     "Bank": {
-      "Credits": 1000000
+      "Credits": 10000
     },
     "Market": {
       "Reference": "Default",

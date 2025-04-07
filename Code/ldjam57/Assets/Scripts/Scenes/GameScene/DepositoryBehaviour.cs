@@ -124,8 +124,10 @@ namespace Assets.Scripts.Scenes.GameScene
         }
         public void Sell()
         {
-            //TODO: right now just sell 1 (t)
-            Debug.Log("Sell");
+            var mineralPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
+            var totalValue = depository.Value * mineralPrice;
+            Base.Core.Game.State.Bank.Credits += totalValue;
+            depository.Value = 0;
         }
         private void UpdateLevel()
         {
@@ -156,7 +158,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             var sprite = default(Sprite);
 
-            Debug.Log(String.Format("level: {0} - {1}", level, spriteName));
+//            Debug.Log(String.Format("level: {0} - {1}", level, spriteName));
 
             if (spriteName.HasValue())
             {
@@ -183,14 +185,16 @@ namespace Assets.Scripts.Scenes.GameScene
                 priceField.SetText(currentPrice.ToString("F1")+"/t"); //TODO
             }
 
-            if (depository.Value > 1)
+            sellButton.enabled = true;
+            //TODO:
+/*            if (depository.Value > 1)
             {
                 sellButton.enabled = true;
             }
             else
             {
                 sellButton.enabled = false;
-            }
+            }*/
         }
 
         public Dictionary<Mineral, double> GetStorage()
