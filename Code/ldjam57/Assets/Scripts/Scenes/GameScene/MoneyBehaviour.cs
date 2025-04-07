@@ -175,6 +175,11 @@ public class MoneyBehaviour : MonoBehaviour
 
         activeEvents.Remove(marketEvent);
 
+        if(activeEvents.Count == 0 && newsBehaviour != null)
+        {
+            newsBehaviour.Hide();
+        } 
+
         // Event effect ends (you might want to gradually return to normal)
     }
 

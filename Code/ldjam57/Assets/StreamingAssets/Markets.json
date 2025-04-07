@@ -25,7 +25,7 @@
     [
       {
         "Name": "Bridge Collapse",
-        "Description": "An important bridge collapsed. Iron Prices are jumping.",
+        "Description": "Iron prices go up.",
         "AffectedMaterials": [ "Copper" ],
         "PriceImpact": 0.12,
         "Duration":  10

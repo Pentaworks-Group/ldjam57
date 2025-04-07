@@ -1,6 +1,8 @@
 using Assets.Scripts.Core.Model;
+using Assets.Scripts.Scenes.GameScene;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class NewsBehaviour : MonoBehaviour
 {
