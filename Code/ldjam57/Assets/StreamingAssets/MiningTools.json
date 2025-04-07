@@ -36,7 +36,7 @@
       "X": 3,
       "Y": 1
     },
-    "Sprite": "",
+    "Sprite": "Digger",
     "Capacity": 100,
     "SpeedFactor": 5,
     "IsUnlockable": true,

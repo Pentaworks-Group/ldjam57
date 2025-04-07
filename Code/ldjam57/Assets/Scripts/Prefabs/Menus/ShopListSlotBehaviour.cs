@@ -68,7 +68,15 @@ namespace Assets.Scripts.Prefabs.Menus
             } else if (content.Type == ShopItemType.Transport && content.Transport != null) {
                 TransportInventoryItem item = new TransportInventoryItem();
                 item.Transport = content.Transport;
-                //TODO: Horizontal and vertical?
+
+                if (content.TransportDirection == TransportDirection.Horizontal)
+                {
+                    Base.Core.Game.State.Inventory.HorizontalTransports.Add(item);
+                }
+                else if (content.TransportDirection == TransportDirection.Vertical)
+                {
+                    Base.Core.Game.State.Inventory.VerticalTransports.Add(item);
+                }
             }
 
             Base.Core.Game.State.Bank.Credits -= (double)content.PurchaseCost;

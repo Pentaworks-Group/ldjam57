@@ -13,6 +13,12 @@ namespace Assets.Scripts.Prefabs.Menus
         Transport
     }
 
+    public enum TransportDirection
+    {
+        Horizontal,
+        Vertical
+    }
+
     public class ShopItem
     {
         public String Name {  get; set; }
@@ -22,5 +28,6 @@ namespace Assets.Scripts.Prefabs.Menus
         public ShopItemType Type { get; set; }
         public MiningTool MiningTool { get; set; } = null;
         public Transport Transport { get; set; } = null;
+        public TransportDirection TransportDirection { get; set; }
     }
 }

@@ -28,6 +28,29 @@ namespace Assets.Scripts.Prefabs.Menus
                 item.Type = ShopItemType.Tool;
                 list.Add(item);
             });
+
+            Base.Core.Game.State.AvailableHorizontalTransports.ForEach(transport =>
+            {
+                ShopItem item = new ShopItem();
+                item.Name = transport.Name;
+                item.PurchaseCost = transport.PurchaseCost;
+                item.OperatingCost = transport.OperatingCost;
+                item.Sprite = transport.Sprite;
+                item.Type = ShopItemType.Transport;
+                item.TransportDirection = TransportDirection.Horizontal;
+            });
+
+            Base.Core.Game.State.AvailableVerticalTransports.ForEach(transport =>
+            {
+                ShopItem item = new ShopItem();
+                item.Name = transport.Name;
+                item.PurchaseCost = transport.PurchaseCost;
+                item.OperatingCost = transport.OperatingCost;
+                item.Sprite = transport.Sprite;
+                item.Type = ShopItemType.Transport;
+                item.TransportDirection = TransportDirection.Vertical;
+            });
+
             SetContentList(list);
         }
     }
