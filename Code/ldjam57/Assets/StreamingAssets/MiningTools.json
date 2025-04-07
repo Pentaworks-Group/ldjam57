@@ -45,6 +45,6 @@
     "IsUnlockable": true,
     "UnlockCost": 100000,
     "PurchaseCost": 1000,
-    "OperatingCost": 10
+    "OperatingCost": 0.2
   }
 ]
