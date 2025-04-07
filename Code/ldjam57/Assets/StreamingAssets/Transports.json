@@ -11,7 +11,8 @@
     "Capacity": 2,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost": 10
   },
   {
     "Reference": "Cart",
@@ -25,7 +26,8 @@
     "Capacity": 2000,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost": 10
   },
   {
     "Reference": "Ladder",
@@ -39,7 +41,8 @@
     "Capacity": 2,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost": 10
   },
   {
     "Reference": "Elevator",
@@ -53,6 +56,7 @@
     "Capacity": 10000,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost": 10
   }
 ]

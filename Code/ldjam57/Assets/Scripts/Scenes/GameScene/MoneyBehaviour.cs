@@ -12,7 +12,7 @@ public class MoneyBehaviour : MonoBehaviour
     {
         updateCashLabel();
 
-        calcDiggingCosts(Time.deltaTime);
+        Core.Game.State.Bank.Credits -= calcDiggingCosts(Time.deltaTime);
     }
 
     private void updateCashLabel()
@@ -25,12 +25,14 @@ public class MoneyBehaviour : MonoBehaviour
 
     private float calcDiggingCosts(float dt)
     {
+        float totalOperatingCost = 0;
         foreach (var digger in Core.Game.State.ActiveDiggers)
         {
-            if(digger.IsMining)
+            if(digger.IsMining && digger.MiningTool!=null)
             {
-
+                totalOperatingCost += (float) digger.MiningTool.OperatingCost * dt;
             }
         }
+        return totalOperatingCost;
     }
 }

@@ -11,7 +11,8 @@
     "SpeedFactor": 1,
     "IsUnlockable": true,
     "UnlockCost": 0,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost":  1
   },
   {
     "Reference": "Drill",
@@ -25,7 +26,8 @@
     "SpeedFactor": 2,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost": 10
   },
   {
     "Reference": "Digger",
@@ -39,6 +41,7 @@
     "SpeedFactor": 5,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000
+    "PurchaseCost": 1000,
+    "OperatingCost": 10
   }
 ]
