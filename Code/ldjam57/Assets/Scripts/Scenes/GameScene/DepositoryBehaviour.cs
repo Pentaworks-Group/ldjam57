@@ -23,6 +23,8 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         TextMeshProUGUI nameField;
         [SerializeField]
+        TextMeshProUGUI storageField;
+        [SerializeField]
         TextMeshProUGUI priceField;
         [SerializeField]
         Button sellButton;
@@ -39,26 +41,20 @@ namespace Assets.Scripts.Scenes.GameScene
 
         }
 
-        public void Update()
-        {
-            if ((Input.GetMouseButtonDown(0)))
-            {
-                if (!isPointerOverPopupMenu() && popupMenu != null && popupMenu.activeInHierarchy)
-                {
-//                    popupMenu.SetActive(false);
-                }
-            }
-        }
-
         public void OnClicked()
         {
             // Open Shop?
-            if (popupMenu != null)
+            if (popupMenu != null && !popupMenu.activeSelf)
             {
                 popupMenu.SetActive(true);
 
                 //Update UI
-//                nameField.SetText(depository.Mineral.Name);
+                nameField.SetText(depository.Mineral.Name);
+                storageField.SetText(depository.Value.ToString("F1") + " t");
+                priceField.SetText("$"+depository.Value.ToString("F1")); //TODO
+            }
+            else if (popupMenu != null) {
+                popupMenu.SetActive(false);
             }
         }
 
@@ -149,11 +145,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             this.levelRenderer.sprite = sprite;
-        }
-
-        private bool isPointerOverPopupMenu()
-        {
-            return false;
         }
 
     }
