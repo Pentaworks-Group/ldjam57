@@ -132,6 +132,14 @@
       {
         "Reference": "Pickaxe",
         "IsReferenced": true
+      },
+      {
+        "Reference": "Drill",
+        "IsReferenced": true
+      },
+      {
+        "Reference": "Digger",
+        "IsReferenced": true
       }
     ],
     "AvailableHorizontalTransports": [

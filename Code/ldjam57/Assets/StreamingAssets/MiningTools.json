@@ -6,13 +6,13 @@
       "X": 1,
       "Y": 1
     },
-    "Sprite": "",
+    "Sprite": "Pickaxe",
     "Capacity": 2,
     "SpeedFactor": 1,
     "IsUnlockable": true,
     "UnlockCost": 0,
     "PurchaseCost": 1000,
-    "OperatingCost":  1
+    "OperatingCost": 1
   },
   {
     "Reference": "Drill",
@@ -21,7 +21,7 @@
       "X": 1,
       "Y": 1
     },
-    "Sprite": "",
+    "Sprite": "Bohrer",
     "Capacity": 100,
     "SpeedFactor": 2,
     "IsUnlockable": true,
@@ -36,7 +36,7 @@
       "X": 3,
       "Y": 1
     },
-    "Sprite": "",
+    "Sprite": "Digger",
     "Capacity": 100,
     "SpeedFactor": 5,
     "IsUnlockable": true,

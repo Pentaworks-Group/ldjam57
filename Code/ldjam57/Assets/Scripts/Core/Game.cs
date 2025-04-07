@@ -4,6 +4,7 @@ using System.Linq;
 
 using Assets.Scripts.Core.Definitons;
 using Assets.Scripts.Core.Definitons.Loaders;
+using Assets.Scripts.Core.Persistence;
 
 using GameFrame.Core.Definitions.Loaders;
 using GameFrame.Core.Extensions;
@@ -12,7 +13,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Core
 {
-    public class Game : GameFrame.Core.Game<GameState, PlayerOptions>
+    public class Game : GameFrame.Core.SaveableGame<GameState, PlayerOptions, SavedGamePreview>
     {
         private readonly DefinitionCache<GameMode> gameModeCache = new DefinitionCache<GameMode>();
 

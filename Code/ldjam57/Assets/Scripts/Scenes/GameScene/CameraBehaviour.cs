@@ -47,6 +47,13 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 Debug.LogError("No Camera component found on this GameObject!");
             }
+
+            Base.Core.Game.OnPauseToggled.AddListener(OnPauseToggled);
+        }
+
+        private void OnPauseToggled(Boolean isPaused)
+        {
+            //gameObject.SetActive(isPaused);
         }
 
         private void OnEnable()

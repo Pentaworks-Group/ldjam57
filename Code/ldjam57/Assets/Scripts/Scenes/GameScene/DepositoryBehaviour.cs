@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
+using TMPro;
 using GameFrame.Core.Math;
 using UnityEditor.UIElements;
 
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -19,21 +22,59 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private Dictionary<Mineral, double> storage = new();
 
+        private GameObject popupMenu;
+
+        [SerializeField]
+        TextMeshProUGUI nameField;
+        [SerializeField]
+        TextMeshProUGUI storageField;
+        [SerializeField]
+        TextMeshProUGUI priceField;
+        [SerializeField]
+        Button sellButton;
+        [SerializeField]
+        ProgressBarBehaviour fillAmountBehaviour;
+        
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
             this.worldBehaviour = worldBehaviour;
             this.depository = depository;
 
             levelRenderer = transform.Find("Stash").GetComponent<SpriteRenderer>();
+            popupMenu = transform.Find("PopupMenu").gameObject;
 
             levelRenderer.color = depository.Mineral.Color.ToUnity();
             storage[depository.Mineral] = depository.Value;
             RegisterStorage();
         }
 
+            if (fillAmountBehaviour != null )
+            {
+                fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
+                fillAmountBehaviour.SetValue(0);
+            }
+
+        }
+
+        public void Update()
+        {
+            if (popupMenu != null && popupMenu.activeSelf) {
+                updatePopupUI();
+            }
+        }
+
         public void OnClicked()
         {
             // Open Shop?
+            if (popupMenu != null && !popupMenu.activeSelf)
+            {
+                popupMenu.SetActive(true);
+
+                updatePopupUI();
+            }
+            else if (popupMenu != null) {
+                popupMenu.SetActive(false);
+            }
         }
 
         /// <summary>
@@ -81,6 +122,12 @@ namespace Assets.Scripts.Scenes.GameScene
             return false;
         }
 
+        public void Sell()
+        {
+            //TODO: right now just sell 1 (t)
+            Debug.Log("Sell");
+        }
+
         private void UpdateLevel()
         {
             var level = depository.Value / depository.Capacity;
@@ -118,57 +165,27 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             this.levelRenderer.sprite = sprite;
+
+            if (fillAmountBehaviour != null)
+            {
+                fillAmountBehaviour.SetValue((float)level);
+            }
         }
 
-        public Dictionary<Mineral, double> GetStorage()
+        private void updatePopupUI()
         {
-            return storage;
-        }
+            //Update UI
+            nameField.SetText(depository.Mineral.Name);
+            storageField.SetText(depository.Value.ToString("F1") + " t");
+            priceField.SetText("$" + depository.Value.ToString("F1") + "/t"); //TODO
 
-        public bool AllowsNewTypes()
-        {
-            return false;
-        }
-
-        public bool CanBeTakenFrom()
-        {
-            return false;
-        }
-
-        public void StorageChanged()
-        {
-            depository.Value = storage[depository.Mineral];
-            UpdateLevel();
-        }
-
-        void RegisterStorage()
-        {
-            worldBehaviour.RegisterStorage(this);
-        }
-
-        void UnRegisterStorage()
-        {
-            worldBehaviour.UnRegisterStorage(this);
-        }
-
-        public Point2 GetPosition()
-        {
-            return depository.Position;
-        }
-
-        void IStorage.RegisterStorage()
-        {
-            RegisterStorage();
-        }
-
-        void IStorage.UnRegisterStorage()
-        {
-            UnRegisterStorage();
-        }
-
-        public double GetCapacity()
-        {
-            return depository.Capacity;
+            if(depository.Value > 1)
+            {
+                sellButton.enabled = true;
+            } else
+            {
+                sellButton.enabled = false;
+            }
         }
     }
 }
