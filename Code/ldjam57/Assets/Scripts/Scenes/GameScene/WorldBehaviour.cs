@@ -191,7 +191,10 @@ namespace Assets.Scripts.Scenes.GameScene
             Base.Core.Game.State.ActiveDiggers.Add(digger);
 
             ClearDigSites();
-            DisplayPosibleDigSites(siteBehaviour.GetMiningTool());
+            if (siteBehaviour.GetMiningTool().Amount > 0)
+            {
+                DisplayPosibleDigSites(siteBehaviour.GetMiningTool());
+            }
         }
 
         private void ClearDigSites()

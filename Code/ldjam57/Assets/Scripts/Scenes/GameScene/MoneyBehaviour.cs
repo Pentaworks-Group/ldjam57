@@ -22,6 +22,9 @@ public class MoneyBehaviour : MonoBehaviour
     private System.Random random;
     private float nextUpdateTime;
     private float marketMood = 0f; // Current market sentiment that fluctuates over time
+    private float lastEventTime = -999f; // Time when the last event occurred
+    private float eventCooldownPeriod = 10f; // Base cooldown period between events (in seconds)
+    private float eventCooldownRandomFactor = 5f; // Random additional cooldown time
 
     private bool isInited = false;
 
@@ -101,6 +104,17 @@ public class MoneyBehaviour : MonoBehaviour
 
     private void UpdatePrices()
     {
+        float timeSinceLastEvent = Time.time - lastEventTime;
+        float currentProbability = (float)Core.Game.State.Market.EventProbability;
+
+        if (timeSinceLastEvent < eventCooldownPeriod)
+        {
+            // Probability increases linearly from 10% of base to 100% of base over the cooldown period
+            float multiplier = Mathf.Lerp(0.1f, 1.0f, timeSinceLastEvent / eventCooldownPeriod);
+            currentProbability *= multiplier;
+            Debug.Log(currentProbability);
+        }
+
         // Market-wide factor affecting all materials
         float marketFactor = UnityEngine.Random.Range(-0.1f, 0.1f) * (float)Core.Game.State.Market.Volatility + marketTrend * 0.01f;
 
@@ -113,14 +127,13 @@ public class MoneyBehaviour : MonoBehaviour
             float priceChange = (float) (material.Value * (randomFactor + marketFactor * material.TrendStrength));
 
             // Apply random events
-            if (Core.Game.State.Market.EnableRandomEvents && UnityEngine.Random.value < Core.Game.State.Market.EventProbability)
+            if (Core.Game.State.Market.EnableRandomEvents && UnityEngine.Random.value < currentProbability)
             {
                 TriggerRandomEvent();
-/*                float eventImpact = UnityEngine.Random.Range(-0.2f, 0.2f) * (float)Core.Game.State.Market.EventImpactMultiplier;
-                priceChange += (float)material.Value * eventImpact;
 
-                // Log event for debugging
-                Debug.Log($"Random event affected {material.Mineral.Name}: {eventImpact:P2} change");*/
+                lastEventTime = Time.time;
+
+                eventCooldownPeriod = 10f + UnityEngine.Random.Range(0f, eventCooldownRandomFactor);
             }
             activeEvents.ForEach(e =>
             {
