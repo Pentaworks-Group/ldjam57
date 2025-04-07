@@ -24,15 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Touch",
-                    "type": "Value",
-                    "id": "025518c9-56b2-481b-8cd5-3d951b4b41f9",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Click",
                     "type": "Button",
                     "id": "59017f4b-a98a-4400-acd1-ae18cfa856ec",
@@ -122,22 +113,22 @@
                 },
                 {
                     "name": "",
-                    "id": "9170ab0e-5f09-4975-86e4-e11ff88ced1b",
-                    "path": "<Touchscreen>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Touch",
-                    "action": "Touch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "27e4a0bf-9089-48e3-a4a4-104493d67edf",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9170ab0e-5f09-4975-86e4-e11ff88ced1b",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touch",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
