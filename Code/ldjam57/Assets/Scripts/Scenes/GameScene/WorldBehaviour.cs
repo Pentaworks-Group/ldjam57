@@ -572,6 +572,7 @@ namespace Assets.Scripts.Scenes.GameScene
         internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
         {
             ClearTransportSites();
+            selectedTransport.Amount -= 1;
             if (transportSiteBehaviour.IsVertical())
             {
                 DisplayPossibleVerticalTransportSites(selectedTransport);
@@ -612,12 +613,12 @@ namespace Assets.Scripts.Scenes.GameScene
         public bool GetStoragesAtPosition(int x, int y, out List<IStorage> storagesAtPoint)
         {
             bool v = storages.TryGetValue(x, y, out storagesAtPoint);
-            double r = 0;
-            if (v)
-            {
-                r = storagesAtPoint.Count;
-            }
-            Debug.Log("Gettig Storages at: " + x + "," + y + "  " + r);
+            //double r = 0;
+            //if (v)
+            //{
+            //    r = storagesAtPoint.Count;
+            //}
+            //Debug.Log("Gettig Storages at: " + x + "," + y + "  " + r);
             return v;
         }
 
