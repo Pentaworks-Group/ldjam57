@@ -19,7 +19,9 @@ namespace Assets.Scripts.Prefabs.Menus
         [SerializeField]
         TextMeshProUGUI nameField;
         [SerializeField]
-        TextMeshProUGUI costField;
+        TextMeshProUGUI purchaseCostField;
+        [SerializeField]
+        TextMeshProUGUI operatingCostField;
         [SerializeField]
         Image spriteImage;
         [SerializeField]
@@ -33,7 +35,8 @@ namespace Assets.Scripts.Prefabs.Menus
         public override void UpdateUI()
         {
             nameField.SetText(content.Name);
-            costField.SetText("Purchase: " + content.PurchaseCost.ToString("F0") + ", Operating: " + content.OperatingCost.ToString("F0"));
+            purchaseCostField.SetText(content.PurchaseCost.ToString("F0"));
+            operatingCostField.SetText(content.OperatingCost.ToString("F0"));
 
             if (content.Sprite != null)
             {
