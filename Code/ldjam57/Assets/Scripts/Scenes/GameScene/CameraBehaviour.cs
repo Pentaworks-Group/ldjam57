@@ -58,20 +58,34 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void OnEnable()
         {
+            HookActions();
+
+
+        }
+
+        private void OnDisable()
+        {
+            UnhookActions();
+        }
+
+        public void HookActions()
+        {
             var moveAction = InputSystem.actions.FindAction("Move");
             moveAction.performed += OnMove;
             moveAction.started += OnMoveStarted;
             moveAction.canceled += OnMoveCanceled;
+
             var zoomAction = InputSystem.actions.FindAction("Zoom");
             zoomAction.performed += OnZoom;
         }
 
-        private void OnDisable()
+        public void UnhookActions()
         {
             var moveAction = InputSystem.actions.FindAction("Move");
             moveAction.performed -= OnMove;
             moveAction.started -= OnMoveStarted;
             moveAction.canceled -= OnMoveCanceled;
+
             var zoomAction = InputSystem.actions.FindAction("Zoom");
             zoomAction.performed -= OnZoom;
         }
