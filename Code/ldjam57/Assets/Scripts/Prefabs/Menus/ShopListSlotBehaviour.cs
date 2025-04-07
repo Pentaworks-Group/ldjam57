@@ -43,7 +43,6 @@ namespace Assets.Scripts.Prefabs.Menus
                 UnityEngine.Debug.Log(sprite);
             }
 
-
             if (Base.Core.Game.State.Bank.Credits < (double)content.PurchaseCost)
             {
                 buyButton.enabled = false;
@@ -66,6 +65,8 @@ namespace Assets.Scripts.Prefabs.Menus
                 };
 
                 Base.Core.Game.State.Inventory.MiningTools.AddOrUpdate(item);
+
+                GameFrame.Base.Audio.Effects.Play("Buy");
             }
             else if (content.Type == ShopItemType.Transport && content.Transport != null)
             {
@@ -86,10 +87,11 @@ namespace Assets.Scripts.Prefabs.Menus
 
                     Base.Core.Game.State.Inventory.VerticalTransports.AddOrUpdate(item);
                 }
+
+                GameFrame.Base.Audio.Effects.Play("Buy");
             }
 
             Base.Core.Game.State.Bank.Credits -= (double)content.PurchaseCost;
         }
-
     }
 }
