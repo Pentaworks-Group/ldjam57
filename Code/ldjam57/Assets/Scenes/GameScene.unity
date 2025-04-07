@@ -1390,6 +1390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Depository
       objectReference: {fileID: 0}
+    - target: {fileID: 7741865885130580284, guid: 2917c93857d228f4fa1aeee9f9939322, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1328617117}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

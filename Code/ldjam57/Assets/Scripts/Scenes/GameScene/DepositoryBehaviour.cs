@@ -3,10 +3,11 @@
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
-
+using TMPro;
 using UnityEditor.UIElements;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -16,6 +17,13 @@ namespace Assets.Scripts.Scenes.GameScene
         private Depository depository;
 
         private SpriteRenderer levelRenderer;
+
+        [SerializeField]
+        TextMeshProUGUI nameField;
+        [SerializeField]
+        TextMeshProUGUI priceField;
+        [SerializeField]
+        Button sellButton;
         
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
@@ -75,6 +83,11 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             return false;
+        }
+
+        public void Sell(Double amount)
+        {
+
         }
 
         private void UpdateLevel()
