@@ -6,6 +6,7 @@ namespace Assets.Scripts.Core.Model
 {
     public class MiningTool
     {
+        public String Reference { get; set; }
         public String Name { get; set; }
         public Boolean IsUnlocked { get; set; }
         public Vector2 Size { get; set; }        

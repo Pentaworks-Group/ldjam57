@@ -68,16 +68,20 @@ namespace Assets.Scripts.Prefabs.Menus
                 Core.Model.Inventories.MiningToolInventoryItem item = new Core.Model.Inventories.MiningToolInventoryItem();
                 item.MiningTool = content.MiningTool;
                 Base.Core.Game.State.Inventory.MiningTools.Add(item);
-            } else if (content.Type == ShopItemType.Transport && content.Transport != null) {
+            } 
+            else if (content.Type == ShopItemType.Transport && content.Transport != null) 
+            {
                 TransportInventoryItem item = new TransportInventoryItem();
                 item.Transport = content.Transport;
 
                 if (content.TransportDirection == TransportDirection.Horizontal)
                 {
+                    item.IsVertical = false;
                     Base.Core.Game.State.Inventory.HorizontalTransports.Add(item);
                 }
                 else if (content.TransportDirection == TransportDirection.Vertical)
                 {
+                    item.IsVertical = true;
                     Base.Core.Game.State.Inventory.VerticalTransports.Add(item);
                 }
             }
