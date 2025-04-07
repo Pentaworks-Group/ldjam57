@@ -117,6 +117,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DiggerButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5452424541030572497, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -147,7 +151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -22.133335
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_LocalPosition.x
@@ -203,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6782373280921254793, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_fontSize
-      value: 23.3
+      value: 34.35
       objectReference: {fileID: 0}
     - target: {fileID: 8849340443900071137, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -239,6 +243,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VerticalTransportButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5452424541030572497, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -269,7 +277,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -22.133335
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_LocalPosition.x
@@ -325,7 +333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6782373280921254793, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 22.4
       objectReference: {fileID: 0}
     - target: {fileID: 8849340443900071137, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -361,6 +369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HorizontalTransportButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5452424541030572497, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -391,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -22.133335
       objectReference: {fileID: 0}
     - target: {fileID: 5865278983240936799, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_LocalPosition.x
@@ -447,7 +459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6782373280921254793, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 19.35
       objectReference: {fileID: 0}
     - target: {fileID: 8849340443900071137, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -569,7 +581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6782373280921254793, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_fontSize
-      value: 23.3
+      value: 34.35
       objectReference: {fileID: 0}
     - target: {fileID: 8849340443900071137, guid: 28b444f801ae2654faf5606c5cdbf323, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
