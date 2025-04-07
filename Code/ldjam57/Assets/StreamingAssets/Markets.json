@@ -15,6 +15,11 @@
         "MaxPrice": 100.0,
         "TrendStrength": 0.4
       }
-    ]
+    ],
+    "UpdateInterval": 1.0,
+    "MarketVolatility": 1.0,
+    "EnableRandomEvents": true,
+    "EventProbability": 0.05,
+    "EventImpactMultiplier":  2.0
   }
 ]

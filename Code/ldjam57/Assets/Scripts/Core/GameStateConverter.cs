@@ -196,7 +196,12 @@ namespace Assets.Scripts.Core
         {
             var market = new Market()
             {
-                MineralValues = new List<MineralMarketValue>()
+                MineralValues = new List<MineralMarketValue>(),
+                UpdateInterval = mode.Market.UpdateInterval.GetValueOrDefault(),
+                Volatility = mode.Market.UpdateInterval.GetValueOrDefault(),
+                EnableRandomEvents = mode.Market.EnableRandomEvents.GetValueOrDefault(),
+                EventProbability = mode.Market.EventProbability.GetValueOrDefault(),
+                EventImpactMultiplier = mode.Market.EventImpactMultiplier.GetValueOrDefault(),
             };
 
             foreach (var mineralMarketValue in mode.Market.MineralValues)
@@ -223,6 +228,7 @@ namespace Assets.Scripts.Core
             {
                 var miningTool = new MiningTool()
                 {
+                    Reference = definition.Reference,
                     Name = definition.Name,
                     Sprite = definition.Sprite,
                     Capacity = definition.Capacity.GetValueOrDefault(),
@@ -236,6 +242,7 @@ namespace Assets.Scripts.Core
                     Sound = definition.Sound,
                 };
 
+                this.miningToolMap[definition.Reference] = miningTool;
                 gameState.AvailableMiningTools.Add(miningTool);
             }
         }
@@ -273,10 +280,9 @@ namespace Assets.Scripts.Core
             if (mode.Inventory != default)
             {
                 ConvertInventoryMiningTool(mode.Inventory.MiningTools, inventory.MiningTools);
-                ConvertInventoryTransport(mode.Inventory.VerticalTransports, inventory.VerticalTransports);
+                ConvertInventoryTransport(mode.Inventory.VerticalTransports, inventory.VerticalTransports, true);
                 ConvertInventoryTransport(mode.Inventory.HorizontalTransports, inventory.HorizontalTransports);
             }
-
 
             return inventory;
         }
@@ -298,7 +304,7 @@ namespace Assets.Scripts.Core
             }
         }
 
-        private void ConvertInventoryTransport(List<TransportDefinitionInventoryItem> transportDefinitions, List<TransportInventoryItem> transportInventoryItems)
+        private void ConvertInventoryTransport(List<TransportDefinitionInventoryItem> transportDefinitions, List<TransportInventoryItem> transportInventoryItems, Boolean isVertical = false)
         {
             if (transportDefinitions?.Count > 0)
             {
@@ -307,6 +313,7 @@ namespace Assets.Scripts.Core
                     var transportInventoryItem = new TransportInventoryItem()
                     {
                         Transport = this.transportMap[transportDefinition.Transport.Reference],
+                        IsVertical = isVertical,
                         Amount = transportDefinition.Amount.GetValueOrDefault()
                     };
 

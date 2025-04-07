@@ -1,5 +1,7 @@
 using Assets.Scripts.Core.Model;
+
 using UnityEngine;
+
 using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -11,8 +13,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private ShaftBehaviour shaft;
         private Direction direction;
 
-
-        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft,  Direction direction)
+        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft, Direction direction)
         {
             this.worldBehaviour = worldBehaviour;
             this.transport = transport;
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 var lScale = transform.localScale;
                 var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (-(1 - scale.y ) / 2) * .9f);
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (-(1 - scale.y) / 2) * .9f);
                 var rotation = transform.rotation;
                 rotation *= Quaternion.Euler(0, 0, -90);
                 transform.rotation = rotation;
@@ -58,7 +59,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 transform.localScale = scale;
 
             }
-                
+
         }
 
         public bool IsVertical()
@@ -72,9 +73,10 @@ namespace Assets.Scripts.Scenes.GameScene
             BuildSite();
         }
 
-        private TransportBehaviour GetTransportBehaviour() {
+        private TransportBehaviour GetTransportBehaviour()
+        {
             var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport, direction);
-            shaft.TransportBehaviour  = transB;
+            shaft.TransportBehaviour = transB;
             return transB;
         }
 

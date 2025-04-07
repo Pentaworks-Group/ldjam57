@@ -180,7 +180,7 @@ namespace Assets.Scripts.Scenes.GameScene
             if (moneyBehaviour != null)
             {
                 float currentPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
-                priceField.SetText(currentPrice+"/t"); //TODO
+                priceField.SetText(currentPrice.ToString("F1")+"/t"); //TODO
             }
 
             if (depository.Value > 1)
@@ -246,6 +246,11 @@ namespace Assets.Scripts.Scenes.GameScene
         public int Priority()
         {
             return 1;
+        }
+
+        public void SetMoneyBehaviour(MoneyBehaviour mb)
+        {
+            moneyBehaviour = mb;
         }
     }
 }

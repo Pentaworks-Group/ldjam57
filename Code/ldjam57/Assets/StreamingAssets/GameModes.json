@@ -163,9 +163,68 @@
       }
     ],
     "Inventory": {
-      "MiningTools": [],
-      "VerticalTransports": [],
-      "HorizontalTransports": []
+      "MiningTools": [
+        {
+          "MiningTool": {
+            "Reference": "Pickaxe",
+            "IsReferenced": true
+          },
+          "Sprite": "Pickaxe",
+          "Amount": 5
+        },
+        {
+          "MiningTool": {
+            "Reference": "Drill",
+            "IsReferenced": true
+          },
+          "Sprite": "Bohrer",
+          "Amount": 0
+        },
+        {
+          "MiningTool": {
+            "Reference": "Digger",
+            "IsReferenced": true
+          },
+          "Sprite": "Digger",
+          "Amount": 0
+        }
+      ],
+      "VerticalTransports": [
+        {
+          "Transport": {
+            "Reference": "Ladder",
+            "IsReferenced": true
+          },
+          "Sprite": "",
+          "Amount": 0
+        },
+        {
+          "Transport": {
+            "Reference": "Elevator",
+            "IsReferenced": true
+          },
+          "Sprite": "",
+          "Amount": 0
+        }
+      ],
+      "HorizontalTransports": [
+        {
+          "Transport": {
+            "Reference": "Bag",
+            "IsReferenced": true
+          },
+          "Sprite": "",
+          "Amount": 0
+        },
+        {
+          "Transport": {
+            "Reference": "Cart",
+            "IsReferenced": true
+          },
+          "Sprite": "",
+          "Amount": 0
+        }
+      ]
     }
   }
 ]

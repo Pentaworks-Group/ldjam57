@@ -116,12 +116,13 @@ namespace Assets.Scripts.Core.Definitons.Loaders
 
         private void CheckMiningToolInventoryItems(List<MiningToolDefinitionInventoryItem> loadedItems, List<MiningToolDefinitionInventoryItem> targetItems, DefinitionCache<MiningToolDefinition> cache)
         {
-            foreach (var transportDefinitionInventoryItem in loadedItems)
+            foreach (var loadedItem in loadedItems)
             {
                 var transportInventoryItem = new MiningToolDefinitionInventoryItem()
                 {
-                    MiningTool = CheckItem(transportDefinitionInventoryItem.MiningTool, cache),
-                    Amount = transportDefinitionInventoryItem.Amount
+                    MiningTool = CheckItem(loadedItem.MiningTool, cache),
+                    Sprite = loadedItem.Sprite,
+                    Amount = loadedItem.Amount
                 };
 
                 targetItems.Add(transportInventoryItem);
@@ -135,6 +136,7 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                 var targetItem = new TransportDefinitionInventoryItem()
                 {
                     Transport = CheckItem(loadedItem.Transport, cache),
+                    Sprite = loadedItem.Sprite,
                     Amount = loadedItem.Amount
                 };
 

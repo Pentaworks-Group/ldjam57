@@ -1,13 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.Core.Model.Inventories
 {
     public class TransportInventoryItem : InventoryItem
     {
         public Transport Transport { get; set; }
+        public Boolean IsVertical { get; set; }
+
+        public override System.String GetKey()
+        {
+            return Transport.Reference;
+        }
+
+        public override String GetName()
+        {
+            return Transport.Name;
+        }
+
+        public override String GetSprite()
+        {
+            return Transport.Sprite;
+        }
     }
 }
