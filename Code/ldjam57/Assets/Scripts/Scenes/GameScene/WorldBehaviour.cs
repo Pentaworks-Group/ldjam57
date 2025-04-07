@@ -335,7 +335,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     mousePosition = touchPressed.ReadValue<UnityEngine.Vector2>();
                 }
-
+                Debug.Log("ClickPosition: " + mousePosition);
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
