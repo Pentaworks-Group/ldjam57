@@ -202,6 +202,7 @@ namespace Assets.Scripts.Core
                 EnableRandomEvents = mode.Market.EnableRandomEvents.GetValueOrDefault(),
                 EventProbability = mode.Market.EventProbability.GetValueOrDefault(),
                 EventImpactMultiplier = mode.Market.EventImpactMultiplier.GetValueOrDefault(),
+                Events = new List<MarketEvent>()
             };
 
             foreach (var mineralMarketValue in mode.Market.MineralValues)
@@ -218,6 +219,21 @@ namespace Assets.Scripts.Core
 
                 market.MineralValues.Add(newMarketValue);
             }
+
+            foreach (var ev in mode.Market.Events)
+            {
+                var newMarketEvent = new MarketEvent()
+                {
+                    Name = ev.Name,
+                    Description = ev.Description,
+                    AffectedMaterials = ev.AffectedMaterials,
+                    PriceImpact = ev.PriceImpact,
+                    Duration = ev.Duration,
+                };
+
+                market.Events.Add(newMarketEvent);
+            }
+
 
             return market;
         }
