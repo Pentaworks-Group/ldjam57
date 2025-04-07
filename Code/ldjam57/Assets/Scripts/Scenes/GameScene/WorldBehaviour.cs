@@ -322,11 +322,11 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void OnClick(InputAction.CallbackContext context)
         {
-            Debug.Log("OnClick");
             if (context.phase == InputActionPhase.Performed)
             {
                 UnityEngine.Vector2 mousePosition = Mouse.current.position.ReadValue();
 
+                Debug.Log("OnClick" + mousePosition);
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
