@@ -161,10 +161,10 @@ namespace Assets.Scripts.Scenes.GameScene
             newDigger.Init(this, digger);
             newDigger.UpdatePosition();
             newDigger.gameObject.SetActive(true);
+            Base.Core.Game.State.ActiveDiggers.Add(digger);
 
             ClearDigSites();
-
-            Base.Core.Game.State.ActiveDiggers.Add(digger);
+            DisplayPosibleDigSites(siteBehaviour.GetMiningTool());
         }
 
         private void ClearDigSites()

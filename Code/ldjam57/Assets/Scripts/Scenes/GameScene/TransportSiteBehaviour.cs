@@ -24,7 +24,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
        public void UpdatePosition()
         {
-            if (direction == Direction.Left)
+            if (direction == Direction.Right)
             {
                 var lScale = transform.localScale;
                 var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 transform.position = position;
                 transform.localScale = scale;
             }
-            else if (direction == Direction.Right)
+            else if (direction == Direction.Left)
             {
                 var lScale = transform.localScale;
                 var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
