@@ -6,8 +6,8 @@
       "X": 1,
       "Y": 1
     },
-    "Sprite": "Pickaxe",
-    "Sound":  "Shovel",
+    "Sprite": "Menu_Items_Pickaxe",
+    "Sound": "Shovel",
     "Capacity": 2,
     "SpeedFactor": 1,
     "IsUnlockable": true,
@@ -22,7 +22,7 @@
       "X": 1,
       "Y": 1
     },
-    "Sprite": "Bohrer",
+    "Sprite": "Menu_Items_Drill",
     "Sound": "Drill",
     "Capacity": 100,
     "SpeedFactor": 2,
