@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 
@@ -415,6 +416,8 @@ namespace Assets.Scripts.Scenes.GameScene
             var depositoryGameObject = Instantiate(DepositoryTemplate, position, DepositoryTemplate.transform.rotation, DepositoryContainer.transform);
 
             var depositoryBehaviour = depositoryGameObject.GetComponent<DepositoryBehaviour>();
+            MoneyBehaviour sceneMoneyBehaviour = FindFirstObjectByType<MoneyBehaviour>();
+            depositoryBehaviour.SetMoneyBehaviour(sceneMoneyBehaviour);
 
             depositoryBehaviour.Init(this, depository);
 

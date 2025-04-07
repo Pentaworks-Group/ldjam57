@@ -196,7 +196,12 @@ namespace Assets.Scripts.Core
         {
             var market = new Market()
             {
-                MineralValues = new List<MineralMarketValue>()
+                MineralValues = new List<MineralMarketValue>(),
+/*                UpdateInterval = loadedMarketDefinition.UpdateInterval,
+                Volatility = loadedMarketDefinition.Volatility,
+                EnableRandomEvents = loadedMarketDefinition.EnableRandomEvents,
+                EventProbability = loadedMarketDefinition.EventProbability,
+                EventImpactMultiplier = loadedMarketDefinition.EventImpactMultiplier*/
             };
 
             foreach (var mineralMarketValue in mode.Market.MineralValues)

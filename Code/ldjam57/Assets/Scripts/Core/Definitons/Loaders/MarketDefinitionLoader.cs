@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using GameFrame.Core.Definitions.Loaders;
 
@@ -24,7 +25,12 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         Reference = loadedMarketDefinition.Reference,
                         Name = loadedMarketDefinition.Name,
                         Factor = loadedMarketDefinition.Factor,
-                        MineralValues = new List<MineralValueDefinition>()
+                        MineralValues = new List<MineralValueDefinition>(),
+                        UpdateInterval = loadedMarketDefinition.UpdateInterval,
+                        Volatility = loadedMarketDefinition.Volatility,
+                        EnableRandomEvents = loadedMarketDefinition.EnableRandomEvents,
+                        EventProbability = loadedMarketDefinition.EventProbability,
+                        EventImpactMultiplier = loadedMarketDefinition.EventImpactMultiplier
                     };
 
                     if (loadedMarketDefinition.MineralValues?.Count > 0)
