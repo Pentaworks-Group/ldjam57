@@ -1,6 +1,4 @@
 using Assets.Scripts.Base;
-using Assets.Scripts.Core.Model;
-using Assets.Scripts.Scenes.GameScene;
 using TMPro;
 using UnityEngine;
 
@@ -9,11 +7,21 @@ public class MoneyBehaviour : MonoBehaviour
 	[SerializeField]
 	TextMeshProUGUI cashLabel;
 
+    private bool isInited = false;
+
+    private void Awake()
+    {
+        Core.Game.ExecuteAfterInstantation(() => isInited = true);
+    }
+
     private void Update()
     {
-        updateCashLabel();
+        if (isInited)
+        {
+            updateCashLabel();
 
-        Core.Game.State.Bank.Credits -= calcDiggingCosts(Time.deltaTime);
+            Core.Game.State.Bank.Credits -= calcDiggingCosts(Time.deltaTime);
+        }
     }
 
     private void updateCashLabel()

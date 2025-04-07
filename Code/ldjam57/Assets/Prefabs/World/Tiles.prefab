@@ -571,8 +571,8 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   CameraBehaviour: {fileID: 0}
   TileTemplate: {fileID: 5636538170213821750}
-  ShaftTemplate: {fileID: 7846743086096433141}
-  GroundLevelShaftTemplate: {fileID: 0}
+  ShaftTemplate: {fileID: 1317784867049956716}
+  GroundLevelShaftTemplate: {fileID: 3977035978385775521}
   SiteTemplate: {fileID: 3581218484507081750}
   DiggerTemplate: {fileID: 5036246921400583290}
   TransportSiteTemplate: {fileID: 4136033832205687590}
