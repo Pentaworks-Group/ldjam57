@@ -7,6 +7,7 @@
       "Y": 1
     },
     "Sprite": "Wood_cart",
+    "Sound": "Roll",
     "Speed": 1,
     "Capacity": 1,
     "IsUnlockable": true,
@@ -22,6 +23,7 @@
       "Y": 1
     },
     "Sprite": "Lore",
+    "Sound": "Lorry",
     "Speed": 50,
     "Capacity": 2000,
     "IsUnlockable": true,
@@ -52,6 +54,7 @@
       "Y": 1
     },
     "Sprite": "Elevator",
+    "Sound": "Roll",
     "Speed": 5,
     "Capacity": 10000,
     "IsUnlockable": true,

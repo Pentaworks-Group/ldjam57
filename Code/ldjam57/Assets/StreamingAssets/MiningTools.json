@@ -7,6 +7,7 @@
       "Y": 1
     },
     "Sprite": "Pickaxe",
+    "Sound":  "Shovel",
     "Capacity": 2,
     "SpeedFactor": 1,
     "IsUnlockable": true,
@@ -22,6 +23,7 @@
       "Y": 1
     },
     "Sprite": "Bohrer",
+    "Sound": "Drill",
     "Capacity": 100,
     "SpeedFactor": 2,
     "IsUnlockable": true,
@@ -37,6 +39,7 @@
       "Y": 1
     },
     "Sprite": "Digger",
+    "Sound": "Shovel",
     "Capacity": 100,
     "SpeedFactor": 5,
     "IsUnlockable": true,

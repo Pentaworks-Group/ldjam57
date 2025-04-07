@@ -19,9 +19,10 @@ namespace Assets.Scripts.Scenes.GameScene
             this.shaft = shaft;
             this.direction = direction;
             UpdatePosition();
+
         }
 
-        public void UpdatePosition()
+       public void UpdatePosition()
         {
             if (direction == Direction.Left)
             {
@@ -82,6 +83,5 @@ namespace Assets.Scripts.Scenes.GameScene
             GetTransportBehaviour();
             worldBehaviour.BuildTransporteSite(this);
         }
-
     }
 }

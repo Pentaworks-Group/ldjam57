@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -63,6 +64,7 @@ namespace Assets.Scripts.Scenes.GameScene
             Base.Core.Game.State.ActiveTransporters.Add(transporter);
             //SetStorages();
             RegisterStorage();
+            playSoundEffect();
         }
 
 
@@ -214,5 +216,18 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return -1;
         }
+
+        private void playSoundEffect()
+        {
+            if (!string.IsNullOrEmpty(transporter.Transport.Sound))
+            {
+                var audioClip = GameFrame.Base.Resources.Manager.Audio.Get(transporter.Transport.Sound);
+                if (audioClip != null)
+                {
+                    GameFrame.Base.Audio.Effects.Play(audioClip);
+                }
+            }
+        }
+
     }
 }

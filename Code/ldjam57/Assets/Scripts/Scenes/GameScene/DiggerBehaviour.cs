@@ -217,6 +217,8 @@ namespace Assets.Scripts.Scenes.GameScene
                 else if (digger.Direction == Direction.Right)
                     direction = 1;
                 _animator.SetInteger("Direction", direction);
+
+                playSoundEffect();
             }
         }
 
@@ -276,6 +278,18 @@ namespace Assets.Scripts.Scenes.GameScene
         public double GetCapacity()
         {
             return digger.MiningTool.Capacity;
+        }
+
+        private void playSoundEffect()
+        {
+            if(!string.IsNullOrEmpty(digger.MiningTool.Sound))
+            {
+                var audioClip = GameFrame.Base.Resources.Manager.Audio.Get(digger.MiningTool.Sound);
+                if (audioClip != null)
+                {
+                    GameFrame.Base.Audio.Effects.Play(audioClip);
+                }
+            }
         }
     }
 }

@@ -16,5 +16,6 @@ namespace Assets.Scripts.Core.Model
         public Decimal UnlockCost { get; set; }
         public Decimal PurchaseCost { get; set; }
         public Decimal OperatingCost { get; set; }
+        public String Sound { get; set; }
     }
 }
