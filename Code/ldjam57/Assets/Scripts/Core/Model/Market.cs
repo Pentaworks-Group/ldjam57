@@ -14,6 +14,7 @@ namespace Assets.Scripts.Core.Model
         public Boolean EnableRandomEvents { get; set; }
         public Double EventProbability { get; set; }
         public Double EventImpactMultiplier { get; set; }
+        public List<MarketEvent> Events { get; set; }
 
     }
 }

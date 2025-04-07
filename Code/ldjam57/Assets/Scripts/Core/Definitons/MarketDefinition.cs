@@ -15,5 +15,6 @@ namespace Assets.Scripts.Core.Definitons
         public Boolean? EnableRandomEvents { get; set; }
         public Double? EventProbability { get; set; }
         public Double? EventImpactMultiplier { get; set;}
+        public List<MarketEventDefinition> Events { get; set; }
     }
 }

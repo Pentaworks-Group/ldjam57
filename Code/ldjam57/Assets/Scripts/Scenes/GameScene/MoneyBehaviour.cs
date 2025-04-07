@@ -2,7 +2,9 @@ using Assets.Scripts.Base;
 using Assets.Scripts.Core.Model;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoneyBehaviour : MonoBehaviour
@@ -11,16 +13,8 @@ public class MoneyBehaviour : MonoBehaviour
 	TextMeshProUGUI cashLabel;
 
     [Header("Market Settings")]
-//    public float updateInterval = 1.0f; // Time in seconds between price updates
-//    public float marketVolatility = 1.0f; // Overall market volatility multiplier
     [Range(-1f, 1f)]
     public float marketTrend = 0.0f; // Overall market trend: -1 (bearish) to 1 (bullish)
-
-//    [Header("Random Events")]
-//    public bool enableRandomEvents = true;
-//    [Range(0f, 1f)]
-//    public float eventProbability = 0.05f; // Probability of random event per update
-//    public float eventImpactMultiplier = 2.0f; // How strongly events affect prices
 
     // Internal variables
     private System.Random random;
@@ -28,6 +22,8 @@ public class MoneyBehaviour : MonoBehaviour
     private float marketMood = 0f; // Current market sentiment that fluctuates over time
 
     private bool isInited = false;
+
+    private List<MarketEvent> activeEvents = new List<MarketEvent>();
 
     private void Awake()
     {
@@ -117,12 +113,22 @@ public class MoneyBehaviour : MonoBehaviour
             // Apply random events
             if (Core.Game.State.Market.EnableRandomEvents && UnityEngine.Random.value < Core.Game.State.Market.EventProbability)
             {
-                float eventImpact = UnityEngine.Random.Range(-0.2f, 0.2f) * (float)Core.Game.State.Market.EventImpactMultiplier;
+                TriggerRandomEvent();
+/*                float eventImpact = UnityEngine.Random.Range(-0.2f, 0.2f) * (float)Core.Game.State.Market.EventImpactMultiplier;
                 priceChange += (float)material.Value * eventImpact;
 
                 // Log event for debugging
-                Debug.Log($"Random event affected {material.Mineral.Name}: {eventImpact:P2} change");
+                Debug.Log($"Random event affected {material.Mineral.Name}: {eventImpact:P2} change");*/
             }
+            activeEvents.ForEach(e =>
+            {
+                if (e.AffectedMaterials.Contains(material.Mineral.Name))
+                {
+                    float eventImpact = (float)(e.PriceImpact * Core.Game.State.Market.EventImpactMultiplier);
+                    priceChange += (float)material.Value * eventImpact;
+                    Debug.Log($"Random event affected {material.Mineral.Name}: {eventImpact:P2} change");
+                }
+            });
 
             // Update price with some influence from market mood
             material.CurrentPrice += priceChange + (marketMood * material.TrendStrength * 0.01f * material.Value);
@@ -133,6 +139,36 @@ public class MoneyBehaviour : MonoBehaviour
             if (material.MaxPrice > 0 && material.CurrentPrice > material.MaxPrice)
                 material.CurrentPrice = material.MaxPrice;
         }
+    }
+
+    public MarketEvent TriggerRandomEvent(bool forcePositive = false, bool forceNegative = false)
+    {
+        if(Core.Game.State.Market.Events.Count > 0)
+        {
+            // Pick a random event
+            MarketEvent selectedEvent = Core.Game.State.Market.Events[UnityEngine.Random.Range(0, Core.Game.State.Market.Events.Count)];
+
+            // Log the event
+            Debug.Log($"MARKET EVENT: {selectedEvent.Name} - {selectedEvent.Description}");
+
+            // Trigger price effects
+            StartCoroutine(ApplyEventEffect(selectedEvent));
+
+            return selectedEvent;
+        }
+        return null;
+    }
+
+    private IEnumerator ApplyEventEffect(MarketEvent marketEvent)
+    {
+        activeEvents.Add(marketEvent);
+
+        // Effect duration
+        yield return new WaitForSeconds((float)marketEvent.Duration);
+
+        activeEvents.Remove(marketEvent);
+
+        // Event effect ends (you might want to gradually return to normal)
     }
 
     public float GetMaterialPrice(Mineral mineral)

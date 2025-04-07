@@ -30,7 +30,8 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                         Volatility = loadedMarketDefinition.Volatility,
                         EnableRandomEvents = loadedMarketDefinition.EnableRandomEvents,
                         EventProbability = loadedMarketDefinition.EventProbability,
-                        EventImpactMultiplier = loadedMarketDefinition.EventImpactMultiplier
+                        EventImpactMultiplier = loadedMarketDefinition.EventImpactMultiplier,
+                        Events = new List<MarketEventDefinition>()
                     };
 
                     if (loadedMarketDefinition.MineralValues?.Count > 0)
@@ -48,6 +49,23 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                             };
 
                             marketDefinition.MineralValues.Add(newMineralValueDefinition);
+                        }
+                    }
+
+                    if (loadedMarketDefinition.Events?.Count > 0)
+                    {
+                        foreach (var ev in loadedMarketDefinition.Events)
+                        {
+                            var newMarketEventDefinition = new MarketEventDefinition()
+                            {
+                                Name = ev.Name,
+                                Description = ev.Description,
+                                AffectedMaterials = ev.AffectedMaterials,
+                                PriceImpact = ev.PriceImpact,
+                                Duration = ev.Duration,
+                            };
+
+                            marketDefinition.Events.Add(newMarketEventDefinition);
                         }
                     }
 
