@@ -1106,6 +1106,14 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1682637802365037447, guid: ea658807be36e2f4791b62353e8271c5, type: 3}
+      propertyPath: ObjectsToHide.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682637802365037447, guid: ea658807be36e2f4791b62353e8271c5, type: 3}
+      propertyPath: 'ObjectsToHide.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1139034248}
     - target: {fileID: 4881762453490254551, guid: ea658807be36e2f4791b62353e8271c5, type: 3}
       propertyPath: m_SizeDelta.y
       value: -92.9621
@@ -1324,6 +1332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Headquarters
       objectReference: {fileID: 0}
+    - target: {fileID: 6998301892688144944, guid: ee1682c2e1297b747a92801466828273, type: 3}
+      propertyPath: shop
+      value: 
+      objectReference: {fileID: 1021000410}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

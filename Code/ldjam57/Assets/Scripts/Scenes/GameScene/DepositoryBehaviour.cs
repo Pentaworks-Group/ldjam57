@@ -43,7 +43,6 @@ namespace Assets.Scripts.Scenes.GameScene
 
             if (fillAmountBehaviour != null )
             {
-                Debug.Log(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.SetValue(0);
             }

@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 678924544008520980}
   - component: {fileID: 2152702758866857631}
+  - component: {fileID: 6998301892688144944}
   m_Layer: 0
   m_Name: Headquarters
   m_TagString: Untagged
@@ -141,3 +142,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 1}
   m_Center: {x: 1, y: 0, z: 0}
+--- !u!114 &6998301892688144944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6834824647702348374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89ae83690dff5c34f9b7a8226010c098, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shop: {fileID: 0}
