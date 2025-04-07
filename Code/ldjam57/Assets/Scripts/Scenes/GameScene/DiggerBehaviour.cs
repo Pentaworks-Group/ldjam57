@@ -70,7 +70,6 @@ namespace Assets.Scripts.Scenes.GameScene
             this.digger = digger;
             _animator = gameObject.GetComponent<Animator>();
             _animator.gameObject.SetActive(true);
-            nameText.text = digger.MiningTool.Name;
             StartMining();
         }
 
@@ -268,13 +267,13 @@ namespace Assets.Scripts.Scenes.GameScene
             upgradeOption.Amount -= 1;
             inventoryItem.Amount += 1;
             digger.MiningTool = upgradeOption.MiningTool;
-            nameText.text = digger.MiningTool.Name;
             ClosePopup();
             playSoundEffect();
 
         }
         private void OpenPopup()
         {
+            nameText.text = digger.MiningTool.Name;
             upgradeOption = GetUpgradeOption();
             upgradeButton.interactable = upgradeOption != null;
             popUpObject.SetActive(true);
