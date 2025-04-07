@@ -194,7 +194,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             sellButton.enabled = true;
 
-            if (depository.Value > 1)
+            if (depository.Value > 0)
             {
                 var mineralPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
                 var totalValue = depository.Value * mineralPrice;
