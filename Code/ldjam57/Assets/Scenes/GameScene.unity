@@ -193,6 +193,7 @@ GameObject:
   - component: {fileID: 427461238}
   - component: {fileID: 427461240}
   - component: {fileID: 427461239}
+  - component: {fileID: 427461241}
   m_Layer: 5
   m_Name: CashBalance
   m_TagString: Untagged
@@ -207,12 +208,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427461237}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3055115880420913360}
+  m_Father: {fileID: 1139034252}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.8, y: 0.9}
   m_AnchorMax: {x: 1, y: 1}
@@ -318,6 +319,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427461237}
   m_CullTransparentMesh: 1
+--- !u!114 &427461241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427461237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4c373484a206c4fb5d54ab6088eef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cashLabel: {fileID: 427461239}
+  diggerBehaviour: {fileID: 2436717478696280080}
 --- !u!1 &743389813
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,7 +489,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -490,7 +505,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 427461238}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1306,6 +1322,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8680c25088e59a343b461915b344e271, type: 3}
+--- !u!114 &2436717478696280080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5036246921400583290, guid: 8680c25088e59a343b461915b344e271, type: 3}
+  m_PrefabInstance: {fileID: 2436717478696280079}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f87ae9e34f545c449564fc4e5dba25f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3055115880420913359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1440,17 +1467,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2739745378346920224, guid: d4d9e5d6444cc174fa99f7ed35419679, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 427461238}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d9e5d6444cc174fa99f7ed35419679, type: 3}
---- !u!224 &3055115880420913360 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2739745378346920224, guid: d4d9e5d6444cc174fa99f7ed35419679, type: 3}
-  m_PrefabInstance: {fileID: 3055115880420913359}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
