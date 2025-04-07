@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "TouchPressed",
+                    "type": "Button",
+                    "id": "c0b18a52-dfe9-49fa-8a8d-848c3e11f786",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -133,17 +142,6 @@
                 },
                 {
                     "name": "",
-                    "id": "9170ab0e-5f09-4975-86e4-e11ff88ced1b",
-                    "path": "<Touchscreen>/primaryTouch/tap",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Touch",
-                    "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c9066d0e-d61f-4d2a-8f44-b5b50b81da0e",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
@@ -216,6 +214,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TouchPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9170ab0e-5f09-4975-86e4-e11ff88ced1b",
+                    "path": "<Touchscreen>/primaryTouch/tap",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touch",
+                    "action": "TouchPressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

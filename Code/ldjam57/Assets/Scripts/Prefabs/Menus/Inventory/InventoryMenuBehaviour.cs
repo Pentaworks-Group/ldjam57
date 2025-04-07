@@ -24,6 +24,22 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
         public UnityEvent PointerEntered = new UnityEvent();
         public UnityEvent PointerExited = new UnityEvent();
 
+        public void EnableButtons()
+        {
+            foreach (var registieredItem in registeredInventoryItemBehaviours) 
+            {
+                registieredItem.EnableButtons();
+            }
+        }
+
+        public void DisableButtons()
+        {
+            foreach (var registieredItem in registeredInventoryItemBehaviours)
+            {
+                registieredItem.DisableButtons();
+            }
+        }
+
         private void Awake()
         {
             Base.Core.Game.ExecuteAfterInstantation(LoadInventory);

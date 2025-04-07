@@ -68,12 +68,14 @@ namespace Assets.Scripts.Scenes.GameScene
         private TransportInventoryItem selectedTransport;
 
         private InputAction touchPressed;
+        private InputAction touchPosition;
 
         private void Awake()
         {
             Base.Core.Game.ExecuteAfterInstantation(OnGameInitialized);
 
-            touchPressed = InputSystem.actions.FindAction("TouchPosition");
+            touchPosition = InputSystem.actions.FindAction("TouchPosition");
+            touchPressed = InputSystem.actions.FindAction("TouchPressed");
         }
 
         private void OnEnable()
@@ -330,26 +332,32 @@ namespace Assets.Scripts.Scenes.GameScene
             if (context.phase == InputActionPhase.Performed)
             {
                 UnityEngine.Vector2 mousePosition = Mouse.current.position.ReadValue();
+                Debug.Log("OnClick: " + mousePosition);
+                EvalutePress(mousePosition);
+            }
+        }
 
-                if (mousePosition.x == 0 && mousePosition.y == 0)
-                {
-                    Debug.Log("TouchPosition: " + mousePosition);
-                    mousePosition = touchPressed.ReadValue<UnityEngine.Vector2>();
-                }
-                else
-                {
-                    Debug.Log("ClickPosition: " + mousePosition);
-                }
-                Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
-                if (Physics.Raycast(ray, out RaycastHit hit))
-                {
-                    GameObject clickedObject = hit.collider.gameObject;
+        private void OnTouched(InputAction.CallbackContext context)
+        {
+            if (context.phase == InputActionPhase.Performed)
+            {
+                UnityEngine.Vector2 position = touchPosition.ReadValue<UnityEngine.Vector2>();
+                Debug.Log("OnTouched: " + position);
+                EvalutePress(position);
+            }
+        }
+        private void EvalutePress(UnityEngine.Vector2 position)
+        {
+            Ray ray = mainCamera.ScreenPointToRay(position);
 
-                    if (clickedObject.TryGetComponent<IClickable>(out var clickable))
-                    {
-                        clickable?.OnClicked();
-                    }
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                GameObject clickedObject = hit.collider.gameObject;
+
+                if (clickedObject.TryGetComponent<IClickable>(out var clickable))
+                {
+                    clickable?.OnClicked();
                 }
             }
         }
@@ -369,11 +377,14 @@ namespace Assets.Scripts.Scenes.GameScene
             if (isOpen)
             {
                 UnhookActions();
+                this.inventoryMenuBehaviour.DisableButtons();
                 this.CameraBehaviour.UnhookActions();
             }
             else
             {
                 HookActions();
+                this.inventoryMenuBehaviour.gameObject.SetActive(true);
+                this.inventoryMenuBehaviour.EnableButtons();
                 this.CameraBehaviour.HookActions();
             }
         }
@@ -663,18 +674,21 @@ namespace Assets.Scripts.Scenes.GameScene
             return GetStoragesAtPosition(pos.X, pos.Y, out storagesAtPoint);
         }
 
-
         private void HookActions()
         {
-            var clickAction = InputSystem.actions.FindAction("Click");
-            clickAction.performed += OnClick;
+            if (!shop.IsOpen)
+            {
+                var clickAction = InputSystem.actions.FindAction("Click");
+                clickAction.performed += OnClick;
+                touchPressed.performed += OnTouched;
+            }
         }
 
         private void UnhookActions()
         {
             var clickAction = InputSystem.actions.FindAction("Click");
             clickAction.performed -= OnClick;
+            touchPressed.performed -= OnTouched;
         }
-
     }
 }

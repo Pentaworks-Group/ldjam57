@@ -13,6 +13,7 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
     {
         private InventoryItem inventorItem;
         private Int32 runningNumber;
+        private Boolean? buttonWasInteractable;
 
         [SerializeField]
         private TMP_Text text;
@@ -35,6 +36,33 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
 
                     button.interactable = runningNumber > 0;
                 }
+            }
+        }
+
+        internal void ForceDisable()
+        {
+            if (!this.buttonWasInteractable.HasValue)
+            {
+                this.buttonWasInteractable = button.interactable;
+                button.interactable = false;
+            }
+            else
+            {
+                Debug.LogError("-- Button was forcefully disabled but not restored!!! ---");
+            }
+        }
+
+        internal void RestoreStatus()
+        {
+            if (this.buttonWasInteractable.HasValue)
+            {
+                button.interactable = buttonWasInteractable.Value;
+
+                this.buttonWasInteractable = null;
+            }
+            else
+            {
+                Debug.LogError("-- Button was not forcefully disabled before attempting a restore!!! ---");
             }
         }
     }

@@ -127,15 +127,19 @@ namespace Assets.Scripts.Scenes.GameScene
 
             return false;
         }
+
         public void Sell()
         {
-            var mineralPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
-            var totalValue = depository.Value * mineralPrice;
-            Base.Core.Game.State.Bank.Credits += totalValue;
-            depository.Value = 0;
-            storage[depository.Mineral] = depository.Value;
+            if (depository.Value > 0)
+            {
+                var mineralPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
+                var totalValue = depository.Value * mineralPrice;
+                Base.Core.Game.State.Bank.Credits += totalValue;
+                depository.Value = 0;
+                storage[depository.Mineral] = depository.Value;
 
-            GameFrame.Base.Audio.Effects.Play("MoneyRain");
+                GameFrame.Base.Audio.Effects.Play("MoneyRain");
+            }
         }
 
         private void UpdateLevel()
