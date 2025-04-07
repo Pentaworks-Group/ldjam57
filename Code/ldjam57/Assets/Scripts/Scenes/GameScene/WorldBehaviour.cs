@@ -25,7 +25,9 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private GroundBehaviour TileTemplate;
         [SerializeField]
-        private GameObject ShaftTemplate;
+        private ShaftBehaviour ShaftTemplate;
+        [SerializeField]
+        private ShaftBehaviour GroundLevelShaftTemplate;
         [SerializeField]
         private SiteBehaviour SiteTemplate;
         [SerializeField]
@@ -128,15 +130,15 @@ namespace Assets.Scripts.Scenes.GameScene
                 }
             }
 
-            for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
-            {
-                var tile = tileMap[x, 0];
-                if (tile.IsDigable() && !diggerMap.TryGetValue(tile.GetPosition().X, tile.GetPosition().Y, out _))
-                {
-                    Point2 pos = new Point2(x, -1);
-                    CreateSite(pos, miningTool, Direction.Down);
-                }
-            }
+            //for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
+            //{
+            //    var tile = tileMap[x, 0];
+            //    if (tile.IsDigable() && !diggerMap.TryGetValue(tile.GetPosition().X, tile.GetPosition().Y, out _))
+            //    {
+            //        Point2 pos = new Point2(x, -1);
+            //        CreateSite(pos, miningTool, Direction.Down);
+            //    }
+            //}
         }
 
         public void BuildDigSite(SiteBehaviour siteBehaviour)
@@ -224,15 +226,15 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     continue;
                 }
-                GenerateTransportSite(transport, shaft, Direction.Left, false);
-                GenerateTransportSite(transport, shaft, Direction.Right, false);
+                GenerateTransportSite(transport, shaft, Direction.Left);
+                GenerateTransportSite(transport, shaft, Direction.Right);
             }
         }
 
-        private void GenerateTransportSite(Transport transport, ShaftBehaviour shaft, Direction direction, bool vertical)
+        private void GenerateTransportSite(Transport transport, ShaftBehaviour shaft, Direction direction)
         {
             var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-            newSite.Init(this, transport, shaft, vertical, direction);
+            newSite.Init(this, transport, shaft, direction);
             newSite.gameObject.SetActive(true);
             TransportSites.Add(newSite);
         }
@@ -262,7 +264,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     continue;
                 }
                 var direction = Direction.Down;
-                GenerateTransportSite(transport, shaft, direction, true);
+                GenerateTransportSite(transport, shaft, direction);
             }
         }
 
@@ -308,7 +310,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 if (tile.DigingProgress >= 1)
                 {
-                    CreateShaft(tile.Position);
+                    CreateShaft(tile.Position, ShaftTemplate);
                 }
                 else
                 {
@@ -322,6 +324,12 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 GenerateDepository(depository);
             }
+
+            for (int i = 0; i < world.Width; i++)
+            {
+                CreateShaft(new Point2(i, -1), GroundLevelShaftTemplate);
+            }
+
         }
 
         private void GenerateGround(Tile tile)
@@ -343,25 +351,18 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void ReplaceTile(TileBehaviour tile)
         {
-            CreateShaft(tile.GetPosition());
+            CreateShaft(tile.GetPosition(), ShaftTemplate);
             GameObject.Destroy(tile.gameObject);
         }
 
-        private void CreateShaft(Point2 pos)
+        private void CreateShaft(Point2 pos, ShaftBehaviour shaftTemplate)
         {
-            var position = GetUnityVector(pos, ShaftTemplate.transform.position.z);
-            var newTile = GameObject.Instantiate(ShaftTemplate, position, ShaftTemplate.transform.rotation, TilesParent.transform);
-
-            newTile.name = "Shaft_" + pos;
-
-            var shaftBehaviour = newTile.GetComponent<ShaftBehaviour>();
-
+            var position = GetUnityVector(pos, shaftTemplate.transform.position.z);
+            var shaftBehaviour = GameObject.Instantiate(shaftTemplate, position, shaftTemplate.transform.rotation, TilesParent.transform);
+            shaftBehaviour.gameObject.name = shaftTemplate.gameObject.name + "_" + pos;
             shaftBehaviour.Init(this, pos);
-
             Shafts.Add(shaftBehaviour);
-
-            newTile.SetActive(true);
-
+            shaftBehaviour.gameObject.SetActive(true);
             tileMap[pos.X, pos.Y] = shaftBehaviour;
         }
 
@@ -435,7 +436,7 @@ namespace Assets.Scripts.Scenes.GameScene
             return tileMap[newX, newY];
         }
 
-        internal T GetTilerRelativeOfType<T>(Point2 pos, int x, int y) 
+        internal T GetTilerRelativeOfType<T>(Point2 pos, int x, int y)
         {
             var tile = GetTileRelative(pos, x, y);
             if (tile is T typedTile)
@@ -512,8 +513,16 @@ namespace Assets.Scripts.Scenes.GameScene
 
         internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
         {
-            Destroy(transportSiteBehaviour.gameObject);
-            TransportSites.Remove(transportSiteBehaviour);
+            ClearTransportSites();
+            if (transportSiteBehaviour.IsVertical())
+            {
+                DisplayPossibleVerticalTransportSites(selectedTransport);
+            }
+            else
+            {
+
+                DisplayPossibleHorizontalTransportSites(selectedTransport);
+            }
         }
     }
 }

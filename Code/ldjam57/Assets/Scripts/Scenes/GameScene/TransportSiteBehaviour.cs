@@ -1,12 +1,5 @@
 using Assets.Scripts.Core.Model;
-using GameFrame.Core.Math;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using UnityEngine.UIElements;
-using UnityEngine.WSA;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -16,16 +9,14 @@ namespace Assets.Scripts.Scenes.GameScene
         private WorldBehaviour worldBehaviour;
         private Transport transport;
         private ShaftBehaviour shaft;
-        private bool vertical;
         private Direction direction;
 
 
-        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft, bool vertical, Direction direction)
+        public void Init(WorldBehaviour worldBehaviour, Transport transport, ShaftBehaviour shaft,  Direction direction)
         {
             this.worldBehaviour = worldBehaviour;
             this.transport = transport;
             this.shaft = shaft;
-            this.vertical = vertical;
             this.direction = direction;
             UpdatePosition();
         }
@@ -36,7 +27,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 var lScale = transform.localScale;
                 var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: -(1 - scale.y ) / 2);
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (-(1 - scale.y ) / 2) * .9f);
                 var rotation = transform.rotation;
                 rotation *= Quaternion.Euler(0, 0, -90);
                 transform.rotation = rotation;
@@ -48,7 +39,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 var lScale = transform.localScale;
                 var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
 
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (1 - scale.y) / 2);
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: ((1 - scale.y) / 2) * .9f);
                 var rotation = transform.rotation;
                 rotation *= Quaternion.Euler(0, 0, 90);
                 transform.rotation = rotation;
@@ -57,10 +48,21 @@ namespace Assets.Scripts.Scenes.GameScene
             }
             else
             {
-                var vect = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z);
-                transform.position = vect;
+                var lScale = transform.localScale;
+                var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
+
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, yOffset: ((1 - scale.y) / 2) * .9f);
+
+                transform.position = position;
+                transform.localScale = scale;
+
             }
                 
+        }
+
+        public bool IsVertical()
+        {
+            return direction == Direction.Down;
         }
 
 
