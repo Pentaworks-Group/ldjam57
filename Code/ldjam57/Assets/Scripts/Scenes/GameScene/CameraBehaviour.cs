@@ -264,7 +264,7 @@ namespace Assets.Scripts.Scenes.GameScene
             float targetSize = currentSize;
 
             targetSize -= zoomInput * sensitivity;
-            Debug.Log(targetSize+", "+sensitivity+", "+zoomInput);
+            //Debug.Log(targetSize+", "+sensitivity+", "+zoomInput);
             targetSize = Mathf.Clamp(targetSize, minZoom, maxZoom);
 
             mainCamera.orthographicSize = targetSize;

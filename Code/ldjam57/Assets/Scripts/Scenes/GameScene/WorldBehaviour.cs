@@ -11,6 +11,7 @@ using GameFrame.Core.Math;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -48,6 +49,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private GameObject DepositoryContainer;
 
         private Map<int, TileBehaviour> tileMap = new();
+        private Map<int, List<IStorage>> storages = new();
 
         private List<ShaftBehaviour> Shafts = new();
 
@@ -368,9 +370,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateDepository(Depository depository)
         {
-            var position = depository.Position.ToUnityVector3();
-
-            position.z = DepositoryTemplate.transform.position.z;
+            var position = GetUnityVector(depository.Position, DepositoryTemplate.transform.position.z);
 
             var depositoryGameObject = Instantiate(DepositoryTemplate, position, DepositoryTemplate.transform.rotation, DepositoryContainer.transform);
 
@@ -523,6 +523,48 @@ namespace Assets.Scripts.Scenes.GameScene
 
                 DisplayPossibleHorizontalTransportSites(selectedTransport);
             }
+        }
+
+        internal void RegisterStorage(IStorage storage)
+        {
+            var pos = storage.GetPosition();
+            var storagesAtPoint = EnsureStoragesAtPoint(pos);
+            storagesAtPoint.Add(storage);
+            storagesAtPoint.OrderByDescending(s => s.Priority());
+        }
+
+        internal void UnRegisterStorage(IStorage storage)
+        {
+            var pos = storage.GetPosition();
+            var storagesAtPoint = EnsureStoragesAtPoint(pos);
+            storagesAtPoint.Remove(storage);
+        }
+
+        private List<IStorage> EnsureStoragesAtPoint(Point2 pos)
+        {
+            //storagesAtPoint
+            if (!GetStoragesAtPoint(pos, out var storagesAtPoint)) {
+                storagesAtPoint = new();
+                storages[pos.X, pos.Y] = storagesAtPoint;
+            }
+            return storagesAtPoint;
+        }
+
+        public bool GetStoragesAtPosition(int x, int y, out List<IStorage> storagesAtPoint)
+        {
+            bool v = storages.TryGetValue(x, y, out storagesAtPoint);
+            double r = 0;
+            if (v)
+            {
+                r = storagesAtPoint.Count;
+            }
+            Debug.Log("Gettig Storages at: " + x + "," + y + "  " + r);
+            return v;
+        }
+
+        public bool GetStoragesAtPoint(Point2 pos, out List<IStorage> storagesAtPoint)
+        {
+            return GetStoragesAtPosition(pos.X, pos.Y, out storagesAtPoint);
         }
     }
 }

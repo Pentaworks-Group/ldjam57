@@ -1,22 +1,24 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
-
+using GameFrame.Core.Math;
 using UnityEditor.UIElements;
 
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
-    public class DepositoryBehaviour : MonoBehaviour, IClickable
+    public class DepositoryBehaviour : MonoBehaviour, IClickable, IStorage
     {
         private WorldBehaviour worldBehaviour;
         private Depository depository;
 
         private SpriteRenderer levelRenderer;
-        
+
+        private Dictionary<Mineral, double> storage = new();
+
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
             this.worldBehaviour = worldBehaviour;
@@ -25,6 +27,8 @@ namespace Assets.Scripts.Scenes.GameScene
             levelRenderer = transform.Find("Stash").GetComponent<SpriteRenderer>();
 
             levelRenderer.color = depository.Mineral.Color.ToUnity();
+            storage[depository.Mineral] = depository.Value;
+            RegisterStorage();
         }
 
         public void OnClicked()
@@ -114,6 +118,57 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             this.levelRenderer.sprite = sprite;
+        }
+
+        public Dictionary<Mineral, double> GetStorage()
+        {
+            return storage;
+        }
+
+        public bool AllowsNewTypes()
+        {
+            return false;
+        }
+
+        public bool CanBeTakenFrom()
+        {
+            return false;
+        }
+
+        public void StorageChanged()
+        {
+            depository.Value = storage[depository.Mineral];
+            UpdateLevel();
+        }
+
+        void RegisterStorage()
+        {
+            worldBehaviour.RegisterStorage(this);
+        }
+
+        void UnRegisterStorage()
+        {
+            worldBehaviour.UnRegisterStorage(this);
+        }
+
+        public Point2 GetPosition()
+        {
+            return depository.Position;
+        }
+
+        void IStorage.RegisterStorage()
+        {
+            RegisterStorage();
+        }
+
+        void IStorage.UnRegisterStorage()
+        {
+            UnRegisterStorage();
+        }
+
+        public double GetCapacity()
+        {
+            return depository.Capacity;
         }
     }
 }

@@ -79,6 +79,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 newShaft.DiggerBehaviour = this;
                 shaft = newShaft;
             }
+            RegisterStorage();
         }
 
 
@@ -119,37 +120,41 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void MoveDigger()
         {
-
+            Point2 newPoint;
             if (digger.Direction == Direction.Left)
             {
-                var validPos = worldBehaviour.GetRelativePosition(digger.Position, -1, 0, out Point2 newPoint);
+                var validPos = worldBehaviour.GetRelativePosition(digger.Position, -1, 0, out newPoint);
                 if (!validPos)
                 {
                     StopMining();
                     return;
                 }
-                digger.Position = newPoint;
             }
             else if (digger.Direction == Direction.Right)
             {
-                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 1, 0, out Point2 newPoint);
+                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 1, 0, out newPoint);
                 if (!validPos)
                 {
                     StopMining();
                     return;
                 }
-                digger.Position = newPoint;
             }
             else if (digger.Direction == Direction.Down)
             {
-                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 0, 1, out Point2 newPoint);
+                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 0, 1, out newPoint);
                 if (!validPos)
                 {
                     StopMining();
                     return;
                 }
-                digger.Position = newPoint;
             }
+            else
+            {
+                return;
+            }
+
+            UnRegisterStorage();
+            digger.Position = newPoint;
             UpdatePosition();
             worldBehaviour.DiggerMoved(this);
             OnDiggerMoved.Invoke(this);
@@ -242,5 +247,35 @@ namespace Assets.Scripts.Scenes.GameScene
             return digger.MinedAmount;
         }
 
+        public bool CanBePutInto()
+        {
+            return false;
+        }
+
+        void RegisterStorage()
+        {
+            worldBehaviour.RegisterStorage(this);
+        }
+
+        void UnRegisterStorage()
+        {
+            worldBehaviour.UnRegisterStorage(this);
+        }
+
+
+        void IStorage.RegisterStorage()
+        {
+            RegisterStorage();
+        }
+
+        void IStorage.UnRegisterStorage()
+        {
+            UnRegisterStorage();
+        }
+
+        public double GetCapacity()
+        {
+            return digger.MiningTool.Capacity;
+        }
     }
 }
