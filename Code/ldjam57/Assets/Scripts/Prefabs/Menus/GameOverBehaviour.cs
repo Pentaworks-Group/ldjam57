@@ -8,11 +8,12 @@ public class GameOverBehaviour : BaseMenuBehaviour
 {
     private void Start()
     {
-        var outroAudio = new List<AudioClip>()
+        var outroAudio = GameFrame.Base.Resources.Manager.Audio.Get("Game_over");
+        var menuAudio = new List<AudioClip>()
             {
-                GameFrame.Base.Resources.Manager.Audio.Get("Game_over")
+                GameFrame.Base.Resources.Manager.Audio.Get("Percussion")
             };
-        GameFrame.Base.Audio.Background.ReplaceClips(outroAudio);
+        GameFrame.Base.Audio.Background.PlayTransition(outroAudio, menuAudio);
     }
 
     public void GoToMainMenu()
