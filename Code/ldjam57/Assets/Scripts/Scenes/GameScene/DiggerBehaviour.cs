@@ -279,7 +279,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Capacity;
         }
-
+		
         private void playSoundEffect()
         {
             if(!string.IsNullOrEmpty(digger.MiningTool.Sound))
@@ -290,6 +290,11 @@ namespace Assets.Scripts.Scenes.GameScene
                     GameFrame.Base.Audio.Effects.Play(audioClip);
                 }
             }
+		}
+
+        public int Priority()
+        {
+            return -1;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -76,28 +77,29 @@ namespace Assets.Scripts.Scenes.GameScene
         private void MoveStuff()
         {
             var p = transporter.Position;
-            List<IStorage> froms = new();
-            List<IStorage> tos = new();
-            GetStorages(p, ref froms, ref tos);
+            var storages = GetStorages(p);
 
-            if (froms.Count == 1 && tos.Count == 1 && froms[0] == tos[0])
+            if (storages.Count == 1)
             {
                 return;
             }
-            if (transporter.Direction == Direction.Left)
-            {
-                Debug.Log("Horizontal");
-            }
+            //if (transporter.Direction == Direction.Left)
+            //{
+            //    Debug.Log("Horizontal");
+            //}
             double amountToMove = transporter.Transport.Speed;
             int cnt = 10;
             while (cnt > 0)
             {
                 bool moved = false;
-                foreach (var from in froms)
+                int halfPoint = storages.Count / 2;
+                for (int f = 0; f < halfPoint; f++)
                 {
-                    foreach (var to in tos)
+                    for (int t = storages.Count - 1; t >= halfPoint - 1; t--)
                     {
-                        if (to == from)
+                        var from = storages[f];
+                        var to = storages[t];
+                        if (to == from || !from.CanBeTakenFrom() || !to.CanBePutInto())
                         {
                             continue;
                         }
@@ -125,45 +127,41 @@ namespace Assets.Scripts.Scenes.GameScene
             Debug.LogError("Error in Transporter, to many move attemts");
         }
 
-        private void GetStorages(Point2 p, ref List<IStorage> froms, ref List<IStorage> tos)
+        private void AddStorages(int x, int y, List<IStorage> storages)
         {
-            if (direction == Direction.Left)
+            if (worldBehaviour.GetStoragesAtPosition(x, y, out var tmps))
             {
-                if (!worldBehaviour.GetStoragesAtPosition(p.X - 1, p.Y, out froms) || froms.Count < 1)
-                {
-                    worldBehaviour.GetStoragesAtPosition(p.X, p.Y, out froms);
-                }
-                if (!worldBehaviour.GetStoragesAtPosition(p.X + 1, p.Y, out tos) || tos.Count < 1)
-                {
-                    worldBehaviour.GetStoragesAtPosition(p.X, p.Y, out tos);
-                }
+                storages.AddRange(tmps);
             }
-            else if (direction == Direction.Right)
+        }
+
+
+        private List<IStorage> GetStorages(Point2 p)
+        {
+            if (direction == Direction.Left || direction == Direction.Right)
             {
-                if (!worldBehaviour.GetStoragesAtPosition(p.X + 1, p.Y, out froms) || froms.Count < 1)
+                List<IStorage> storages = new List<IStorage>();
+                AddStorages(p.X - 1, p.Y, storages);
+                AddStorages(p.X, p.Y, storages);
+                AddStorages(p.X + 1, p.Y, storages);
+                if (direction == Direction.Left)
                 {
-                    worldBehaviour.GetStoragesAtPosition(p.X, p.Y, out froms);
+                    return storages.OrderBy(s => s.Priority()).ThenBy(s => s.GetPosition().X).ToList();
                 }
-                if (!worldBehaviour.GetStoragesAtPosition(p.X - 1, p.Y, out tos) || tos.Count < 1)
-                {
-                    worldBehaviour.GetStoragesAtPosition(p.X, p.Y, out tos);
+                else {
+                    return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().X).ToList();
                 }
             }
             else if (direction == Direction.Down)
             {
-                if (!worldBehaviour.GetStoragesAtPosition(p.X, p.Y + 1, out froms) || froms.Count < 1)
-                {
-                    worldBehaviour.GetStoragesAtPosition(p.X, p.Y, out froms);
-                }
-                if (!worldBehaviour.GetStoragesAtPosition(p.X, p.Y - 1, out tos) || tos.Count < 1)
-                {
-                    worldBehaviour.GetStoragesAtPosition(p.X, p.Y, out tos);
-                }
+                List<IStorage> storages = new List<IStorage>();
+                AddStorages(p.X, p.Y - 1, storages);
+                AddStorages(p.X, p.Y, storages);
+                AddStorages(p.X, p.Y + 1, storages);
+                
+                return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().Y).ToList();                
             }
-            froms = froms.ToList();
-            froms.RemoveAll(storag => !storag.CanBeTakenFrom());
-            tos = tos.ToList();
-            tos.RemoveAll(storag => !storag.CanBePutInto());
+            return new();
         }
 
         public void OnClicked()
@@ -228,6 +226,5 @@ namespace Assets.Scripts.Scenes.GameScene
                 }
             }
         }
-
     }
 }

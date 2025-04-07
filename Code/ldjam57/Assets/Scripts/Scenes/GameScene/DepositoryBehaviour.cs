@@ -236,5 +236,9 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return depository.Capacity;
         }
+        public int Priority()
+        {
+            return 1;
+        }
     }
 }
