@@ -19,14 +19,14 @@
     "UpdateInterval": 1.0,
     "MarketVolatility": 1.0,
     "EnableRandomEvents": true,
-    "EventProbability": 0.55,
+    "EventProbability": 0.05,
     "EventImpactMultiplier": 2.0,
     "Events":
     [
       {
         "Name": "Bridge Collapse",
         "Description": "Iron prices go up.",
-        "AffectedMaterials": [ "Copper" ],
+        "AffectedMaterials": [ "Iron" ],
         "PriceImpact": 0.12,
         "Duration":  10
       }
