@@ -38,7 +38,7 @@
       "X": 1,
       "Y": 1
     },
-    "Sprite": "Ladder",
+    "Sprite": "Menu_Item_Ladder",
     "Speed": 0.5,
     "Capacity": 2,
     "IsUnlockable": true,
@@ -53,7 +53,7 @@
       "X": 1,
       "Y": 1
     },
-    "Sprite": "Elevator",
+    "Sprite": "Menu_Item_Elevator",
     "Sound": "Roll",
     "Speed": 5,
     "Capacity": 10000,

@@ -4,10 +4,11 @@ using Assets.Scripts.Core.Model;
 
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Prefabs.Menus.Inventory
 {
-    public class InventoryMenuBehaviour : MonoBehaviour
+    public class InventoryMenuBehaviour : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private readonly List<IInventoryItemBehaviour> registeredInventoryItemBehaviours = new List<IInventoryItemBehaviour>();
         private Assets.Scripts.Core.Model.Inventory inventory;
@@ -20,6 +21,8 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
         private TransportInventoryItemBehaviour verticalTransportItemsMenu;
 
         public UnityEvent<InventoryItem> OnItemSelected = new UnityEvent<InventoryItem>();
+        public UnityEvent PointerEntered = new UnityEvent();
+        public UnityEvent PointerExited = new UnityEvent();
 
         private void Awake()
         {
@@ -70,6 +73,16 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
         private void InventoryItem_OnItemSelected(InventoryItem inventoryItem)
         {
             this.OnItemSelected.Invoke(inventoryItem);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            this.PointerEntered.Invoke();
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            this.PointerExited.Invoke();
         }
     }
 }

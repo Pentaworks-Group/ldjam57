@@ -16,6 +16,6 @@ namespace Assets.Scripts.Core.Definitons
         public Decimal? PurchaseCost { get; set; }
         public Decimal? OperatingCost { get; set; }
         public GameFrame.Core.Math.Vector2? Size { get; set; }
-        public String? Sound { get; set; }
+        public String Sound { get; set; }
     }
 }
