@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
-using TMPro;
 using GameFrame.Core.Math;
-using UnityEditor.UIElements;
+using TMPro;
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -34,7 +32,7 @@ namespace Assets.Scripts.Scenes.GameScene
         Button sellButton;
         [SerializeField]
         ProgressBarBehaviour fillAmountBehaviour;
-        
+
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
             this.worldBehaviour = worldBehaviour;
@@ -46,9 +44,9 @@ namespace Assets.Scripts.Scenes.GameScene
             levelRenderer.color = depository.Mineral.Color.ToUnity();
             storage[depository.Mineral] = depository.Value;
             RegisterStorage();
-        }
 
-            if (fillAmountBehaviour != null )
+
+            if (fillAmountBehaviour != null)
             {
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.SetValue(0);
@@ -58,7 +56,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void Update()
         {
-            if (popupMenu != null && popupMenu.activeSelf) {
+            if (popupMenu != null && popupMenu.activeSelf)
+            {
                 updatePopupUI();
             }
         }
@@ -72,7 +71,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
                 updatePopupUI();
             }
-            else if (popupMenu != null) {
+            else if (popupMenu != null)
+            {
                 popupMenu.SetActive(false);
             }
         }
@@ -179,13 +179,65 @@ namespace Assets.Scripts.Scenes.GameScene
             storageField.SetText(depository.Value.ToString("F1") + " t");
             priceField.SetText("$" + depository.Value.ToString("F1") + "/t"); //TODO
 
-            if(depository.Value > 1)
+            if (depository.Value > 1)
             {
                 sellButton.enabled = true;
-            } else
+            }
+            else
             {
                 sellButton.enabled = false;
             }
+        }
+
+        public Dictionary<Mineral, double> GetStorage()
+        {
+            return storage;
+        }
+
+        public bool AllowsNewTypes()
+        {
+            return false;
+        }
+
+        public bool CanBeTakenFrom()
+        {
+            return false;
+        }
+
+        public void StorageChanged()
+        {
+            depository.Value = storage[depository.Mineral];
+            UpdateLevel();
+        }
+
+        void RegisterStorage()
+        {
+            worldBehaviour.RegisterStorage(this);
+        }
+
+        void UnRegisterStorage()
+        {
+            worldBehaviour.UnRegisterStorage(this);
+        }
+
+        public Point2 GetPosition()
+        {
+            return depository.Position;
+        }
+
+        void IStorage.RegisterStorage()
+        {
+            RegisterStorage();
+        }
+
+        void IStorage.UnRegisterStorage()
+        {
+            UnRegisterStorage();
+        }
+
+        public double GetCapacity()
+        {
+            return depository.Capacity;
         }
     }
 }
