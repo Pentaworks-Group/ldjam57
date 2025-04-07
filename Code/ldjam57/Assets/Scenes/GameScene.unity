@@ -738,6 +738,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 3940025263866156732, guid: 056a99555c8ce8946a75ce3bdea889e1, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4330053958090610723, guid: 056a99555c8ce8946a75ce3bdea889e1, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -852,6 +856,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4330053958090610723, guid: 056a99555c8ce8946a75ce3bdea889e1, type: 3}
   m_PrefabInstance: {fileID: 1408299834}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1408299836 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6449502071781000816, guid: 056a99555c8ce8946a75ce3bdea889e1, type: 3}
+  m_PrefabInstance: {fileID: 1408299834}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e09f29784268704b8b78ffea5977f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1562149016
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1512,6 +1527,10 @@ PrefabInstance:
       propertyPath: DepositoryContainer
       value: 
       objectReference: {fileID: 165025681}
+    - target: {fileID: 5247409948763168480, guid: 8680c25088e59a343b461915b344e271, type: 3}
+      propertyPath: inventoryMenuBehaviour
+      value: 
+      objectReference: {fileID: 1408299836}
     - target: {fileID: 6748090710772594148, guid: 8680c25088e59a343b461915b344e271, type: 3}
       propertyPath: m_Name
       value: Tiles
