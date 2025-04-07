@@ -13,7 +13,7 @@
     "IsUnlockable": true,
     "UnlockCost": 0,
     "PurchaseCost": 1000,
-    "OperatingCost": 1
+    "OperatingCost": 0.2
   },
   {
     "Reference": "Drill",

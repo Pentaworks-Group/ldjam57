@@ -9,26 +9,147 @@
           "Reference": "Copper",
           "IsReferenced": true
         },
+        "Value": 75.0,
+        "Volatility": 0.6,
+        "MinPrice": 35.0,
+        "MaxPrice": 150.0,
+        "TrendStrength": 0.5
+      },
+      {
+        "Mineral": {
+          "Reference": "Iron",
+          "IsReferenced": true
+        },
         "Value": 50.0,
         "Volatility": 0.6,
         "MinPrice": 25.0,
         "MaxPrice": 100.0,
         "TrendStrength": 0.4
+      },
+      {
+        "Mineral": {
+          "Reference": "Gold",
+          "IsReferenced": true
+        },
+        "Value": 1200.0,
+        "Volatility": 1.2,
+        "MinPrice": 800.0,
+        "MaxPrice": 2000.0,
+        "TrendStrength": 0.7
+      },
+      {
+        "Mineral": {
+          "Reference": "Stone",
+          "IsReferenced": true
+        },
+        "Value": 15.0,
+        "Volatility": 0.3,
+        "MinPrice": 8.0,
+        "MaxPrice": 25.0,
+        "TrendStrength": 0.2
+      },
+      {
+        "Mineral": {
+          "Reference": "Dirt",
+          "IsReferenced": true
+        },
+        "Value": 5.0,
+        "Volatility": 0.2,
+        "MinPrice": 2.0,
+        "MaxPrice": 10.0,
+        "TrendStrength": 0.1
+      },
+      {
+        "Mineral": {
+          "Reference": "Lithium",
+          "IsReferenced": true
+        },
+        "Value": 180.0,
+        "Volatility": 1.1,
+        "MinPrice": 100.0,
+        "MaxPrice": 350.0,
+        "TrendStrength": 0.6
+      },
+      {
+        "Mineral": {
+          "Reference": "Crystals",
+          "IsReferenced": true
+        },
+        "Value": 220.0,
+        "Volatility": 1.4,
+        "MinPrice": 120.0,
+        "MaxPrice": 500.0,
+        "TrendStrength": 0.8
       }
     ],
-    "UpdateInterval": 1.0,
+    "UpdateInterval": 5.0,
     "MarketVolatility": 1.0,
     "EnableRandomEvents": true,
-    "EventProbability": 0.05,
-    "EventImpactMultiplier": 2.0,
-    "Events":
-    [
+    "EventProbability": 0.03,
+    "EventImpactMultiplier": 1.0,
+    "Events": [
       {
         "Name": "Bridge Collapse",
         "Description": "Iron prices go up.",
         "AffectedMaterials": [ "Iron" ],
         "PriceImpact": 0.12,
-        "Duration":  10
+        "Duration": 10
+      },
+      {
+        "Name": "New Govermenment",
+        "Description": "All Prices are falling.",
+        "AffectedMaterials": [ "Iron", "Copper", "Gold", "Stone", "Dirt", "Lithium", "Crystals" ],
+        "PriceImpact": -0.3,
+        "Duration": 10
+      },
+      {
+        "Name": "Energy based on Dirt Announced",
+        "Description": "Dirt Prices are rising.",
+        "AffectedMaterials": [ "Dirt" ],
+        "PriceImpact": 0.2,
+        "Duration": 10
+      },
+      {
+        "Name": "Billionaire seen with gold chain",
+        "Description": "Gold prices are rising.",
+        "AffectedMaterials": [ "Gold" ],
+        "PriceImpact": 0.15,
+        "Duration": 10
+      },
+      {
+        "Name": "Influencer praises dirt diet",
+        "Description": "Dirt Prices are rising.",
+        "AffectedMaterials": [ "Dirt" ],
+        "PriceImpact": 0.3,
+        "Duration": 10
+      },
+      {
+        "Name": "CEO mistake: gold reserves bigger than assumed",
+        "Description": "Gold Prices are falling.",
+        "AffectedMaterials": [ "Gold" ],
+        "PriceImpact": -0.14,
+        "Duration": 10
+      },
+      {
+        "Name": "TikTok Lithium challenge goes viral",
+        "Description": "Lithium Prices are rising.",
+        "AffectedMaterials": [ "Lithium" ],
+        "PriceImpact": 0.3,
+        "Duration": 10
+      },
+      {
+        "Name": "X: Silicon is overrated, use stone instead!",
+        "Description": "Stone Prices are rising.",
+        "AffectedMaterials": [ "Stone" ],
+        "PriceImpact": 0.14,
+        "Duration": 10
+      },
+      {
+        "Name": "Innovation: New Batterie needs 40% more copper.",
+        "Description": "Copper Prices are rising.",
+        "AffectedMaterials": [ "Copper" ],
+        "PriceImpact": 0.15,
+        "Duration": 10
       }
     ]
   }
