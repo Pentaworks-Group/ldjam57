@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
+
 using TMPro;
 
 using UnityEngine;
@@ -158,8 +160,6 @@ namespace Assets.Scripts.Scenes.GameScene
 
             var sprite = default(Sprite);
 
-//            Debug.Log(String.Format("level: {0} - {1}", level, spriteName));
-
             if (spriteName.HasValue())
             {
                 sprite = GameFrame.Base.Resources.Manager.Sprites.Get(spriteName);
@@ -182,7 +182,7 @@ namespace Assets.Scripts.Scenes.GameScene
             if (moneyBehaviour != null)
             {
                 float currentPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
-                priceField.SetText(currentPrice.ToString("F1")+"/t"); //TODO
+                priceField.SetText(currentPrice.ToString("F1") + "/t"); //TODO
             }
 
             sellButton.enabled = true;

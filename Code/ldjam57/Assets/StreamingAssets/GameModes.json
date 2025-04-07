@@ -31,6 +31,10 @@
         {
           "IsReferenced": true,
           "Reference": "Crystals"
+        },
+        {
+          "IsReferenced": true,
+          "Reference": "Spice"
         }
       ],
       "Width": 64,
@@ -115,6 +119,17 @@
           },
           "Position": {
             "X": 45,
+            "y": -1
+          },
+          "Capacity": 100
+        },
+        {
+          "Mineral": {
+            "IsReferenced": true,
+            "Reference": "Spice"
+          },
+          "Position": {
+            "X": 47,
             "y": -1
           },
           "Capacity": 100
