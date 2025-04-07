@@ -32,6 +32,10 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         Button sellButton;
         [SerializeField]
+        TextMeshProUGUI buttonText;
+        [SerializeField]
+        TextMeshProUGUI nameLabel;
+        [SerializeField]
         ProgressBarBehaviour fillAmountBehaviour;
         [SerializeField]
         MoneyBehaviour moneyBehaviour;
@@ -53,6 +57,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.SetValue(0);
             }
+            nameLabel.SetText(depository.Mineral.Name);
         }
 
         public void Update()
@@ -189,14 +194,17 @@ namespace Assets.Scripts.Scenes.GameScene
 
             sellButton.enabled = true;
 
-            //if (depository.Value > 1)
-            //{
-            //    sellButton.enabled = true;
-            //}
-            //else
-            //{
-            //    sellButton.enabled = false;
-            //}
+            if (depository.Value > 1)
+            {
+                var mineralPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
+                var totalValue = depository.Value * mineralPrice;
+
+                buttonText.SetText($"Sell for {totalValue.ToString("F0")}");
+            }
+            else
+            {
+                buttonText.SetText($"Nothing to Sell");
+            }
         }
 
         public Dictionary<Mineral, double> GetStorage()
