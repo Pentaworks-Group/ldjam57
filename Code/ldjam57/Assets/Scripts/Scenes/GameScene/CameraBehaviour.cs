@@ -47,6 +47,13 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 Debug.LogError("No Camera component found on this GameObject!");
             }
+
+            Base.Core.Game.OnPauseToggled.AddListener(OnPauseToggled);
+        }
+
+        private void OnPauseToggled(Boolean isPaused)
+        {
+            //gameObject.SetActive(isPaused);
         }
 
         private void OnEnable()
@@ -264,7 +271,7 @@ namespace Assets.Scripts.Scenes.GameScene
             float targetSize = currentSize;
 
             targetSize -= zoomInput * sensitivity;
-            Debug.Log(targetSize+", "+sensitivity+", "+zoomInput);
+            Debug.Log(targetSize + ", " + sensitivity + ", " + zoomInput);
             targetSize = Mathf.Clamp(targetSize, minZoom, maxZoom);
 
             mainCamera.orthographicSize = targetSize;

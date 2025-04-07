@@ -15,24 +15,21 @@ namespace Assets.Scripts.Prefabs.Menus
         private GameObject menuToggle;
         private GameObject pauseArea;
         private GameObject optionsArea;
-        //        private GameObject savedGameArea;
+        private GameObject savedGameArea;
         private Button backButton;
         private Button continueButton;
-
 
         private Text currentOpenMenu;
         private List<Action> openSubMenues = new List<Action>();
 
-
         public GameObject Tutorial;
-
 
         private void Awake()
         {
             menuToggle = transform.Find("ToggleArea").gameObject;
             pauseArea = transform.Find("ToggleArea/Background/Background/ContentArea/PauseArea").gameObject;
             optionsArea = transform.Find("ToggleArea/Background/Background/ContentArea/OptionsArea").gameObject;
-            //            savedGameArea = transform.Find("ToggleArea/Background/Background/ContentArea/SaveGameArea").gameObject;
+            savedGameArea = transform.Find("ToggleArea/Background/Background/ContentArea/SavedGamesArea").gameObject;
 
             backButton = transform.Find("ToggleArea/Background/Background/Header/Back").GetComponent<Button>();
             continueButton = transform.Find("ToggleArea/Background/Background/Header/Continue").GetComponent<Button>();
@@ -85,7 +82,7 @@ namespace Assets.Scripts.Prefabs.Menus
         {
             if (menuToggle.activeSelf == true)
             {
-                if (this.optionsArea.activeSelf/* || this.savedGameArea.activeSelf*/)
+                if (this.optionsArea.activeSelf || this.savedGameArea.activeSelf)
                 {
                     OnBackButtonClicked();
                 }
@@ -146,10 +143,10 @@ namespace Assets.Scripts.Prefabs.Menus
 
         public void OnBackButtonClicked()
         {
-            /*            if (this.savedGameArea.activeSelf)
-                        {
-                            Base.Core.Game.SaveOptions();
-                        }*/
+            if (this.savedGameArea.activeSelf)
+            {
+                Base.Core.Game.SaveOptions();
+            }
 
             Base.Core.Game.PlayButtonSound();
             SetVisible(pauseMenu: true);
@@ -168,7 +165,6 @@ namespace Assets.Scripts.Prefabs.Menus
 
             Base.Core.Game.Stop();
             Base.Core.Game.ChangeScene(SceneNames.MainMenu);
-
         }
 
         private void SetVisible(Boolean pauseMenu = false, Boolean options = false, Boolean savedGame = false)
@@ -188,7 +184,7 @@ namespace Assets.Scripts.Prefabs.Menus
 
             this.pauseArea.SetActive(pauseMenu);
             this.optionsArea.SetActive(options);
-            //            this.savedGameArea.SetActive(savedGame);
+            this.savedGameArea.SetActive(savedGame);
 
             this.continueButton.gameObject.SetActive(pauseMenu);
             this.backButton.gameObject.SetActive(!pauseMenu);
