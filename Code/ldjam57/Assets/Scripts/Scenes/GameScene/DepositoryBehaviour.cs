@@ -7,6 +7,7 @@ using TMPro;
 using UnityEditor.UIElements;
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private Depository depository;
 
         private SpriteRenderer levelRenderer;
+        private GameObject popupMenu;
 
         [SerializeField]
         TextMeshProUGUI nameField;
@@ -31,13 +33,33 @@ namespace Assets.Scripts.Scenes.GameScene
             this.depository = depository;
 
             levelRenderer = transform.Find("Stash").GetComponent<SpriteRenderer>();
+            popupMenu = transform.Find("PopupMenu").gameObject;
 
             levelRenderer.color = depository.Mineral.Color.ToUnity();
+
+        }
+
+        public void Update()
+        {
+            if ((Input.GetMouseButtonDown(0)))
+            {
+                if (!isPointerOverPopupMenu() && popupMenu != null && popupMenu.activeInHierarchy)
+                {
+//                    popupMenu.SetActive(false);
+                }
+            }
         }
 
         public void OnClicked()
         {
             // Open Shop?
+            if (popupMenu != null)
+            {
+                popupMenu.SetActive(true);
+
+                //Update UI
+//                nameField.SetText(depository.Mineral.Name);
+            }
         }
 
         /// <summary>
@@ -128,5 +150,11 @@ namespace Assets.Scripts.Scenes.GameScene
 
             this.levelRenderer.sprite = sprite;
         }
+
+        private bool isPointerOverPopupMenu()
+        {
+            return false;
+        }
+
     }
 }

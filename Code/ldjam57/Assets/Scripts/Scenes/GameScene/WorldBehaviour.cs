@@ -294,14 +294,15 @@ namespace Assets.Scripts.Scenes.GameScene
 
                     if (clickedObject.TryGetComponent<IClickable>(out var clickable))
                     {
-                        if (clickable is DepositoryBehaviour test)
+                        clickable?.OnClicked();
+/*                        if (clickable is DepositoryBehaviour test)
                         {
                             this.shop.ShowShop();
                         }
                         else
                         {
                             clickable?.OnClicked();
-                        }
+                        }*/
                     }
                 }
             }
