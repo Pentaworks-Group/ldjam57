@@ -11,6 +11,8 @@ public class MoneyBehaviour : MonoBehaviour
 {
 	[SerializeField]
 	TextMeshProUGUI cashLabel;
+    [SerializeField]
+    NewsBehaviour newsBehaviour;
 
     [Header("Market Settings")]
     [Range(-1f, 1f)]
@@ -162,6 +164,11 @@ public class MoneyBehaviour : MonoBehaviour
     private IEnumerator ApplyEventEffect(MarketEvent marketEvent)
     {
         activeEvents.Add(marketEvent);
+
+        if (newsBehaviour != null )
+        {
+            newsBehaviour.ShowEvent(marketEvent);
+        }
 
         // Effect duration
         yield return new WaitForSeconds((float)marketEvent.Duration);

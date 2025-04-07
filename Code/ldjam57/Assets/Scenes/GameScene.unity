@@ -286,6 +286,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CashDisplay
       objectReference: {fileID: 0}
+    - target: {fileID: 6927256131127543367, guid: 4234531fe89a8ee47892f644cc2d0348, type: 3}
+      propertyPath: newsBehaviour
+      value: 
+      objectReference: {fileID: 496738135547973315}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1419,6 +1423,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4366318182897228131, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4366318182897228131, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4366318182897228131, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261325415253371030, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261325415253371030, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8261325415253371030, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1429,6 +1457,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2688487644182131498, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
   m_PrefabInstance: {fileID: 496738135547973313}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &496738135547973315 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1964577918341713523, guid: 0ad46919fd13f28459f5389cb2093de8, type: 3}
+  m_PrefabInstance: {fileID: 496738135547973313}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80de11930489e2d4b88493e28448c4ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &987087414621724742
 PrefabInstance:
   m_ObjectHideFlags: 0
