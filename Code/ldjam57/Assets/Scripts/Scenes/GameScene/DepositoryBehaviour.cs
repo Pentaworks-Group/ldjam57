@@ -19,7 +19,6 @@ namespace Assets.Scripts.Scenes.GameScene
         private SpriteRenderer levelRenderer;
 
         private Dictionary<Mineral, double> storage = new();
-
         private GameObject popupMenu;
 
         [SerializeField]
@@ -32,7 +31,6 @@ namespace Assets.Scripts.Scenes.GameScene
         Button sellButton;
         [SerializeField]
         ProgressBarBehaviour fillAmountBehaviour;
-
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
             this.worldBehaviour = worldBehaviour;
@@ -51,7 +49,6 @@ namespace Assets.Scripts.Scenes.GameScene
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.SetValue(0);
             }
-
         }
 
         public void Update()
@@ -62,9 +59,9 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
+
         public void OnClicked()
         {
-            // Open Shop?
             if (popupMenu != null && !popupMenu.activeSelf)
             {
                 popupMenu.SetActive(true);
@@ -76,6 +73,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 popupMenu.SetActive(false);
             }
         }
+
 
         /// <summary>
         /// Adds given amount to deposit.
@@ -121,13 +119,11 @@ namespace Assets.Scripts.Scenes.GameScene
 
             return false;
         }
-
         public void Sell()
         {
             //TODO: right now just sell 1 (t)
             Debug.Log("Sell");
         }
-
         private void UpdateLevel()
         {
             var level = depository.Value / depository.Capacity;
@@ -165,6 +161,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             this.levelRenderer.sprite = sprite;
+
 
             if (fillAmountBehaviour != null)
             {
