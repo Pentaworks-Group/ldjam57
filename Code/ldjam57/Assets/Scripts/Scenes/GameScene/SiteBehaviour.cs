@@ -1,4 +1,5 @@
 using Assets.Scripts.Core.Model;
+using Assets.Scripts.Core.Model.Inventories;
 
 using GameFrame.Core.Math;
 
@@ -6,7 +7,7 @@ namespace Assets.Scripts.Scenes.GameScene
 {
     public class SiteBehaviour : TileBehaviour, IClickable
     {
-        private MiningTool miningTool;
+        private MiningToolInventoryItem miningToolInventoryItem;
         private Direction direction;
         private Point2 pos;
 
@@ -15,10 +16,10 @@ namespace Assets.Scripts.Scenes.GameScene
             this.digable = false;
         }
 
-        public void Init(WorldBehaviour worldBehaviour, Point2 pos, MiningTool miningTool, Direction direction)
+        public void Init(WorldBehaviour worldBehaviour, Point2 pos, MiningToolInventoryItem miningToolInventoryItem, Direction direction)
         {
             base.Init(worldBehaviour);
-            this.miningTool = miningTool;
+            this.miningToolInventoryItem = miningToolInventoryItem;
             this.direction = direction;
             this.pos = pos;
         }
@@ -28,9 +29,9 @@ namespace Assets.Scripts.Scenes.GameScene
             worldBehaviour.BuildDigSite(this);
         }
 
-        public MiningTool GetMiningTool()
+        public MiningToolInventoryItem GetMiningTool()
         {
-            return miningTool;
+            return miningToolInventoryItem;
         }
 
         public Direction GetDirection()

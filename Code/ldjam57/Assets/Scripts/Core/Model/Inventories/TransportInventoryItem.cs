@@ -7,6 +7,11 @@ namespace Assets.Scripts.Core.Model.Inventories
         public Transport Transport { get; set; }
         public Boolean IsVertical { get; set; }
 
+        public override System.String GetKey()
+        {
+            return Transport.Reference;
+        }
+
         public override String GetName()
         {
             return Transport.Name;

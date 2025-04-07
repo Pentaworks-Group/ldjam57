@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.Scripts.Base;
 using Assets.Scripts.Core.Model.Inventories;
-using NUnit.Framework;
+using Assets.Scripts.Extensions;
+
 using TMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Assets.Scripts.Prefabs.Menus
 {
@@ -56,7 +50,7 @@ namespace Assets.Scripts.Prefabs.Menus
             }
             else
             {
-                 buyButton.enabled = true;
+                buyButton.enabled = true;
             }
         }
 
@@ -65,24 +59,32 @@ namespace Assets.Scripts.Prefabs.Menus
             //TODO: put in Storage?
             if (content.Type == ShopItemType.Tool && content.MiningTool != null)
             {
-                Core.Model.Inventories.MiningToolInventoryItem item = new Core.Model.Inventories.MiningToolInventoryItem();
-                item.MiningTool = content.MiningTool;
-                Base.Core.Game.State.Inventory.MiningTools.Add(item);
-            } 
-            else if (content.Type == ShopItemType.Transport && content.Transport != null) 
+                var item = new Core.Model.Inventories.MiningToolInventoryItem
+                {
+                    MiningTool = content.MiningTool,
+                    Amount = 1
+                };
+
+                Base.Core.Game.State.Inventory.MiningTools.AddOrUpdate(item);
+            }
+            else if (content.Type == ShopItemType.Transport && content.Transport != null)
             {
-                TransportInventoryItem item = new TransportInventoryItem();
-                item.Transport = content.Transport;
+                TransportInventoryItem item = new TransportInventoryItem()
+                {
+                    Transport = content.Transport,
+                    Amount = 1,
+                };
 
                 if (content.TransportDirection == TransportDirection.Horizontal)
                 {
                     item.IsVertical = false;
-                    Base.Core.Game.State.Inventory.HorizontalTransports.Add(item);
+                    Base.Core.Game.State.Inventory.HorizontalTransports.AddOrUpdate(item);
                 }
                 else if (content.TransportDirection == TransportDirection.Vertical)
                 {
                     item.IsVertical = true;
-                    Base.Core.Game.State.Inventory.VerticalTransports.Add(item);
+
+                    Base.Core.Game.State.Inventory.VerticalTransports.AddOrUpdate(item);
                 }
             }
 

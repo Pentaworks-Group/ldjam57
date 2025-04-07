@@ -149,17 +149,17 @@ namespace Assets.Scripts.Scenes.GameScene
                         var tile = GetTileRelative(shaft.GetPosition(), -1, 0);
                         if (tile?.IsDigable() == true)
                         {
-                            CreateSite(shaft.GetPosition(), inventoryItem.MiningTool, Direction.Left);
+                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Left);
                         }
                         tile = GetTileRelative(shaft.GetPosition(), 1, 0);
                         if (tile?.IsDigable() == true)
                         {
-                            CreateSite(shaft.GetPosition(), inventoryItem.MiningTool, Direction.Right);
+                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Right);
                         }
                         tile = GetTileRelative(shaft.GetPosition(), 0, 1);
                         if (tile?.IsDigable() == true)
                         {
-                            CreateSite(shaft.GetPosition(), inventoryItem.MiningTool, Direction.Down);
+                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Down);
                         }
                     }
                 }
@@ -183,7 +183,7 @@ namespace Assets.Scripts.Scenes.GameScene
             var digger = new Digger()
             {
                 Direction = siteBehaviour.GetDirection(),
-                MiningTool = siteBehaviour.GetMiningTool(),
+                MiningTool = siteBehaviour.GetMiningTool().MiningTool,
                 Position = siteBehaviour.GetPosition()
             };
 
@@ -206,7 +206,7 @@ namespace Assets.Scripts.Scenes.GameScene
             Sites.Clear();
         }
 
-        private void CreateSite(Point2 pos, MiningTool miningTool, Direction direction)
+        private void CreateSite(Point2 pos, MiningToolInventoryItem miningTool, Direction direction)
         {
             UnityEngine.Vector3 position;
             Quaternion rotation;
