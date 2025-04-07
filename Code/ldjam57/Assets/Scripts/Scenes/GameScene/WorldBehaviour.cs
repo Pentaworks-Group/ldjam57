@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Linq;
 
 using Assets.Scripts.Core;
@@ -15,7 +13,6 @@ using GameFrame.Core.Math;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.PlayerSettings;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -50,7 +47,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private GameObject DepositoryTemplate;
         [SerializeField]
         private GameObject DepositoryContainer;
-        
+
         [SerializeField]
         private InventoryMenuBehaviour inventoryMenuBehaviour;
 
@@ -71,19 +68,17 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void Awake()
         {
-            Base.Core.Game.ExecuteAfterInstantation(GenerateWorld);
+            Base.Core.Game.ExecuteAfterInstantation(OnGameInitialized);
         }
 
         private void OnEnable()
         {
-            var clickAction = InputSystem.actions.FindAction("Click");
-            clickAction.performed += OnClick;
+            HookActions();
         }
 
         private void OnDisable()
         {
-            var clickAction = InputSystem.actions.FindAction("Click");
-            clickAction.performed -= OnClick;
+            UnhookActions();
         }
 
         public void DisplayPosibleDigSites()
@@ -233,6 +228,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 return;
             }
+
             var newSite = GameObject.Instantiate(SiteTemplate, position, rotation, TilesParent.transform);
             newSite.Init(this, pos, miningTool, direction);
             newSite.gameObject.SetActive(true);
@@ -245,7 +241,6 @@ namespace Assets.Scripts.Scenes.GameScene
             var transport = Base.Core.Game.State.Inventory.HorizontalTransports.FirstOrDefault();
             DisplayPossibleHorizontalTransportSites(transport);
         }
-
 
         private void DisplayPossibleHorizontalTransportSites(TransportInventoryItem transport)
         {
@@ -326,7 +321,9 @@ namespace Assets.Scripts.Scenes.GameScene
             if (context.phase == InputActionPhase.Performed)
             {
                 UnityEngine.Vector2 mousePosition = Mouse.current.position.ReadValue();
+
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     GameObject clickedObject = hit.collider.gameObject;
@@ -334,16 +331,28 @@ namespace Assets.Scripts.Scenes.GameScene
                     if (clickedObject.TryGetComponent<IClickable>(out var clickable))
                     {
                         clickable?.OnClicked();
-/*                        if (clickable is DepositoryBehaviour test)
-                        {
-                            this.shop.ShowShop();
-                        }
-                        else
-                        {
-                            clickable?.OnClicked();
-                        }*/
                     }
                 }
+            }
+        }
+
+        private void OnGameInitialized()
+        {
+            shop.OnShopToggled.AddListener(OnShopToggeled);
+            GenerateWorld();
+        }
+
+        private void OnShopToggeled(Boolean isOpen)
+        {
+            if (isOpen)
+            {
+                UnhookActions();
+                this.CameraBehaviour.UnhookActions();
+            }
+            else
+            {
+                HookActions();
+                this.CameraBehaviour.HookActions();
             }
         }
 
@@ -592,7 +601,8 @@ namespace Assets.Scripts.Scenes.GameScene
         private List<IStorage> EnsureStoragesAtPoint(Point2 pos)
         {
             //storagesAtPoint
-            if (!GetStoragesAtPoint(pos, out var storagesAtPoint)) {
+            if (!GetStoragesAtPoint(pos, out var storagesAtPoint))
+            {
                 storagesAtPoint = new();
                 storages[pos.X, pos.Y] = storagesAtPoint;
             }
@@ -615,5 +625,19 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return GetStoragesAtPosition(pos.X, pos.Y, out storagesAtPoint);
         }
+
+
+        private void HookActions()
+        {
+            var clickAction = InputSystem.actions.FindAction("Click");
+            clickAction.performed += OnClick;
+        }
+
+        private void UnhookActions()
+        {
+            var clickAction = InputSystem.actions.FindAction("Click");
+            clickAction.performed -= OnClick;
+        }
+
     }
 }

@@ -175,7 +175,7 @@ public class MoneyBehaviour : MonoBehaviour
     {
         foreach (var material in Core.Game.State.Market.MineralValues)
         {
-            if (material.Mineral.Name.Equals(mineral.Name, StringComparison.OrdinalIgnoreCase))
+            if (material.Mineral == mineral)
             {
                 return (float) material.CurrentPrice;
             }

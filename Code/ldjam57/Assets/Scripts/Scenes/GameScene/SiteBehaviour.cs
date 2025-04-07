@@ -26,6 +26,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void OnClicked()
         {
+            miningToolInventoryItem.Amount -= 1;
             worldBehaviour.BuildDigSite(this);
         }
 

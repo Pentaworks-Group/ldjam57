@@ -1431,6 +1431,10 @@ PrefabInstance:
       propertyPath: shop
       value: 
       objectReference: {fileID: 1021000410}
+    - target: {fileID: 6998301892688144944, guid: ee1682c2e1297b747a92801466828273, type: 3}
+      propertyPath: worldBehaviour
+      value: 
+      objectReference: {fileID: 1938564927}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
