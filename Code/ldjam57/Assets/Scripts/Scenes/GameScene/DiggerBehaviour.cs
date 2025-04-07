@@ -1,16 +1,24 @@
 using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
-
+using Assets.Scripts.Core.Model.Inventories;
 using GameFrame.Core.Math;
-
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
     public class DiggerBehaviour : TileBehaviour, IClickable, IStorage
     {
+        [SerializeField]
+        private GameObject popUpObject;
+        [SerializeField]
+        private TextMeshProUGUI nameText;
+        [SerializeField]
+        private Button upgradeButton;
+
         private Digger digger;
         private List<GroundBehaviour> targets = new List<GroundBehaviour>();
 
@@ -21,6 +29,9 @@ namespace Assets.Scripts.Scenes.GameScene
         private ShaftBehaviour shaft;
 
         private Animator _animator;
+
+        private MiningToolInventoryItem upgradeOption;
+        private MiningToolInventoryItem inventoryItem;
 
         public UnityEvent<DiggerBehaviour> OnDiggerMoved { get; set; } = new UnityEvent<DiggerBehaviour>();
 
@@ -59,6 +70,7 @@ namespace Assets.Scripts.Scenes.GameScene
             this.digger = digger;
             _animator = gameObject.GetComponent<Animator>();
             _animator.gameObject.SetActive(true);
+            nameText.text = digger.MiningTool.Name;
             StartMining();
         }
 
@@ -220,6 +232,26 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
+        private MiningToolInventoryItem GetUpgradeOption()
+        {
+            var mTools = Base.Core.Game.State.Inventory.MiningTools;
+            for (int i = 0; i < mTools.Count; i++)
+            {
+                var tTool = mTools[i];
+                if (tTool.MiningTool.Reference == digger.MiningTool.Reference)
+                {
+                    inventoryItem = tTool;
+                    var nI = i + 1;
+                    if (nI < mTools.Count && mTools[nI].Amount > 0)
+                    {
+                        return mTools[nI];
+                    }
+                    return null;
+                }
+            }
+            return null;
+        }
+
         public void StopMining()
         {
             digger.IsMining = false;
@@ -228,10 +260,32 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void OnClicked()
         {
-            RemoveDigger();
+            OpenPopup();
         }
 
-        private void RemoveDigger()
+        public void Upgrade()
+        {
+            upgradeOption.Amount -= 1;
+            inventoryItem.Amount += 1;
+            digger.MiningTool = upgradeOption.MiningTool;
+            nameText.text = digger.MiningTool.Name;
+            ClosePopup();
+            playSoundEffect();
+
+        }
+        private void OpenPopup()
+        {
+            upgradeOption = GetUpgradeOption();
+            upgradeButton.interactable = upgradeOption != null;
+            popUpObject.SetActive(true);
+        }
+
+        public void ClosePopup()
+        {
+            popUpObject.SetActive(false);
+        }
+
+        public void RemoveDigger()
         {
             Base.Core.Game.State.ActiveDiggers.Remove(digger);
             Base.Core.Game.State.Inventory.MiningTools.Find(m => m.MiningTool.Reference == digger.MiningTool.Reference).Amount += 1;
@@ -252,6 +306,8 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return false;
         }
+
+
 
         void RegisterStorage()
         {
