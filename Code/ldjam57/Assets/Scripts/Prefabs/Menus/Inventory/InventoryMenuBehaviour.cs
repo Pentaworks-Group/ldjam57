@@ -63,11 +63,13 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
                     {
                         if (registeredBehaviour.IsExpanded)
                         {
-                            registeredBehaviour.Toggle();
+                            registeredBehaviour.Close();
                         }
                     }
                 }
             }
+
+            this.OnItemSelected.Invoke(default);
         }
 
         private void InventoryItem_OnItemSelected(InventoryItem inventoryItem)

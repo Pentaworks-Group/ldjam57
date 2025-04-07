@@ -13,7 +13,7 @@
     "IsUnlockable": true,
     "UnlockCost": 100000,
     "PurchaseCost": 1000,
-    "OperatingCost": 0.1
+    "OperatingCost": 0.02
   },
   {
     "Reference": "Cart",
@@ -29,7 +29,7 @@
     "IsUnlockable": true,
     "UnlockCost": 100000,
     "PurchaseCost": 1000,
-    "OperatingCost": 0.1
+    "OperatingCost": 0.02
   },
   {
     "Reference": "Ladder",
