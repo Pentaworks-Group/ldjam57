@@ -10,6 +10,7 @@ namespace Assets.Scripts.Constants
         public const String Options = Scenes.OptionsName;
         public const String Game = Scenes.GameName;
         public const String TerrainTest = Scenes.TerrainTestName;
+        public const String GameOver = Scenes.GameOverName;
 
         public static List<String> GameSceneNames = new() { Scenes.MainMenuName, Scenes.OptionsName, Scenes.CreditsName, Scenes.GameName };
         public static List<String> DevelopmentSceneNames = new() { Scenes.TerrainTestName };

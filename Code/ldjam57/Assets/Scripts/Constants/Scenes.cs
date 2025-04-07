@@ -108,6 +108,24 @@ namespace Assets.Scripts.Constants
             }
         }
 
+        public const String GameOverName = "GameOverScene";
+        private static Scene gameOver;
+        public static Scene GameOver
+        {
+            get
+            {
+                if (gameOver == default)
+                {
+                    gameOver = new Scene()
+                    {
+                        Name = GameOverName
+                    };
+                }
+
+                return gameOver;
+            }
+        }
+
         public static IList<Scene> GetAll()
         {
             return new List<Scene>()
@@ -116,7 +134,8 @@ namespace Assets.Scripts.Constants
                 Credits,
                 Options,
                 Game,
-                TerrainTest
+                TerrainTest,
+                GameOver
             };
         }
     }

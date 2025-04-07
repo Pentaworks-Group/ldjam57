@@ -1,4 +1,5 @@
 using Assets.Scripts.Base;
+using Assets.Scripts.Constants;
 using Assets.Scripts.Core.Model;
 using System;
 using System.Collections;
@@ -69,6 +70,11 @@ public class MoneyBehaviour : MonoBehaviour
             {
                 UpdatePrices();
                 nextUpdateTime = Time.time + (float)Core.Game.State.Market.UpdateInterval;
+            }
+
+            if (Core.Game.State.Bank.Credits < 0 )
+            {
+                Core.Game.ChangeScene(SceneNames.GameOver);
             }
         }
     }
