@@ -234,6 +234,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private void RemoveDigger()
         {
             Base.Core.Game.State.ActiveDiggers.Remove(digger);
+            Base.Core.Game.State.Inventory.MiningTools.Find(m => m.MiningTool.Reference == digger.MiningTool.Reference).Amount += 1;
             Destroy(gameObject);
         }
 
