@@ -6,5 +6,6 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
     {
         Boolean IsExpanded { get; }
         void Toggle();
+        void Close();
     }
 }
