@@ -192,7 +192,7 @@ public class MoneyBehaviour : MonoBehaviour
                 return (float) material.CurrentPrice;
             }
         }
-        Debug.LogWarning($"Material '{mineral.Name}' not found!");
+        //Debug.LogWarning($"Material '{mineral.Name}' not found!");
         return -1f;
     }
 

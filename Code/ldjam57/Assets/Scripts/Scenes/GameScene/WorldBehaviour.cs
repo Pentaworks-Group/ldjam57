@@ -7,6 +7,7 @@ using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Model.Inventories;
 using Assets.Scripts.Prefabs.Menus;
 using Assets.Scripts.Prefabs.Menus.Inventory;
+using Assets.Scripts.UI;
 
 using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
@@ -339,6 +340,10 @@ namespace Assets.Scripts.Scenes.GameScene
         private void OnGameInitialized()
         {
             shop.OnShopToggled.AddListener(OnShopToggeled);
+
+            inventoryMenuBehaviour.PointerEntered.AddListener(() => UnhookActions());
+            inventoryMenuBehaviour.PointerExited.AddListener(() => HookActions());
+
             GenerateWorld();
         }
 
@@ -431,6 +436,12 @@ namespace Assets.Scripts.Scenes.GameScene
             var depositoryGameObject = Instantiate(DepositoryTemplate, position, DepositoryTemplate.transform.rotation, DepositoryContainer.transform);
 
             var depositoryBehaviour = depositoryGameObject.GetComponent<DepositoryBehaviour>();
+            if (depositoryGameObject.transform.Find("PopupMenu").TryGetComponent<MouseEventBehaviour>(out var mouseEventBehaviour))
+            {
+                mouseEventBehaviour.PointerEntered.AddListener(UnhookActions);
+                mouseEventBehaviour.PointerExited.AddListener(HookActions);
+            }
+
             MoneyBehaviour sceneMoneyBehaviour = FindFirstObjectByType<MoneyBehaviour>();
             depositoryBehaviour.SetMoneyBehaviour(sceneMoneyBehaviour);
 
