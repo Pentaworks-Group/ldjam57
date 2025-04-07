@@ -53,6 +53,8 @@ namespace Assets.Scripts.Prefabs.Menus
                 list.Add(item);
             });
 
+            list.Sort();
+
             SetContentList(list);
         }
     }

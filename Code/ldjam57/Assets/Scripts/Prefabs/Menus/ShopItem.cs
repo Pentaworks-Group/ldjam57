@@ -19,7 +19,7 @@ namespace Assets.Scripts.Prefabs.Menus
         Vertical
     }
 
-    public class ShopItem
+    public class ShopItem: IComparable<ShopItem>
     {
         public String Name {  get; set; }
         public Decimal PurchaseCost { get; set; }
@@ -29,5 +29,10 @@ namespace Assets.Scripts.Prefabs.Menus
         public MiningTool MiningTool { get; set; } = null;
         public Transport Transport { get; set; } = null;
         public TransportDirection TransportDirection { get; set; }
+
+        public int CompareTo(ShopItem other)
+        {
+            return other.Name.CompareTo(Name);
+        }
     }
 }
