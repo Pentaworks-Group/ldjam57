@@ -378,11 +378,14 @@ namespace Assets.Scripts.Scenes.GameScene
             if (isOpen)
             {
                 UnhookActions();
+                this.inventoryMenuBehaviour.DisableButtons();
                 this.CameraBehaviour.UnhookActions();
             }
             else
             {
                 HookActions();
+                this.inventoryMenuBehaviour.gameObject.SetActive(true);
+                this.inventoryMenuBehaviour.EnableButtons();
                 this.CameraBehaviour.HookActions();
             }
         }
@@ -672,12 +675,15 @@ namespace Assets.Scripts.Scenes.GameScene
             return GetStoragesAtPosition(pos.X, pos.Y, out storagesAtPoint);
         }
 
-
         private void HookActions()
         {
-            var clickAction = InputSystem.actions.FindAction("Click");
-            clickAction.performed += OnClick;
-            touchPressed.performed += OnTouched;
+         
+            if (!shop.IsOpen)
+            {
+                var clickAction = InputSystem.actions.FindAction("Click");
+                clickAction.performed += OnClick;
+                touchPressed.performed += OnTouched;
+            }
         }
 
         private void UnhookActions()
@@ -686,6 +692,5 @@ namespace Assets.Scripts.Scenes.GameScene
             clickAction.performed -= OnClick;
             touchPressed.performed -= OnTouched;
         }
-
     }
 }

@@ -26,11 +26,32 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
 
         [SerializeField]
         private GameObject buttonTemplate;
+        private List<InventoryItemAmountBehaviour> spawnedButtons = new List<InventoryItemAmountBehaviour>();
 
         private Boolean isExpanded;
         public Boolean IsExpanded => isExpanded;
 
         protected List<TInventoryItem> inventoryItems;
+
+        public void EnableButtons()
+        {
+            this.toggleButton.interactable = true;
+
+            foreach (var spawnedButtons in this.spawnedButtons)
+            {
+                spawnedButtons.RestoreStatus();
+            }
+        }
+
+        public void DisableButtons()
+        {
+            this.toggleButton.interactable = false;
+
+            foreach (var spawnedButtons in this.spawnedButtons)
+            {
+                spawnedButtons.ForceDisable();
+            }
+        }
 
         public virtual void Init(List<TInventoryItem> inventoryItems)
         {
@@ -132,7 +153,7 @@ namespace Assets.Scripts.Prefabs.Menus.Inventory
         private void UpdateInventoryText()
         {
             var total = 0;
-            
+
             foreach (var item in this.inventoryItems)
             {
                 total += item.Amount;
