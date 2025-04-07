@@ -15,6 +15,7 @@ using GameFrame.Core.Math;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -235,6 +236,7 @@ namespace Assets.Scripts.Scenes.GameScene
             var newSite = GameObject.Instantiate(SiteTemplate, position, rotation, TilesParent.transform);
             newSite.Init(this, pos, miningTool, direction);
             newSite.gameObject.SetActive(true);
+            newSite.gameObject.name = "DigSite_" + pos.X + "," + pos.Y;
             Sites.Add(newSite);
         }
 
@@ -272,6 +274,8 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
             newSite.Init(this, transport.Transport, shaft, direction);
+            var pos = shaft.GetPosition();
+            newSite.gameObject.name = "TransportSite_" + pos.X + "," + pos.Y;
             newSite.gameObject.SetActive(true);
             TransportSites.Add(newSite);
         }
@@ -311,6 +315,8 @@ namespace Assets.Scripts.Scenes.GameScene
             var p = shaftBehaviour.transform.position;
             transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
             transportBehaviour.Init(this, shaftBehaviour, transport, direction);
+            var pos = shaftBehaviour.GetPosition();
+            transportBehaviour.gameObject.name = "Transport" + pos.X + "," + pos.Y;
             transportBehaviour.gameObject.SetActive(true);
             return transportBehaviour;
         }
@@ -383,7 +389,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             var groundTile = GameObject.Instantiate(TileTemplate, position, TileTemplate.transform.rotation, TilesParent.transform);
 
-            groundTile.name = "Tile_" + pos;
+            groundTile.name = "Tile_" + pos.X + "," + pos.Y;
 
             groundTile.Init(this, tile);
 
@@ -402,7 +408,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var position = GetUnityVector(pos, shaftTemplate.transform.position.z);
             var shaftBehaviour = GameObject.Instantiate(shaftTemplate, position, shaftTemplate.transform.rotation, TilesParent.transform);
-            shaftBehaviour.gameObject.name = shaftTemplate.gameObject.name + "_" + pos;
+            shaftBehaviour.gameObject.name = shaftTemplate.gameObject.name + "_" + pos.X + "," + pos.Y; ;
             shaftBehaviour.Init(this, pos);
             Shafts.Add(shaftBehaviour);
             shaftBehaviour.gameObject.SetActive(true);

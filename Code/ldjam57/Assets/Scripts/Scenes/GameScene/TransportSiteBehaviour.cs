@@ -53,8 +53,10 @@ namespace Assets.Scripts.Scenes.GameScene
                 var lScale = transform.localScale;
                 var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
 
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, yOffset: ((1 - scale.y) / 2) * .9f);
-
+                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, yOffset: (-(1 - scale.y) / 2) * .9f);
+                var rotation = transform.rotation;
+                rotation *= Quaternion.Euler(0, 0, 180);
+                transform.rotation = rotation;
                 transform.position = position;
                 transform.localScale = scale;
 
