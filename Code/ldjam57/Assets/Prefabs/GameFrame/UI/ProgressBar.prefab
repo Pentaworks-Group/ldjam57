@@ -268,3 +268,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fillImage: {fileID: 5162946790343554836}
   fillAmount: 1
+  barRectTransform: {fileID: 0}

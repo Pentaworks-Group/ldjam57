@@ -34,7 +34,11 @@ namespace Assets.Scripts.Core.Definitons.Loaders
                             var newMineralValueDefinition = new MineralValueDefinition()
                             {
                                 Mineral = CheckItem(marketValue.Mineral, this.mineralCache),
-                                Value = marketValue.Value
+                                Value = marketValue.Value,
+                                Volatility = marketValue.Volatility,
+                                MinPrice = marketValue.MinPrice,
+                                MaxPrice = marketValue.MaxPrice,
+                                TrendStrength = marketValue.TrendStrength,
                             };
 
                             marketDefinition.MineralValues.Add(newMineralValueDefinition);

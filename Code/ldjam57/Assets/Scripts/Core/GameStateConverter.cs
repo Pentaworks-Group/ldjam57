@@ -205,6 +205,10 @@ namespace Assets.Scripts.Core
                 {
                     Mineral = mineralMap[mineralMarketValue.Mineral.Reference],
                     Value = mineralMarketValue.Value.GetValueOrDefault(),
+                    Volatility = mineralMarketValue.Volatility.GetValueOrDefault(),
+                    MinPrice = mineralMarketValue.MinPrice.GetValueOrDefault(),
+                    MaxPrice = mineralMarketValue.MaxPrice.GetValueOrDefault(),
+                    TrendStrength = mineralMarketValue.TrendStrength.GetValueOrDefault(),
                 };
 
                 market.MineralValues.Add(newMarketValue);

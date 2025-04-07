@@ -9,7 +9,11 @@
           "Reference": "Copper",
           "IsReferenced": true
         },
-        "Value": 100.5
+        "Value": 50.0,
+        "Volatility": 0.6,
+        "MinPrice": 25.0,
+        "MaxPrice": 100.0,
+        "TrendStrength": 0.4
       }
     ]
   }

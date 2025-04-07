@@ -31,6 +31,9 @@ namespace Assets.Scripts.Scenes.GameScene
         Button sellButton;
         [SerializeField]
         ProgressBarBehaviour fillAmountBehaviour;
+        [SerializeField]
+        MoneyBehaviour moneyBehaviour;
+
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
             this.worldBehaviour = worldBehaviour;
@@ -174,7 +177,11 @@ namespace Assets.Scripts.Scenes.GameScene
             //Update UI
             nameField.SetText(depository.Mineral.Name);
             storageField.SetText(depository.Value.ToString("F1") + " t");
-            priceField.SetText("$" + depository.Value.ToString("F1") + "/t"); //TODO
+            if (moneyBehaviour != null)
+            {
+                float currentPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
+                priceField.SetText(currentPrice+"/t"); //TODO
+            }
 
             if (depository.Value > 1)
             {

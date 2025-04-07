@@ -1219,6 +1219,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3654858470771838888, guid: 2917c93857d228f4fa1aeee9f9939322, type: 3}
+      propertyPath: moneyBehaviour
+      value: 
+      objectReference: {fileID: 2519459477107135147}
     - target: {fileID: 4356271567669312289, guid: 2917c93857d228f4fa1aeee9f9939322, type: 3}
       propertyPath: m_Name
       value: Depository
@@ -1422,6 +1426,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4234531fe89a8ee47892f644cc2d0348, type: 3}
+--- !u!114 &2519459477107135147 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6927256131127543367, guid: 4234531fe89a8ee47892f644cc2d0348, type: 3}
+  m_PrefabInstance: {fileID: 2519459477107135146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4c373484a206c4fb5d54ab6088eef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3055115880420913359
 PrefabInstance:
   m_ObjectHideFlags: 0
