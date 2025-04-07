@@ -151,10 +151,6 @@
       {
         "Reference": "Drill",
         "IsReferenced": true
-      },
-      {
-        "Reference": "Digger",
-        "IsReferenced": true
       }
     ],
     "AvailableHorizontalTransports": [
@@ -185,22 +181,13 @@
             "IsReferenced": true
           },
           "Sprite": "Pickaxe",
-          "Amount": 5
+          "Amount": 1
         },
         {
           "MiningTool": {
             "Reference": "Drill",
             "IsReferenced": true
           },
-          "Sprite": "Bohrer",
-          "Amount": 0
-        },
-        {
-          "MiningTool": {
-            "Reference": "Digger",
-            "IsReferenced": true
-          },
-          "Sprite": "Digger",
           "Amount": 0
         }
       ],
@@ -210,15 +197,13 @@
             "Reference": "Ladder",
             "IsReferenced": true
           },
-          "Sprite": "",
-          "Amount": 0
+          "Amount": 10
         },
         {
           "Transport": {
             "Reference": "Elevator",
             "IsReferenced": true
           },
-          "Sprite": "",
           "Amount": 0
         }
       ],
@@ -228,15 +213,13 @@
             "Reference": "Bag",
             "IsReferenced": true
           },
-          "Sprite": "",
-          "Amount": 0
+          "Amount": 10
         },
         {
           "Transport": {
             "Reference": "Cart",
             "IsReferenced": true
           },
-          "Sprite": "",
           "Amount": 0
         }
       ]
