@@ -1,12 +1,14 @@
-using Assets.Scripts.Core.Model;
-using GameFrame.Core.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Assets.Scripts.Core.Model;
+
+using GameFrame.Core.Math;
+
 using TMPro;
+
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -21,8 +23,6 @@ namespace Assets.Scripts.Scenes.GameScene
         private WorldBehaviour worldBehaviour;
         private float tickInterval = 1f;
         private Direction direction;
-
-
 
         private void Update()
         {
@@ -53,25 +53,30 @@ namespace Assets.Scripts.Scenes.GameScene
             this.worldBehaviour = worldBehaviour;
             this.direction = direction;
 
-            SpriteRenderer renderer = gameObject.GetComponent<SpriteRenderer>();
-            Sprite texture2D = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
-            renderer.sprite = texture2D;
-            if (direction == Direction.Right)
+            if (gameObject.transform.Find("SpritePlacement")?.TryGetComponent<SpriteRenderer>(out var renderer) == true)
             {
-                renderer.flipX = true;
+                Sprite texture2D = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
+
+                renderer.sprite = texture2D;
+
+                if (direction == Direction.Right)
+                {
+                    renderer.flipX = true;
+                }
             }
+
             transporter = new Transporter()
             {
                 Transport = transport,
                 Direction = direction,
                 Position = shaftBehaviour.GetPosition()
             };
+
             Base.Core.Game.State.ActiveTransporters.Add(transporter);
             //SetStorages();
             RegisterStorage();
             playSoundEffect();
         }
-
 
         private void UpdateDigger(DiggerBehaviour digger)
         {
@@ -126,7 +131,8 @@ namespace Assets.Scripts.Scenes.GameScene
                     return;
                 }
                 cnt--;
-                if (cnt < 5) {
+                if (cnt < 5)
+                {
                     Debug.Log("Strange stuff hapening");
                 }
             }
@@ -141,7 +147,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-
         private List<IStorage> GetStorages(Point2 p)
         {
             if (direction == Direction.Left || direction == Direction.Right)
@@ -154,7 +159,8 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     return storages.OrderBy(s => s.Priority()).ThenBy(s => s.GetPosition().X).ToList();
                 }
-                else {
+                else
+                {
                     return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().X).ToList();
                 }
             }
@@ -164,8 +170,8 @@ namespace Assets.Scripts.Scenes.GameScene
                 AddStorages(p.X, p.Y - 1, storages);
                 AddStorages(p.X, p.Y, storages);
                 AddStorages(p.X, p.Y + 1, storages);
-                
-                return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().Y).ToList();                
+
+                return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().Y).ToList();
             }
             return new();
         }
