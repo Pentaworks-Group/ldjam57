@@ -281,5 +281,17 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             cameraBounds = new Rect(0, -maxDepth, width, maxDepth + maxHeight);
         }
+
+        internal void GotoToPosition(Vector3 position)
+        {
+            Vector3 newPosition;
+            var p = transform.position;
+            newPosition = new Vector3(
+                   position.x,
+                   position.y,
+                   p.z
+               );
+            transform.position = newPosition;
+        }
     }
 }

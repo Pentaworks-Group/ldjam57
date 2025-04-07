@@ -317,6 +317,7 @@ namespace Assets.Scripts.Scenes.GameScene
             tileGenerator = new TileGenerator(world);
 
             Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3(Headquarters.transform.position.z);
+            CameraBehaviour.GotoToPosition(Headquarters.transform.position);
 
             foreach (var tile in world.Tiles)
             {
