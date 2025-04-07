@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
@@ -34,7 +33,6 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Size;
         }
-
 
         private void Awake()
         {
@@ -279,10 +277,10 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Capacity;
         }
-		
+
         private void playSoundEffect()
         {
-            if(!string.IsNullOrEmpty(digger.MiningTool.Sound))
+            if (!string.IsNullOrEmpty(digger.MiningTool.Sound))
             {
                 var audioClip = GameFrame.Base.Resources.Manager.Audio.Get(digger.MiningTool.Sound);
                 if (audioClip != null)
@@ -290,7 +288,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     GameFrame.Base.Audio.Effects.Play(audioClip);
                 }
             }
-		}
+        }
 
         public int Priority()
         {
