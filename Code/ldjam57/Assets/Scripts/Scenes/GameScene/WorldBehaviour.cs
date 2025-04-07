@@ -333,9 +333,13 @@ namespace Assets.Scripts.Scenes.GameScene
 
                 if (mousePosition.x == 0 && mousePosition.y == 0)
                 {
+                    Debug.Log("TouchPosition: " + mousePosition);
                     mousePosition = touchPressed.ReadValue<UnityEngine.Vector2>();
                 }
-
+                else
+                {
+                    Debug.Log("ClickPosition: " + mousePosition);
+                }
                 Ray ray = mainCamera.ScreenPointToRay(mousePosition);
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
