@@ -94,7 +94,7 @@ public class MoneyBehaviour : MonoBehaviour
 
         foreach (var transporter in Core.Game.State.ActiveTransporters)
         {
-            if(transporter.Transport!=null)
+            if(transporter.Transport!=null && transporter.IsActive)
             {
                 totalOperatingCost += (float)transporter.Transport.OperatingCost * dt;
             }

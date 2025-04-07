@@ -32,7 +32,7 @@ namespace Assets.Scripts.Prefabs.Menus
             purchaseCostField.SetText(content.PurchaseCost.ToString("F0"));
             operatingCostField.SetText(content.OperatingCost.ToString("F0"));
 
-            if (content.Sprite != null)
+            if (content.Sprite != null && spriteImage.sprite == default)
             {
                 var sprite = GameFrame.Base.Resources.Manager.Sprites.Get(content.Sprite);
 
@@ -42,56 +42,54 @@ namespace Assets.Scripts.Prefabs.Menus
                 }
                 UnityEngine.Debug.Log(sprite);
             }
-
-            if (Base.Core.Game.State.Bank.Credits < (double)content.PurchaseCost)
-            {
-                buyButton.enabled = false;
-            }
-            else
-            {
-                buyButton.enabled = true;
-            }
         }
 
         public void BuyItem()
         {
-            //TODO: put in Storage?
-            if (content.Type == ShopItemType.Tool && content.MiningTool != null)
+            if (Base.Core.Game.State.Bank.Credits >= (double)content.PurchaseCost)
             {
-                var item = new Core.Model.Inventories.MiningToolInventoryItem
+                //TODO: put in Storage?
+                if (content.Type == ShopItemType.Tool && content.MiningTool != null)
                 {
-                    MiningTool = content.MiningTool,
-                    Amount = 1
-                };
+                    var item = new Core.Model.Inventories.MiningToolInventoryItem
+                    {
+                        MiningTool = content.MiningTool,
+                        Amount = 1
+                    };
 
-                Base.Core.Game.State.Inventory.MiningTools.AddOrUpdate(item);
+                    Base.Core.Game.State.Inventory.MiningTools.AddOrUpdate(item);
 
-                GameFrame.Base.Audio.Effects.Play("Buy");
+                    GameFrame.Base.Audio.Effects.Play("Buy");
+                }
+                else if (content.Type == ShopItemType.Transport && content.Transport != null)
+                {
+                    TransportInventoryItem item = new TransportInventoryItem()
+                    {
+                        Transport = content.Transport,
+                        Amount = 1,
+                    };
+
+                    if (content.TransportDirection == TransportDirection.Horizontal)
+                    {
+                        item.IsVertical = false;
+                        Base.Core.Game.State.Inventory.HorizontalTransports.AddOrUpdate(item);
+                    }
+                    else if (content.TransportDirection == TransportDirection.Vertical)
+                    {
+                        item.IsVertical = true;
+
+                        Base.Core.Game.State.Inventory.VerticalTransports.AddOrUpdate(item);
+                    }
+
+                    GameFrame.Base.Audio.Effects.Play("Buy");
+                }
+
+                Base.Core.Game.State.Bank.Credits -= (double)content.PurchaseCost;
             }
-            else if (content.Type == ShopItemType.Transport && content.Transport != null)
+            else
             {
-                TransportInventoryItem item = new TransportInventoryItem()
-                {
-                    Transport = content.Transport,
-                    Amount = 1,
-                };
-
-                if (content.TransportDirection == TransportDirection.Horizontal)
-                {
-                    item.IsVertical = false;
-                    Base.Core.Game.State.Inventory.HorizontalTransports.AddOrUpdate(item);
-                }
-                else if (content.TransportDirection == TransportDirection.Vertical)
-                {
-                    item.IsVertical = true;
-
-                    Base.Core.Game.State.Inventory.VerticalTransports.AddOrUpdate(item);
-                }
-
-                GameFrame.Base.Audio.Effects.Play("Buy");
+                GameFrame.Base.Audio.Effects.Play("Error");
             }
-
-            Base.Core.Game.State.Bank.Credits -= (double)content.PurchaseCost;
         }
     }
 }

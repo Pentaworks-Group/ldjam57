@@ -97,6 +97,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 bool moved = false;
                 int halfPoint = storages.Count / 2;
+                transporter.IsActive = false;
                 for (int f = 0; f < halfPoint; f++)
                 {
                     for (int t = storages.Count - 1; t >= halfPoint - 1; t--)
@@ -111,6 +112,7 @@ namespace Assets.Scripts.Scenes.GameScene
                         if (movedAmount > 0)
                         {
                             moved = true;
+                            transporter.IsActive = true;
                         }
                         amountToMove -= movedAmount;
                         if (amountToMove <= 0.001)

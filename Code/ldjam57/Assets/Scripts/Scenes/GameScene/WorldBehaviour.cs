@@ -299,6 +299,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     return;
                 }
             }
+
             selectedTransport = transport;
 
             foreach (var shaft in Shafts)
@@ -562,8 +563,8 @@ namespace Assets.Scripts.Scenes.GameScene
                 return;
             }
 
-
             var pos = toolBehaviour.GetPosition();
+
             foreach (var point in pointList)
             {
                 var validPosition = GetRelativePosition(pos, point.x, point.y, out int x, out int y);
@@ -595,7 +596,9 @@ namespace Assets.Scripts.Scenes.GameScene
         internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
         {
             ClearTransportSites();
+
             selectedTransport.Amount -= 1;
+
             if (transportSiteBehaviour.IsVertical())
             {
                 DisplayPossibleVerticalTransportSites(selectedTransport);
@@ -604,6 +607,12 @@ namespace Assets.Scripts.Scenes.GameScene
             {
 
                 DisplayPossibleHorizontalTransportSites(selectedTransport);
+            }
+
+            if (selectedTransport.Amount <= 0)
+            {
+                ClearTransportSites();
+                selectedTransport = null;
             }
         }
 
