@@ -14,7 +14,6 @@ using GameFrame.Core.Math;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -677,7 +676,6 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void HookActions()
         {
-         
             if (!shop.IsOpen)
             {
                 var clickAction = InputSystem.actions.FindAction("Click");
