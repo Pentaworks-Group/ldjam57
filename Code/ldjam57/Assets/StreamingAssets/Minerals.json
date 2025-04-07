@@ -133,5 +133,24 @@
     },
     "Weight": 2.32,
     "MiningSpeedFactor": 1.3
+  },
+  {
+    "Reference": "Spice",
+    "Name": "Spice",
+    "Color": {
+      "Red": 0.062,
+      "Green": 0.0,
+      "Blue": 0.937,
+      "Alpha": 1
+    },
+    "SeedRange": {
+      "Min": 0,
+      "Max": 2500
+    },
+    "SpawnRange": {
+      "Min": 50
+    },
+    "Weight": 10,
+    "MiningSpeedFactor": 5
   }
 ]

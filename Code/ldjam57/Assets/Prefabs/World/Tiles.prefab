@@ -564,7 +564,6 @@ MonoBehaviour:
   DepositoryContainer: {fileID: 0}
   inventoryMenuBehaviour: {fileID: 0}
   shop: {fileID: 0}
-  graphicRaycasters: []
 --- !u!1 &6916041625664262790
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,7 +696,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6067564683870501251}
-  - component: {fileID: 622349793437860382}
   - component: {fileID: 1317784867049956716}
   - component: {fileID: 7589319352063940528}
   m_Layer: 0
@@ -723,27 +721,6 @@ Transform:
   - {fileID: 6426831811153235803}
   m_Father: {fileID: 3387433711027783709}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &622349793437860382
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7846743086096433141}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1317784867049956716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -943,6 +920,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6426831811153235803}
   - component: {fileID: 7227587085526463090}
+  - component: {fileID: 2405252253453540646}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -1020,6 +998,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &2405252253453540646
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8409868976054418088}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3289582234689529327
 PrefabInstance:
   m_ObjectHideFlags: 0
