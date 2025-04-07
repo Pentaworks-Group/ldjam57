@@ -11,10 +11,25 @@ namespace Assets.Scripts.Scenes.GameScene
         public static double GetStoredAmount(Dictionary<Mineral, Double> storage, List<Mineral> selectedMinerals = null)
         {
             double usedCapacity = 0;
-            selectedMinerals ??= storage.Keys.ToList();
-            foreach (var mineral in selectedMinerals)
+            List<Mineral> minerals;
+            if (selectedMinerals == null)
             {
-                usedCapacity += storage[mineral] * mineral.Weight;
+                minerals = storage.Keys.ToList();
+            }
+            else
+            {
+                minerals = selectedMinerals.ToList();
+            }
+            foreach (var mineral in minerals)
+            {
+                if (storage.TryGetValue(mineral, out double stored))
+                {
+                    usedCapacity += stored * mineral.Weight;
+                }
+                else
+                {
+                    selectedMinerals?.Remove(mineral);
+                }
             }
             return usedCapacity;
         }
@@ -55,55 +70,52 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 return 0;
             }
-            double storedAmount = GetStoredAmount(from);
+            double storedAmount = GetStoredAmount(from, allowedMaterials);
+            double amountMoved = 0;
             if (amountToMove < storedAmount)
             {
                 var toStorage = to.GetStorage();
                 var percentage = amountToMove / storedAmount;
                 percentage = Math.Min(percentage, 1);
-                double amountMoved = 0;
-                foreach (var pair in from.GetStorage().ToList())
+                foreach (var mat in allowedMaterials)
                 {
-                    double transferedAmount = pair.Value * percentage; ;
-                    if (toStorage.ContainsKey(pair.Key))
+                    var value = from.GetStorage()[mat];
+                    double transferedAmount = value * percentage; ;
+                    if (toStorage.ContainsKey(mat))
                     {
-                        toStorage[pair.Key] += transferedAmount;
-                        from.GetStorage()[pair.Key] -= transferedAmount;
+                        toStorage[mat] += transferedAmount;
+                        from.GetStorage()[mat] -= transferedAmount;
                     }
                     else if (to.AllowsNewTypes())
                     {
-                        toStorage[pair.Key] = transferedAmount;
-                        from.GetStorage()[pair.Key] -= transferedAmount;
+                        toStorage[mat] = transferedAmount;
+                        from.GetStorage()[mat] -= transferedAmount;
                     }
-                    amountMoved += transferedAmount * pair.Key.Weight;
+                    amountMoved += transferedAmount * mat.Weight;
                 }
-                to.StorageChanged();
-                from.StorageChanged();
-                return amountMoved;
             }
             else
             {
-                double amountMoved = 0;
-                foreach (var pair in from.GetStorage().ToList())
+                var toStorage = to.GetStorage();
+                foreach (var mat in allowedMaterials)
                 {
-                    var toStorage = to.GetStorage();
-                    double transferedAmount = pair.Value;
-                    if (toStorage.ContainsKey(pair.Key))
+                    var transferedAmount = from.GetStorage()[mat];
+                    if (toStorage.ContainsKey(mat))
                     {
-                        toStorage[pair.Key] += pair.Value;
-                        from.GetStorage()[pair.Key] = 0;
+                        toStorage[mat] += transferedAmount;
+                        from.GetStorage()[mat] = 0;
                     }
                     else if (to.AllowsNewTypes())
                     {
-                        toStorage[pair.Key] = pair.Value;
-                        from.GetStorage()[pair.Key] = 0;
+                        toStorage[mat] = transferedAmount;
+                        from.GetStorage()[mat] = 0;
                     }
-                    amountMoved += transferedAmount * pair.Key.Weight;
+                    amountMoved += transferedAmount * mat.Weight;
                 }
-                to.StorageChanged();
-                from.StorageChanged();
-                return amountMoved;
             }
+            to.StorageChanged();
+            from.StorageChanged();
+            return amountMoved;
         }
     }
 }

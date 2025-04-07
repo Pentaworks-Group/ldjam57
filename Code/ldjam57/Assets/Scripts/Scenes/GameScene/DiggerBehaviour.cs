@@ -277,5 +277,9 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             return digger.MiningTool.Capacity;
         }
+        public int Priority()
+        {
+            return -1;
+        }
     }
 }
