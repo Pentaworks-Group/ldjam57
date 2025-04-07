@@ -48,7 +48,6 @@ namespace Assets.Scripts.Scenes.GameScene
             storage[depository.Mineral] = depository.Value;
             RegisterStorage();
 
-
             if (fillAmountBehaviour != null)
             {
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
@@ -63,7 +62,6 @@ namespace Assets.Scripts.Scenes.GameScene
                 updatePopupUI();
             }
         }
-
 
         public void OnClicked()
         {
@@ -131,7 +129,10 @@ namespace Assets.Scripts.Scenes.GameScene
             Base.Core.Game.State.Bank.Credits += totalValue;
             depository.Value = 0;
             storage[depository.Mineral] = depository.Value;
+
+            GameFrame.Base.Audio.Effects.Play("MoneyRain");
         }
+
         private void UpdateLevel()
         {
             var level = depository.Value / depository.Capacity;
@@ -168,7 +169,6 @@ namespace Assets.Scripts.Scenes.GameScene
 
             this.levelRenderer.sprite = sprite;
 
-
             if (fillAmountBehaviour != null)
             {
                 fillAmountBehaviour.SetValue((float)level);
@@ -180,6 +180,7 @@ namespace Assets.Scripts.Scenes.GameScene
             //Update UI
             nameField.SetText(depository.Mineral.Name);
             storageField.SetText(depository.Value.ToString("F1") + " t");
+
             if (moneyBehaviour != null)
             {
                 float currentPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
@@ -187,15 +188,15 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             sellButton.enabled = true;
-            //TODO:
-/*            if (depository.Value > 1)
-            {
-                sellButton.enabled = true;
-            }
-            else
-            {
-                sellButton.enabled = false;
-            }*/
+
+            //if (depository.Value > 1)
+            //{
+            //    sellButton.enabled = true;
+            //}
+            //else
+            //{
+            //    sellButton.enabled = false;
+            //}
         }
 
         public Dictionary<Mineral, double> GetStorage()

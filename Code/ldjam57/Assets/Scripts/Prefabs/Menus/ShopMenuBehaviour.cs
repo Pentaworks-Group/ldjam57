@@ -20,14 +20,19 @@ namespace Assets.Scripts.Prefabs.Menus
 
         public void ShowShop()
         {
+            GameFrame.Base.Audio.Effects.Play("Bell");
+
             this.toggleArea.SetActive(true);
             this.OnShopToggled.Invoke(true);
         }
 
         public void HideShop()
         {
+            GameFrame.Base.Audio.Effects.Play("Button");
+
             this.toggleArea.SetActive(false);
             this.OnShopToggled.Invoke(false);
+
         }
     }
 }
