@@ -28,6 +28,8 @@ namespace Assets.Scripts.Scenes.GameScene
         TextMeshProUGUI priceField;
         [SerializeField]
         Button sellButton;
+        [SerializeField]
+        ProgressBarBehaviour fillAmountBehaviour;
         
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
@@ -41,6 +43,13 @@ namespace Assets.Scripts.Scenes.GameScene
 
         }
 
+        public void Update()
+        {
+            if (popupMenu != null && popupMenu.activeSelf) {
+                updatePopupUI();
+            }
+        }
+
         public void OnClicked()
         {
             // Open Shop?
@@ -48,10 +57,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 popupMenu.SetActive(true);
 
-                //Update UI
-                nameField.SetText(depository.Mineral.Name);
-                storageField.SetText(depository.Value.ToString("F1") + " t");
-                priceField.SetText("$"+depository.Value.ToString("F1")); //TODO
+                updatePopupUI();
             }
             else if (popupMenu != null) {
                 popupMenu.SetActive(false);
@@ -103,9 +109,10 @@ namespace Assets.Scripts.Scenes.GameScene
             return false;
         }
 
-        public void Sell(Double amount)
+        public void Sell()
         {
-
+            //TODO: right now just sell 1 (t)
+            Debug.Log("Sell");
         }
 
         private void UpdateLevel()
@@ -145,6 +152,22 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             this.levelRenderer.sprite = sprite;
+        }
+
+        private void updatePopupUI()
+        {
+            //Update UI
+            nameField.SetText(depository.Mineral.Name);
+            storageField.SetText(depository.Value.ToString("F1") + " t");
+            priceField.SetText("$" + depository.Value.ToString("F1") + "/t"); //TODO
+
+            if(depository.Value > 1)
+            {
+                sellButton.enabled = true;
+            } else
+            {
+                sellButton.enabled = false;
+            }
         }
 
     }
