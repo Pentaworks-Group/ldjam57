@@ -21,6 +21,11 @@ public class MoneyBehaviour : MonoBehaviour
             updateCashLabel();
 
             Core.Game.State.Bank.Credits -= calcDiggingCosts(Time.deltaTime);
+
+            if (Core.Game.State.Bank.Credits < 0 ) 
+            {
+                //TODO: do a game over event
+            }
         }
     }
 
