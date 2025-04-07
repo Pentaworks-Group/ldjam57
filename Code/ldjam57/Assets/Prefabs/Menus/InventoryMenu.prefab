@@ -89,10 +89,10 @@ PrefabInstance:
     - target: {fileID: 2372744928433228993, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: d81471c4fe93e8940bbab97107b3c1a0, type: 3}
+      objectReference: {fileID: 21300000, guid: 9a9485c0396f2894dac6f6685b91cc26, type: 3}
     - target: {fileID: 2822524188652061212, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_fontSize
-      value: 19.1
+      value: 15.3
       objectReference: {fileID: 0}
     - target: {fileID: 6078867253019659665, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_Pivot.x
@@ -257,6 +257,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2372744928433228993, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: eb2a2773823d7dc4ab62e6bf282f5a00, type: 3}
     - target: {fileID: 6078867253019659665, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -390,10 +394,10 @@ PrefabInstance:
     - target: {fileID: 2372744928433228993, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1653d595e80ab4044a995f3dd23b995d, type: 3}
+      objectReference: {fileID: 21300000, guid: ce014dffbf8be3948b453f917a80e586, type: 3}
     - target: {fileID: 2822524188652061212, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_fontSize
-      value: 19.1
+      value: 15.3
       objectReference: {fileID: 0}
     - target: {fileID: 6078867253019659665, guid: e31517f9a24f6f1408c9f44416fc2028, type: 3}
       propertyPath: m_Pivot.x
