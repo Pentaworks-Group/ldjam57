@@ -14,6 +14,7 @@ namespace Assets.Scripts.Core.Definitons
         public Boolean? IsUnlockable { get; set; }
         public Decimal? UnlockCost { get; set; }
         public Decimal? PurchaseCost { get; set; }
+        public Decimal? OperatingCost { get; set; }
         public GameFrame.Core.Math.Vector2? Size { get; set; }
     }
 }

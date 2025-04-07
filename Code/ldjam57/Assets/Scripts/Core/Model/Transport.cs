@@ -14,5 +14,6 @@ namespace Assets.Scripts.Core.Model
         public Boolean IsUnlockable { get; set; }
         public Decimal UnlockCost { get; set; }
         public Decimal PurchaseCost { get; set; }
+        public Decimal OperatingCost { get; set; }
     }
 }
