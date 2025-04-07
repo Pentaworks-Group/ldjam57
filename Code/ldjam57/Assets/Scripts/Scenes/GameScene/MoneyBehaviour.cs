@@ -33,7 +33,7 @@ public class MoneyBehaviour : MonoBehaviour
     {
         if (cashLabel != null)
         {
-            cashLabel.text = "$" + Core.Game.State.Bank.Credits.ToString("F2");
+            cashLabel.text = Core.Game.State.Bank.Credits.ToString("F2");
         }
     }
 
