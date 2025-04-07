@@ -12,5 +12,7 @@ namespace Assets.Scripts.Core.Model
         public Direction Direction { get; set; }
         public Double Tick { get; set; }
         public Dictionary<Mineral, Double> StoredAmount { get; set; } = new Dictionary<Mineral, Double>();
+        public Boolean IsActive { get; set; }
+
     }
 }
