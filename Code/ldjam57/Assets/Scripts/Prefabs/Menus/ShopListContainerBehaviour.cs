@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Scripts.Base;
 
 namespace Assets.Scripts.Prefabs.Menus
 {
@@ -16,7 +17,18 @@ namespace Assets.Scripts.Prefabs.Menus
 
         public void UpdateList()
         {
-            UnityEngine.Debug.Log("Test");
+            List<ShopItem> list = new List<ShopItem>();
+            Base.Core.Game.State.AvailableMiningTools.ForEach(tool =>
+            {
+                ShopItem item = new ShopItem();
+                item.Name = tool.Name;
+                item.PurchaseCost = tool.PurchaseCost;
+                item.OperatingCost = tool.OperatingCost;
+                item.Sprite = tool.Sprite;
+                item.Type = ShopItemType.Tool;
+                list.Add(item);
+            });
+            SetContentList(list);
         }
     }
 }
