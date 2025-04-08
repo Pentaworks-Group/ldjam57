@@ -61,6 +61,11 @@ public class MusicBehauviour : MonoBehaviour
         nextEnergySwitchTime = getNextEnergySwitchTime(0);
     }
 
+    private void Start()
+    {
+        GameFrame.Base.Audio.Background.ReplaceClips(lowEnergyAudioClips);
+    }
+
     // Update is called once per frame
     void Update()
     {
