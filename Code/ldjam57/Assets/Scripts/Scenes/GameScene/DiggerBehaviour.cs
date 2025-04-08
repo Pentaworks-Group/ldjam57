@@ -2,9 +2,11 @@ using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Model.Inventories;
+
 using GameFrame.Core.Math;
+
 using TMPro;
-using UnityEditor.Animations;
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
