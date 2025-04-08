@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WorkerDrillOverride
+  m_Controller: {fileID: 9100000, guid: 6b56dfe6f1b554702975dd25bd69db5c, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 9cb6698e9d72a4a209dac91742839a95, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ab63076f5026344b4a591ac4b9f2a9e0, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 621663642ebac4feb8d642007a2c9da8, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 621663642ebac4feb8d642007a2c9da8, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: a70f1308dd84d4563b4202accb01c80f, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a70f1308dd84d4563b4202accb01c80f, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e4d55501303844e66b7fbcd75beba292, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e4d55501303844e66b7fbcd75beba292, type: 2}

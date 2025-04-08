@@ -406,6 +406,8 @@ MonoBehaviour:
   popUpObject: {fileID: 2256131994458130520}
   nameText: {fileID: 7233054182298138604}
   upgradeButton: {fileID: 214169607435754159}
+  axeOverrideController: {fileID: 22100000, guid: c4b5314ba774ad14988697be9922997b, type: 2}
+  drillOverrideController: {fileID: 22100000, guid: 1e55fe0c73fd49049a0274ec9180ef96, type: 2}
 --- !u!1 &4764008551457239024
 GameObject:
   m_ObjectHideFlags: 0

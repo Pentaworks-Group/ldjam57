@@ -4,6 +4,7 @@ using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Model.Inventories;
 using GameFrame.Core.Math;
 using TMPro;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -18,6 +19,10 @@ namespace Assets.Scripts.Scenes.GameScene
         private TextMeshProUGUI nameText;
         [SerializeField]
         private Button upgradeButton;
+        [SerializeField]
+        private AnimatorOverrideController axeOverrideController;
+        [SerializeField]
+        private AnimatorOverrideController drillOverrideController;
 
         private Digger digger;
         private List<GroundBehaviour> targets = new List<GroundBehaviour>();
@@ -70,8 +75,23 @@ namespace Assets.Scripts.Scenes.GameScene
             this.digger = digger;
             _animator = gameObject.GetComponent<Animator>();
             _animator.gameObject.SetActive(true);
+            UpdateAnimator();
             StartMining();
         }
+
+        private void UpdateAnimator()
+        {
+            if (digger.MiningTool.Reference == "Drill")
+            {
+                _animator.runtimeAnimatorController = drillOverrideController;
+            }
+            else
+            {
+                _animator.runtimeAnimatorController = axeOverrideController;
+            }
+        }
+
+
 
 
         public void UpdatePosition()
@@ -218,13 +238,18 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             if (SetTargets())
             {
+
                 digger.IsMining = true;
                 _animator.SetBool("Mining", true);
                 int direction = 0;
                 if (digger.Direction == Direction.Left)
+                {
                     direction = -1;
+                }
                 else if (digger.Direction == Direction.Right)
+                {
                     direction = 1;
+                }
                 _animator.SetInteger("Direction", direction);
 
                 playSoundEffect();
@@ -268,6 +293,7 @@ namespace Assets.Scripts.Scenes.GameScene
             inventoryItem.Amount += 1;
             digger.MiningTool = upgradeOption.MiningTool;
             ClosePopup();
+            UpdateAnimator();
             playSoundEffect();
 
         }
