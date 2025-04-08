@@ -9,6 +9,9 @@ namespace Assets.Scripts.Scenes.Credits
         [SerializeField]
         private KobiBehaviour Kobi;
 
+        [SerializeField]
+        private KobiBehaviour Kobi2;
+
         private float flyoutTrigger = 10;
         private float interval = 10;
         private Boolean isMovingRight = true;
@@ -23,15 +26,22 @@ namespace Assets.Scripts.Scenes.Credits
             {
                 flyoutTrigger = interval;
 
-                var kobiVector = new Vector3(1, 0, 0);
-
                 if (isMovingRight)
                 {
-
+                    var kobiVector = new Vector3(1, 0, 0);
                     var kobiSpawn = new Vector3(-10, Kobi.transform.position.z, 0);
+
+                    Kobi.Fly(kobiSpawn, kobiVector);
+                }
+                else
+                {
+                    var kobiVector = new Vector3(-1, 0, 0);
+                    var kobiSpawn = new Vector3(30, Kobi2.transform.position.z, 0);
+
+                    Kobi2.Fly(kobiSpawn, kobiVector);
                 }
 
-                //Kobi.Fly(kobiSpawn, kobiVector);
+                isMovingRight = !isMovingRight;
             }
         }
     }

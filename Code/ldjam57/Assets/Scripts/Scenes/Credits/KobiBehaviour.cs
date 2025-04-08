@@ -5,14 +5,12 @@ namespace Assets.Scripts.Scenes.Credits
     public class KobiBehaviour : MonoBehaviour
     {
         private const float Speed = 5f;
-        private Vector3 originalDirection;
         private Vector3 direction;
 
         public void Fly(Vector3 startPosition, Vector3 direction)
         {
             this.transform.position = startPosition;
             this.direction = direction;
-            this.originalDirection = direction;
 
             this.gameObject.SetActive(true);
         }
