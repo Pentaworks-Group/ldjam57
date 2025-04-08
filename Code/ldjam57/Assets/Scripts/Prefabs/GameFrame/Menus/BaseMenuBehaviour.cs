@@ -6,7 +6,6 @@ namespace Assets.Scripts.Scenes.Menues
 {
     public class BaseMenuBehaviour : MonoBehaviour
     {   
-
         public void ToMainMenu()
         {
             Base.Core.Game.PlayButtonSound();
