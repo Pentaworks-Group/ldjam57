@@ -12,7 +12,7 @@
     "SpeedFactor": 1,
     "IsUnlockable": true,
     "UnlockCost": 0,
-    "PurchaseCost": 1000,
+    "PurchaseCost": 500,
     "OperatingCost": 0.2
   },
   {

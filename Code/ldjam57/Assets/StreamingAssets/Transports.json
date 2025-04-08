@@ -12,7 +12,7 @@
     "Capacity": 1,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000,
+    "PurchaseCost": 100,
     "OperatingCost": 0.01
   },
   {
@@ -28,8 +28,8 @@
     "Capacity": 2000,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000,
-    "OperatingCost": 0.01
+    "PurchaseCost": 600,
+    "OperatingCost": 0.02
   },
   {
     "Reference": "Ladder",
@@ -43,7 +43,7 @@
     "Capacity": 2,
     "IsUnlockable": true,
     "UnlockCost": 100000,
-    "PurchaseCost": 1000,
+    "PurchaseCost": 100,
     "OperatingCost": 0
   },
   {
