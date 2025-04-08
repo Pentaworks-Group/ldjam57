@@ -2041,14 +2041,6 @@ PrefabInstance:
       propertyPath: overrideController
       value: 
       objectReference: {fileID: 22100000, guid: 1e55fe0c73fd49049a0274ec9180ef96, type: 2}
-    - target: {fileID: 5036246921400583290, guid: 8680c25088e59a343b461915b344e271, type: 3}
-      propertyPath: axeOverrideController
-      value: 
-      objectReference: {fileID: 22100000, guid: c4b5314ba774ad14988697be9922997b, type: 2}
-    - target: {fileID: 5036246921400583290, guid: 8680c25088e59a343b461915b344e271, type: 3}
-      propertyPath: drillOverrideController
-      value: 
-      objectReference: {fileID: 22100000, guid: 1e55fe0c73fd49049a0274ec9180ef96, type: 2}
     - target: {fileID: 5247409948763168480, guid: 8680c25088e59a343b461915b344e271, type: 3}
       propertyPath: shop
       value: 

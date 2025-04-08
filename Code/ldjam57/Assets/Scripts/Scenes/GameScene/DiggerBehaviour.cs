@@ -75,6 +75,11 @@ namespace Assets.Scripts.Scenes.GameScene
             this.digger = digger;
             _animator = gameObject.GetComponent<Animator>();
             _animator.gameObject.SetActive(true);
+            if (digger.Direction == Direction.Left)
+            {
+                var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+                spriteRenderer.flipX = true;
+            }
             UpdateAnimator();
             StartMining();
         }
