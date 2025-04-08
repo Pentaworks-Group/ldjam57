@@ -1,10 +1,12 @@
 ﻿using System;
 
+using Assets.Scripts.Scenes.Menues;
+
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Credits
 {
-    public class CreditsBehaviour : MonoBehaviour
+    public class CreditsBehaviour : BaseMenuBehaviour
     {
         [SerializeField]
         private KobiBehaviour Kobi;
