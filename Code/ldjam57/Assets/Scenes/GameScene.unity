@@ -1985,6 +1985,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1920427790288646953, guid: 8680c25088e59a343b461915b344e271, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4174060965070675071, guid: 8680c25088e59a343b461915b344e271, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2025,6 +2029,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5036246921400583290, guid: 8680c25088e59a343b461915b344e271, type: 3}
+      propertyPath: axeAnimation
+      value: 
+      objectReference: {fileID: 7400000, guid: 9cb6698e9d72a4a209dac91742839a95, type: 2}
+    - target: {fileID: 5036246921400583290, guid: 8680c25088e59a343b461915b344e271, type: 3}
+      propertyPath: drillAnimation
+      value: 
+      objectReference: {fileID: 7400000, guid: ab63076f5026344b4a591ac4b9f2a9e0, type: 2}
+    - target: {fileID: 5036246921400583290, guid: 8680c25088e59a343b461915b344e271, type: 3}
+      propertyPath: overrideController
+      value: 
+      objectReference: {fileID: 22100000, guid: 1e55fe0c73fd49049a0274ec9180ef96, type: 2}
     - target: {fileID: 5247409948763168480, guid: 8680c25088e59a343b461915b344e271, type: 3}
       propertyPath: shop
       value: 
@@ -2057,6 +2073,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tiles
       objectReference: {fileID: 0}
+    - target: {fileID: 7953407596822518629, guid: 8680c25088e59a343b461915b344e271, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1328617117}
     - target: {fileID: 8497502713412691545, guid: 8680c25088e59a343b461915b344e271, type: 3}
       propertyPath: m_Camera
       value: 

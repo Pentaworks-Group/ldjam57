@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Assets.Scripts.Core.Model;
-
+using Assets.Scripts.Core.Model.Inventories;
 using GameFrame.Core.Math;
-
 using TMPro;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
@@ -16,13 +16,22 @@ namespace Assets.Scripts.Scenes.GameScene
     {
         [SerializeField]
         private TextMeshPro testLabel;
+        [SerializeField]
+        private GameObject popUpObject;
+        [SerializeField]
+        private TextMeshProUGUI nameText;
+        [SerializeField]
+        private Button upgradeButton;
 
         private Transporter transporter;
         private TransportRoute transportRoute;
         private ShaftBehaviour shaftBehaviour;
         private WorldBehaviour worldBehaviour;
         private float tickInterval = 1f;
-        private Direction direction;
+
+
+        private TransportInventoryItem upgradeOption;
+        private TransportInventoryItem inventoryItem;
 
         private void Update()
         {
@@ -51,19 +60,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             this.shaftBehaviour = shaftBehaviour;
             this.worldBehaviour = worldBehaviour;
-            this.direction = direction;
 
-            if (gameObject.transform.Find("SpritePlacement")?.TryGetComponent<SpriteRenderer>(out var renderer) == true)
-            {
-                Sprite texture2D = GameFrame.Base.Resources.Manager.Sprites.Get(transport.Sprite);
-
-                renderer.sprite = texture2D;
-
-                if (direction == Direction.Right)
-                {
-                    renderer.flipX = true;
-                }
-            }
 
             transporter = new Transporter()
             {
@@ -72,10 +69,26 @@ namespace Assets.Scripts.Scenes.GameScene
                 Position = shaftBehaviour.GetPosition()
             };
 
+            UpdateSprite();
             Base.Core.Game.State.ActiveTransporters.Add(transporter);
             //SetStorages();
             RegisterStorage();
             playSoundEffect();
+        }
+
+        private void UpdateSprite()
+        {
+            if (gameObject.transform.Find("SpritePlacement")?.TryGetComponent<SpriteRenderer>(out var renderer) == true)
+            {
+                Sprite texture2D = GameFrame.Base.Resources.Manager.Sprites.Get(transporter.Transport.Sprite);
+
+                renderer.sprite = texture2D;
+
+                if (transporter.Direction == Direction.Right)
+                {
+                    renderer.flipX = true;
+                }
+            }
         }
 
         private void UpdateDigger(DiggerBehaviour digger)
@@ -149,13 +162,13 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private List<IStorage> GetStorages(Point2 p)
         {
-            if (direction == Direction.Left || direction == Direction.Right)
+            if (transporter.Direction == Direction.Left || transporter.Direction == Direction.Right)
             {
                 List<IStorage> storages = new List<IStorage>();
                 AddStorages(p.X - 1, p.Y, storages);
                 AddStorages(p.X, p.Y, storages);
                 AddStorages(p.X + 1, p.Y, storages);
-                if (direction == Direction.Left)
+                if (transporter.Direction == Direction.Left)
                 {
                     return storages.OrderBy(s => s.Priority()).ThenBy(s => s.GetPosition().X).ToList();
                 }
@@ -164,7 +177,7 @@ namespace Assets.Scripts.Scenes.GameScene
                     return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().X).ToList();
                 }
             }
-            else if (direction == Direction.Down)
+            else if (transporter.Direction == Direction.Down)
             {
                 List<IStorage> storages = new List<IStorage>();
                 AddStorages(p.X, p.Y - 1, storages);
@@ -176,9 +189,77 @@ namespace Assets.Scripts.Scenes.GameScene
             return new();
         }
 
+        private TransportInventoryItem GetUpgradeOption()
+        {
+            List<TransportInventoryItem> mTools;
+            if (transporter.Direction == Direction.Down)
+            {
+                mTools = Base.Core.Game.State.Inventory.VerticalTransports;
+            }
+            else
+            {
+                mTools = Base.Core.Game.State.Inventory.HorizontalTransports;
+            }
+            for (int i = 0; i < mTools.Count; i++)
+            {
+                var tTool = mTools[i];
+                if (tTool.Transport.Reference == transporter.Transport.Reference)
+                {
+                    inventoryItem = tTool;
+                    var nI = i + 1;
+                    if (nI < mTools.Count && mTools[nI].Amount > 0)
+                    {
+                        return mTools[nI];
+                    }
+                    return null;
+                }
+            }
+            return null;
+        }
+
+
         public void OnClicked()
         {
+            OpenPopup();
+        }
 
+
+        public void Upgrade()
+        {
+            upgradeOption.Amount -= 1;
+            inventoryItem.Amount += 1;
+            transporter.Transport = upgradeOption.Transport;
+            UpdateSprite();
+            ClosePopup();
+            playSoundEffect();
+
+        }
+        private void OpenPopup()
+        {
+            nameText.text = transporter.Transport.Name;
+            upgradeOption = GetUpgradeOption();
+            upgradeButton.interactable = upgradeOption != null;
+            popUpObject.SetActive(true);
+        }
+
+        public void RemoveTransporter()
+        {
+            Base.Core.Game.State.ActiveTransporters.Remove(transporter);
+            if (transporter.Direction == Direction.Down)
+            {
+                Base.Core.Game.State.Inventory.VerticalTransports.Find(m => m.Transport.Reference == transporter.Transport.Reference).Amount += 1;
+            }
+            else
+            {
+                Base.Core.Game.State.Inventory.HorizontalTransports.Find(m => m.Transport.Reference == transporter.Transport.Reference).Amount += 1;
+            }
+            Destroy(gameObject);
+        }
+
+
+        public void ClosePopup()
+        {
+            popUpObject.SetActive(false);
         }
 
         public Point2 GetPosition()

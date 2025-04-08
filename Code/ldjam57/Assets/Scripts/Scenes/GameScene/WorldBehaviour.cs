@@ -332,7 +332,7 @@ namespace Assets.Scripts.Scenes.GameScene
             if (context.phase == InputActionPhase.Performed)
             {
                 UnityEngine.Vector2 mousePosition = Mouse.current.position.ReadValue();
-                Debug.Log("OnClick: " + mousePosition);
+                //Debug.Log("OnClick: " + mousePosition);
                 EvalutePress(mousePosition);
             }
         }
@@ -343,7 +343,7 @@ namespace Assets.Scripts.Scenes.GameScene
             if (context.phase == InputActionPhase.Performed)
             {
                 UnityEngine.Vector2 position = touchPosition.ReadValue<UnityEngine.Vector2>();
-                Debug.Log("OnTouched: " + position);
+                //Debug.Log("OnTouched: " + position);
                 EvalutePress(position);
             }
         }
