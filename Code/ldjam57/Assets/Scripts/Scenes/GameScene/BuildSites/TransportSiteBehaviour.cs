@@ -72,20 +72,9 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void OnClicked()
         {
-            BuildSite();
+            //BuildSite();
         }
 
-        private TransportBehaviour GetTransportBehaviour()
-        {
-            var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport, direction);
-            shaft.TransportBehaviour = transB;
-            return transB;
-        }
 
-        private void BuildSite()
-        {
-            GetTransportBehaviour();
-            worldBehaviour.BuildTransporteSite(this);
-        }
     }
 }

@@ -10,7 +10,7 @@ namespace Assets.Scripts.Scenes.GameScene
     public class TransportRoute
     {
         private WorldBehaviour worldBehaviour;
-        private List<TransportBehaviour> points = new List<TransportBehaviour>();
+        private List<TransporterBehaviour> points = new List<TransporterBehaviour>();
         private Transport transport;
         private UnityEngine.Vector3 start;
         private UnityEngine.Vector3 stop;
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Scenes.GameScene
             this.transport = transport;
         }
 
-        public void SetPoints(List<TransportBehaviour> points)
+        public void SetPoints(List<TransporterBehaviour> points)
         {
             this.points = points;
             SetStartStop();

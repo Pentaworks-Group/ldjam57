@@ -24,6 +24,9 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private CameraBehaviour CameraBehaviour;
 
+
+        [SerializeField]
+        private GameObject TilesParent;
         [SerializeField]
         private GroundBehaviour TileTemplate;
         [SerializeField]
@@ -31,19 +34,7 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private ShaftBehaviour GroundLevelShaftTemplate;
         [SerializeField]
-        private SiteBehaviour SiteTemplate;
-        [SerializeField]
-        private DiggerBehaviour DiggerTemplate;
-        [SerializeField]
-        private TransportSiteBehaviour TransportSiteTemplate;
-        [SerializeField]
-        private TransportBehaviour TransportTemplate;
-        [SerializeField]
-        private GameObject TilesParent;
-
-        [SerializeField]
         private GameObject Headquarters;
-
         [SerializeField]
         private GameObject DepositoryTemplate;
         [SerializeField]
@@ -51,6 +42,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         [SerializeField]
         private InventoryMenuBehaviour inventoryMenuBehaviour;
+        [SerializeField]
+        private BuildSiteManagerBehaviour buildSiteManager;
 
         [SerializeField]
         private ShopMenuBehaviour shop;
@@ -58,17 +51,15 @@ namespace Assets.Scripts.Scenes.GameScene
         private Map<int, TileBehaviour> tileMap = new();
         private Map<int, List<IStorage>> storages = new();
 
-        private List<ShaftBehaviour> Shafts = new();
+        public List<ShaftBehaviour> Shafts { get; private set; } = new();
 
-        private List<SiteBehaviour> Sites = new();
-        private List<TransportSiteBehaviour> TransportSites = new();
         private readonly Dictionary<String, DepositoryBehaviour> depositories = new Dictionary<String, DepositoryBehaviour>();
 
-        private TileGenerator tileGenerator;
-        private TransportInventoryItem selectedTransport;
 
         private InputAction touchPressed;
         private InputAction touchPosition;
+
+        private TileGenerator tileGenerator;
 
         private void Awake()
         {
@@ -88,244 +79,97 @@ namespace Assets.Scripts.Scenes.GameScene
             UnhookActions();
         }
 
-        public void DisplayPosibleDigSites()
-        {
-            var miningTool = Base.Core.Game.State.Inventory.MiningTools.FirstOrDefault();
-            DisplayPosibleDigSites(miningTool);
-        }
 
-        public Map<int, Digger> GenerateDiggerMap()
-        {
-            Map<int, Digger> diggerMap = new();
-
-            foreach (var digger in Base.Core.Game.State.ActiveDiggers)
-            {
-                diggerMap[digger.Position.X, digger.Position.Y] = digger;
-            }
-
-            return diggerMap;
-        }
 
         public void OnInventoryItemSelected(InventoryItem inventoryItem)
         {
-            ClearTransportSites();
-            ClearDigSites();
-
-            switch (inventoryItem)
-            {
-                case MiningToolInventoryItem miningToolInventoryItem:
-                    DisplayPosibleDigSites(miningToolInventoryItem);
-                    break;
-
-                case TransportInventoryItem transportInventoryItem:
-
-                    if (transportInventoryItem.IsVertical)
-                    {
-                        DisplayPossibleVerticalTransportSites(transportInventoryItem);
-                    }
-                    else
-                    {
-                        DisplayPossibleHorizontalTransportSites(transportInventoryItem);
-                    }
-
-                    break;
-            }
+            buildSiteManager.SelectTool(inventoryItem);
         }
 
-        public void DisplayPosibleDigSites(MiningToolInventoryItem inventoryItem)
-        {
-            if (Sites.Count > 0)
-            {
-                ClearDigSites();
-                return;
-            }
+        //public void DisplayPosibleDigSites(MiningToolInventoryItem inventoryItem)
+        //{
+        //    if (Sites.Count > 0)
+        //    {
+        //        ClearDigSites();
+        //        return;
+        //    }
 
-            Map<int, Digger> diggerMap = GenerateDiggerMap();
+        //    Map<int, Digger> diggerMap = GenerateDiggerMap();
 
-            foreach (var shaft in Shafts)
-            {
-                var beneath = GetTileRelative(shaft.GetPosition(), 0, 1);
+        //    foreach (var shaft in Shafts)
+        //    {
+        //        var beneath = GetTileRelative(shaft.GetPosition(), 0, 1);
 
-                if (beneath?.IsDigable() == true && !diggerMap.TryGetValue(shaft.GetPosition().X, shaft.GetPosition().Y, out _))
-                {
-                    if (inventoryItem.MiningTool.Size.X < 2)
-                    {
-                        var tile = GetTileRelative(shaft.GetPosition(), -1, 0);
-                        if (tile?.IsDigable() == true)
-                        {
-                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Left);
-                        }
-                        tile = GetTileRelative(shaft.GetPosition(), 1, 0);
-                        if (tile?.IsDigable() == true)
-                        {
-                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Right);
-                        }
-                        tile = GetTileRelative(shaft.GetPosition(), 0, 1);
-                        if (tile?.IsDigable() == true)
-                        {
-                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Down);
-                        }
-                    }
-                }
-            }
+        //        if (beneath?.IsDigable() == true && !diggerMap.TryGetValue(shaft.GetPosition().X, shaft.GetPosition().Y, out _))
+        //        {
+        //            if (inventoryItem.MiningTool.Size.X < 2)
+        //            {
+        //                var tile = GetTileRelative(shaft.GetPosition(), -1, 0);
+        //                if (tile?.IsDigable() == true)
+        //                {
+        //                    CreateSite(shaft.GetPosition(), inventoryItem, Direction.Left);
+        //                }
+        //                tile = GetTileRelative(shaft.GetPosition(), 1, 0);
+        //                if (tile?.IsDigable() == true)
+        //                {
+        //                    CreateSite(shaft.GetPosition(), inventoryItem, Direction.Right);
+        //                }
+        //                tile = GetTileRelative(shaft.GetPosition(), 0, 1);
+        //                if (tile?.IsDigable() == true)
+        //                {
+        //                    CreateSite(shaft.GetPosition(), inventoryItem, Direction.Down);
+        //                }
+        //            }
+        //        }
+        //    }
 
-            //for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
-            //{
-            //    var tile = tileMap[x, 0];
-            //    if (tile.IsDigable() && !diggerMap.TryGetValue(tile.GetPosition().X, tile.GetPosition().Y, out _))
-            //    {
-            //        Point2 pos = new Point2(x, -1);
-            //        CreateSite(pos, miningTool, Direction.Down);
-            //    }
-            //}
-        }
+        //for (var x = 0; x < Base.Core.Game.State.World.Width; x++)
+        //{
+        //    var tile = tileMap[x, 0];
+        //    if (tile.IsDigable() && !diggerMap.TryGetValue(tile.GetPosition().X, tile.GetPosition().Y, out _))
+        //    {
+        //        Point2 pos = new Point2(x, -1);
+        //        CreateSite(pos, miningTool, Direction.Down);
+        //    }
+        //}
+        //}
 
-        public void BuildDigSite(SiteBehaviour siteBehaviour)
-        {
-            var newDigger = GameObject.Instantiate(DiggerTemplate, TilesParent.transform);
+        //private void ClearDigSites()
+        //{
+        //    foreach (var site in Sites)
+        //    {
+        //        GameObject.Destroy(site.gameObject);
+        //    }
 
-            var digger = new Digger()
-            {
-                Direction = siteBehaviour.GetDirection(),
-                MiningTool = siteBehaviour.GetMiningTool().MiningTool,
-                Position = siteBehaviour.GetPosition()
-            };
+        //    Sites.Clear();
+        //}
 
-            newDigger.Init(this, digger);
-            newDigger.UpdatePosition();
-            newDigger.gameObject.SetActive(true);
-            Base.Core.Game.State.ActiveDiggers.Add(digger);
 
-            ClearDigSites();
-            if (siteBehaviour.GetMiningTool().Amount > 0)
-            {
-                DisplayPosibleDigSites(siteBehaviour.GetMiningTool());
-            }
-        }
+        //private void DisplayPossibleVerticalTransportSites(TransportInventoryItem transport)
+        //{
+        //    if (TransportSites.Count > 0)
+        //    {
+        //        ClearTransportSites();
+        //        if (selectedTransport == transport)
+        //        {
+        //            return;
+        //        }
+        //    }
 
-        private void ClearDigSites()
-        {
-            foreach (var site in Sites)
-            {
-                GameObject.Destroy(site.gameObject);
-            }
+        //    selectedTransport = transport;
 
-            Sites.Clear();
-        }
+        //    foreach (var shaft in Shafts)
+        //    {
+        //        if (shaft.HasTransport())
+        //        {
+        //            continue;
+        //        }
+        //        var direction = Direction.Down;
+        //        GenerateTransportSite(transport, shaft, direction);
+        //    }
+        //}
 
-        private void CreateSite(Point2 pos, MiningToolInventoryItem miningTool, Direction direction)
-        {
-            UnityEngine.Vector3 position;
-            Quaternion rotation;
-            if (direction == Direction.Down)
-            {
-                position = GetUnityVector(pos, SiteTemplate.transform.position.z, yOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
-                rotation = SiteTemplate.transform.rotation;
-            }
-            else if (direction == Direction.Left)
-            {
-                position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: -(1 - SiteTemplate.transform.localScale.y) / 2);
-                rotation = SiteTemplate.transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, -90);
-            }
-            else if (direction == Direction.Right)
-            {
-                position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
-                rotation = SiteTemplate.transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, 90);
-            }
-            else
-            {
-                return;
-            }
 
-            var newSite = GameObject.Instantiate(SiteTemplate, position, rotation, TilesParent.transform);
-            newSite.Init(this, pos, miningTool, direction);
-            newSite.gameObject.SetActive(true);
-            newSite.gameObject.name = "DigSite_" + pos.X + "," + pos.Y;
-            Sites.Add(newSite);
-        }
-
-        public void DisplayPossibleHorizontalTransportSites()
-        {
-            var transport = Base.Core.Game.State.Inventory.HorizontalTransports.FirstOrDefault();
-            DisplayPossibleHorizontalTransportSites(transport);
-        }
-
-        private void DisplayPossibleHorizontalTransportSites(TransportInventoryItem transport)
-        {
-            if (TransportSites.Count > 0)
-            {
-                ClearTransportSites();
-                if (selectedTransport == transport)
-                {
-                    return;
-                }
-            }
-
-            selectedTransport = transport;
-            foreach (var shaft in Shafts)
-            {
-                if (shaft.HasTransport() || GetTileRelative(shaft.GetPosition(), 0, 1)?.IsDigable() == false)
-                {
-                    continue;
-                }
-                GenerateTransportSite(transport, shaft, Direction.Left);
-                GenerateTransportSite(transport, shaft, Direction.Right);
-            }
-        }
-
-        private void GenerateTransportSite(TransportInventoryItem transport, ShaftBehaviour shaft, Direction direction)
-        {
-            var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-            newSite.Init(this, transport.Transport, shaft, direction);
-            var pos = shaft.GetPosition();
-            newSite.gameObject.name = "TransportSite_" + pos.X + "," + pos.Y;
-            newSite.gameObject.SetActive(true);
-            TransportSites.Add(newSite);
-        }
-
-        public void DisplayPossibleVerticalTransportSites()
-        {
-            var transport = Base.Core.Game.State.Inventory.VerticalTransports.FirstOrDefault();
-            DisplayPossibleVerticalTransportSites(transport);
-        }
-
-        private void DisplayPossibleVerticalTransportSites(TransportInventoryItem transport)
-        {
-            if (TransportSites.Count > 0)
-            {
-                ClearTransportSites();
-                if (selectedTransport == transport)
-                {
-                    return;
-                }
-            }
-
-            selectedTransport = transport;
-
-            foreach (var shaft in Shafts)
-            {
-                if (shaft.HasTransport())
-                {
-                    continue;
-                }
-                var direction = Direction.Down;
-                GenerateTransportSite(transport, shaft, direction);
-            }
-        }
-
-        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transport transport, Direction direction)
-        {
-            var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
-            var p = shaftBehaviour.transform.position;
-            transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
-            transportBehaviour.Init(this, shaftBehaviour, transport, direction);
-            var pos = shaftBehaviour.GetPosition();
-            transportBehaviour.gameObject.name = "Transport" + pos.X + "," + pos.Y;
-            transportBehaviour.gameObject.SetActive(true);
-            return transportBehaviour;
-        }
 
         private void OnClick(InputAction.CallbackContext context)
         {
@@ -524,7 +368,7 @@ namespace Assets.Scripts.Scenes.GameScene
             return new UnityEngine.Vector3(x + xOffset, -(y + yOffset), z);
         }
 
-        internal TileBehaviour GetTileRelative(Point2 pos, int x, int y)
+        internal TileBehaviour GetTileRelative(Point2 pos, int x = 0, int y = 0)
         {
             if (!GetRelativePosition(pos, x, y, out int newX, out int newY))
             {
@@ -599,37 +443,37 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        private void ClearTransportSites()
-        {
-            foreach (var site in TransportSites)
-            {
-                GameObject.Destroy(site.gameObject);
-            }
-            TransportSites.Clear();
-        }
+        //private void ClearTransportSites()
+        //{
+        //    foreach (var site in TransportSites)
+        //    {
+        //        GameObject.Destroy(site.gameObject);
+        //    }
+        //    TransportSites.Clear();
+        //}
 
-        internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
-        {
-            ClearTransportSites();
+        //internal void BuildTransporteSite(TransportSiteBehaviour transportSiteBehaviour)
+        //{
+        //    ClearTransportSites();
 
-            selectedTransport.Amount -= 1;
+        //    selectedTransport.Amount -= 1;
 
-            if (transportSiteBehaviour.IsVertical())
-            {
-                DisplayPossibleVerticalTransportSites(selectedTransport);
-            }
-            else
-            {
+        //    if (transportSiteBehaviour.IsVertical())
+        //    {
+        //        DisplayPossibleVerticalTransportSites(selectedTransport);
+        //    }
+        //    else
+        //    {
 
-                DisplayPossibleHorizontalTransportSites(selectedTransport);
-            }
+        //        DisplayPossibleHorizontalTransportSites(selectedTransport);
+        //    }
 
-            if (selectedTransport.Amount <= 0)
-            {
-                ClearTransportSites();
-                selectedTransport = null;
-            }
-        }
+        //    if (selectedTransport.Amount <= 0)
+        //    {
+        //        ClearTransportSites();
+        //        selectedTransport = null;
+        //    }
+        //}
 
         internal void RegisterStorage(IStorage storage)
         {

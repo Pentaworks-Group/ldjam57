@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
-    public class TransportBehaviour : MonoBehaviour, IClickable, IStorage
+    public class TransporterBehaviour : MonoBehaviour, IClickable, IStorage
     {
         [SerializeField]
         private TextMeshPro testLabel;
@@ -24,7 +24,6 @@ namespace Assets.Scripts.Scenes.GameScene
         private Button upgradeButton;
 
         private Transporter transporter;
-        private TransportRoute transportRoute;
         private ShaftBehaviour shaftBehaviour;
         private WorldBehaviour worldBehaviour;
         private float tickInterval = 1f;

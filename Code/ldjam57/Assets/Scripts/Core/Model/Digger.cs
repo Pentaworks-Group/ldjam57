@@ -12,5 +12,6 @@ namespace Assets.Scripts.Core.Model
         public Double Tick { get; set; }
         public Boolean IsMining { get; set; }
         public Dictionary<Mineral, Double> MinedAmount { get; set; } = new Dictionary<Mineral, Double>();
+
     }
 }

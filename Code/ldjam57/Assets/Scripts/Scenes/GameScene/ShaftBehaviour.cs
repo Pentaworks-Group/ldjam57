@@ -6,7 +6,7 @@ namespace Assets.Scripts.Scenes.GameScene
     public class ShaftBehaviour : TileBehaviour, IClickable
     {
         private Point2 pos;
-        public TransportBehaviour TransportBehaviour { get; set; }
+        public TransporterBehaviour TransportBehaviour { get; set; }
         public DiggerBehaviour DiggerBehaviour { get; set; }
 
         private void Awake()
