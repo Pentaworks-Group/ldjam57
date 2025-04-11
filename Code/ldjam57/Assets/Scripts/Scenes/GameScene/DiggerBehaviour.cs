@@ -98,9 +98,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-
-
-
         public void UpdatePosition()
         {
             var posi = worldBehaviour.GetUnityVector(digger.Position, -0.01f, xOffset, yOffset);
@@ -117,7 +114,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
             RegisterStorage();
         }
-
 
         private void MineTargets()
         {
@@ -339,8 +335,6 @@ namespace Assets.Scripts.Scenes.GameScene
             return false;
         }
 
-
-
         void RegisterStorage()
         {
             worldBehaviour.RegisterStorage(this);
@@ -350,7 +344,6 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             worldBehaviour.UnRegisterStorage(this);
         }
-
 
         void IStorage.RegisterStorage()
         {
