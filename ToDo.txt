@@ -13,7 +13,7 @@ Todo:
 Bugs: 
  - Sometimes no minerals are spawned
  - Correct calc of transporter.isActive (should be true, if transporter is transporting something)
- - .exe has no quit
+ 
  
 Exceptions: 
  - 
@@ -25,6 +25,7 @@ GamePlay:
  - 
  
 UI: 
+ - Tutorial
  - 
    
 Audio:
@@ -36,11 +37,11 @@ Refactoring:
 
 WIP:
 ----------------------------------
- -  
+ - Tutorial
 
 Nice to have:
 ----------------------------------
- - 
+ - Saved Games
  
  
 Ideas:

@@ -1,12 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
+using System.Runtime.InteropServices;
+
 using Assets.Scripts.Constants;
+
 using UnityEngine;
 
 namespace Assets.Scripts.Scenes.Menues
 {
     public class MainMenuBaseBehaviour : BaseMenuBehaviour
     {
+        [DllImport("__Internal")]
+        private static extern void Quit();
+
+        [SerializeField]
+        private GameObject quitButton;
+
         private void Start()
         {
             var introAudio = GameFrame.Base.Resources.Manager.Audio.Get("Intro");
@@ -19,8 +27,17 @@ namespace Assets.Scripts.Scenes.Menues
                 GameFrame.Base.Resources.Manager.Audio.Get("Menu_1"),
                 GameFrame.Base.Resources.Manager.Audio.Get("Menu_2")
             };
+
             GameFrame.Base.Audio.Background.ReplaceClips(backgroundAudioClips);
             GameFrame.Base.Audio.Background.PlayTransition(introAudio, backgroundAudioClips);
+        }
+
+        public void Awake()
+        {
+            if (SystemInfo.deviceType != DeviceType.Handheld)
+            {
+                quitButton.SetActive(true);
+            }
         }
 
         public void Play()
@@ -39,6 +56,17 @@ namespace Assets.Scripts.Scenes.Menues
         {
             Base.Core.Game.PlayButtonSound();
             Base.Core.Game.ChangeScene(SceneNames.Credits);
+        }
+
+        public void QuitGame()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBGL
+                        Quit();
+#elif UNITY_STANDALONE
+                        Application.Quit();            
+#endif
         }
 
         public void OpenItch()
