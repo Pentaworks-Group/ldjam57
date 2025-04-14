@@ -4,27 +4,27 @@ using Assets.Scripts.Core.Model.Inventories;
 using GameFrame.Core.Math;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
     public class TransportSiteBuilder : Builder
     {
+        [SerializeField]
+        private BuildSiteBehaviour transportBuildSiteTemplate;
         private WorldBehaviour worldBehaviour;
+        private BuildSiteManagerBehaviour buildSiteManagerBehaviour;
 
         private TransportInventoryItem transportInventoryItem => (TransportInventoryItem)inventoryItem;
 
 
-        public TransportSiteBuilder(WorldBehaviour worldBehaviour, InventoryItem inventoryItem)
+        public TransportSiteBuilder(BuildSiteManagerBehaviour buildSiteManagerBehaviour, InventoryItem inventoryItem)
         {
             this.inventoryItem = inventoryItem;
-            this.worldBehaviour = worldBehaviour;
-
+            this.worldBehaviour = buildSiteManagerBehaviour.worldBehaviour;
+            this.buildSiteManagerBehaviour = buildSiteManagerBehaviour;
         }
 
-        public override List<Direction> GetPossiblBuildDirections(Point2 position)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override List<(Point2, Direction)> GetPossibleBuildSites()
         {
@@ -63,6 +63,14 @@ namespace Assets.Scripts.Scenes.GameScene
                 possiblePositions.Add((shaft.GetPosition(), Direction.Left));
                 possiblePositions.Add((shaft.GetPosition(), Direction.Right));
             }
+        }
+
+        public override BuildSiteBehaviour GenerateBuildSite(Point2 pos, Direction dir)
+        {
+
+            var site = GameObject.Instantiate(transportBuildSiteTemplate, buildSiteManagerBehaviour.siteParent.transform);
+            site.Init(buildSiteManagerBehaviour, pos, inventoryItem, dir);
+            return site;
         }
     }
 }

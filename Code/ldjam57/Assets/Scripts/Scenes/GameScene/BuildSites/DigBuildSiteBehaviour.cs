@@ -16,7 +16,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         protected override void BuildSite()
         {
-            var newDigger = GameObject.Instantiate(DiggerTemplate, buildSiteManagerBehaviour.tileParent.transform);
+            var newDigger = GameObject.Instantiate(DiggerTemplate, buildSiteManagerBehaviour.worldBehaviour.TilesParent.transform);
 
             var digger = new Digger()
             {

@@ -1,10 +1,11 @@
 using Assets.Scripts.Core.Model;
 using GameFrame.Core.Math;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
-    public abstract class Builder
+    public abstract class Builder : MonoBehaviour
     {
         public InventoryItem inventoryItem;
 
@@ -15,7 +16,6 @@ namespace Assets.Scripts.Scenes.GameScene
 
         abstract public List<(Point2, Direction)> GetPossibleBuildSites();
 
-        abstract public List<Direction> GetPossiblBuildDirections(Point2 position);
-
+        abstract public BuildSiteBehaviour GenerateBuildSite(Point2 pos, Direction dir);
     }
 }

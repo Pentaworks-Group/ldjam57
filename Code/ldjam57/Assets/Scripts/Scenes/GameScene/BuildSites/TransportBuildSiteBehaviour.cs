@@ -17,7 +17,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         protected override void BuildSite()
         {
-            var newTransporterBehaviour = GameObject.Instantiate(TransporterTemplate, buildSiteManagerBehaviour.tileParent.transform);
+            var newTransporterBehaviour = GameObject.Instantiate(TransporterTemplate, buildSiteManagerBehaviour.siteParent.transform);
 
             var shaftBehaviour = buildSiteManagerBehaviour.worldBehaviour.GetTileRelative(position);
             newTransporterBehaviour.Init(buildSiteManagerBehaviour.worldBehaviour, (ShaftBehaviour)shaftBehaviour, TransportInventoryItem.Transport, direction);

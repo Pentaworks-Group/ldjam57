@@ -26,7 +26,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
 
         [SerializeField]
-        private GameObject TilesParent;
+        public GameObject TilesParent;
         [SerializeField]
         private GroundBehaviour TileTemplate;
         [SerializeField]

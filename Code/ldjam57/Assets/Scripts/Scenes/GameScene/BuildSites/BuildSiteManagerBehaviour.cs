@@ -10,10 +10,7 @@ namespace Assets.Scripts.Scenes.GameScene
     public class BuildSiteManagerBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private BuildSiteBehaviour digBuildSiteTemplate;
-        [SerializeField]
-        private BuildSiteBehaviour transportBuildSiteTemplate;
-        public GameObject tileParent;
+        public GameObject siteParent;
         [SerializeField]
         public WorldBehaviour worldBehaviour;
 
@@ -31,12 +28,12 @@ namespace Assets.Scripts.Scenes.GameScene
             if (!builders.TryGetValue(inventoryItem, out Builder builder)) {
                 if (inventoryItem is MiningToolInventoryItem)
                 {
-                    builder = new DigSiteBuilder(worldBehaviour, inventoryItem);
+                    builder = new DigSiteBuilder(this, inventoryItem);
                     builders.Add(inventoryItem, builder);
                 }
                 else if (inventoryItem is TransportInventoryItem)
                 {
-                    builder = new TransportSiteBuilder(worldBehaviour, inventoryItem);
+                    builder = new TransportSiteBuilder(this, inventoryItem);
                     builders.Add(inventoryItem, builder);
                 }
             }
@@ -63,34 +60,13 @@ namespace Assets.Scripts.Scenes.GameScene
         public void CreateBuildSites()
         {
             var possibleSites = SelectedBuilder.GetPossibleBuildSites();
-            buildSites = new List<BuildSiteBehaviour>();
-
-            if (SelectedBuilder.inventoryItem is TransportInventoryItem transportInventoryItem)
-            {
-                buildSites = possibleSites.Select(pS => GenerateTransportBuildSite(pS.Item1, pS.Item2)).ToList();
-            }
-            else
-            {
-                buildSites = possibleSites.Select(pS => GenerateDigBuildSite(pS.Item1, pS.Item2)).ToList();
-            }
+            buildSites = possibleSites.Select(pS => SelectedBuilder.GenerateBuildSite(pS.Item1, pS.Item2)).ToList();
             buildSites.ForEach(site => site.gameObject.SetActive(true));
         }
 
-        private BuildSiteBehaviour GenerateDigBuildSite(Point2 pos, Direction dir)
-        {
 
-            var site = GameObject.Instantiate(digBuildSiteTemplate, tileParent.transform);
-            site.Init(this, pos, SelectedBuilder.inventoryItem, dir);
-            return site;
-        }
 
-        private BuildSiteBehaviour GenerateTransportBuildSite(Point2 pos, Direction dir)
-        {
 
-            var site = GameObject.Instantiate(transportBuildSiteTemplate, tileParent.transform);
-            site.Init(this, pos, SelectedBuilder.inventoryItem, dir);
-            return site;
-        }
 
         public void RemoveBuildSite(BuildSiteBehaviour site)
         {
