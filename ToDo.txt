@@ -44,6 +44,12 @@ WIP:
 Nice to have:
 ----------------------------------
  - sorting transporter
+ - make buildable tile (for horizontal transporters & diggers in vertical)
+ - pause mode
+ - small permanent upkeep
+ - sell smaller batches
+ - use materials for tools
+ 
  
  
 Ideas:
