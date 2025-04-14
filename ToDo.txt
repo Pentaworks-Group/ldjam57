@@ -11,7 +11,9 @@ Todo:
 ---------------------------------- 
   
 Bugs: 
- - 
+ - Sometimes no minerals are spawned
+ - Correct calc of transporter.isActive (should be true, if transporter is transporting something)
+ - .exe has no quit
  
 Exceptions: 
  - 
