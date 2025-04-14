@@ -12,7 +12,10 @@ Todo:
   
 Bugs: 
  - Sometimes no minerals are spawned
- - Correct calc of transporter.isActive (should be true, if transporter is transporting something)
+ - Correct calc of transporter.isActive (should be true, if transporter is transporting something) 
+ - panning jumps sometimes (open uis?)
+ - make all depository tiles storage
+ - toggle debug view?
  
  
 Exceptions: 
@@ -41,7 +44,13 @@ WIP:
 
 Nice to have:
 ----------------------------------
- - Saved Games
+ - sorting transporter
+ - make buildable tile (for horizontal transporters & diggers in vertical)
+ - pause mode
+ - small permanent upkeep
+ - sell smaller batches
+ - use materials for tools
+  - Saved Games
  
  
 Ideas:
