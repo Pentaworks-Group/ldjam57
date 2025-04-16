@@ -12,6 +12,8 @@ using Assets.Scripts.UI;
 using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
 
+using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -369,12 +371,31 @@ namespace Assets.Scripts.Scenes.GameScene
             inventoryMenuBehaviour.PointerEntered.AddListener(() => UnhookActions());
             inventoryMenuBehaviour.PointerExited.AddListener(() => HookActions());
 
+            Base.Core.Game.OnPauseToggled.AddListener(OnPauseToggled);
+
             GenerateWorld();
         }
 
         private void OnShopToggeled(Boolean isOpen)
         {
             if (isOpen)
+            {
+                UnhookActions();
+                this.inventoryMenuBehaviour.DisableButtons();
+                this.CameraBehaviour.UnhookActions();
+            }
+            else
+            {
+                HookActions();
+                this.inventoryMenuBehaviour.gameObject.SetActive(true);
+                this.inventoryMenuBehaviour.EnableButtons();
+                this.CameraBehaviour.HookActions();
+            }
+        }
+
+        private void OnPauseToggled(Boolean isPaused)
+        {
+            if (isPaused)
             {
                 UnhookActions();
                 this.inventoryMenuBehaviour.DisableButtons();
