@@ -40,7 +40,7 @@ Refactoring:
 
 WIP:
 ----------------------------------
- - Tutorial
+ - Saved Games
 
 Nice to have:
 ----------------------------------
@@ -50,7 +50,7 @@ Nice to have:
  - small permanent upkeep
  - sell smaller batches
  - use materials for tools
-  - Saved Games
+ 
  
  
 Ideas:
