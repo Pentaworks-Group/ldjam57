@@ -11,6 +11,6 @@ namespace Assets.Scripts.Core.Model
         public Direction Direction { get; set; }        
         public Double Tick { get; set; }
         public Boolean IsMining { get; set; }
-        public Dictionary<Mineral, Double> MinedAmount { get; set; } = new Dictionary<Mineral, Double>();
+        public Dictionary<String, MineralAmount> MinedAmount { get; set; } = new Dictionary<String, MineralAmount>();
     }
 }

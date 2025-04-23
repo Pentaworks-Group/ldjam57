@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
@@ -139,13 +140,13 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             foreach (MineralAmount mineralA in mined)
             {
-                if (digger.MinedAmount.ContainsKey(mineralA.Mineral))
+                if (digger.MinedAmount.ContainsKey(mineralA.Mineral.Reference))
                 {
-                    digger.MinedAmount[mineralA.Mineral] += mineralA.Amount;
+                    digger.MinedAmount[mineralA.Mineral.Reference].Amount += mineralA.Amount;
                 }
                 else
                 {
-                    digger.MinedAmount[mineralA.Mineral] = mineralA.Amount;
+                    digger.MinedAmount[mineralA.Mineral.Reference] = new MineralAmount(mineralA.Mineral, mineralA.Amount);
                 }
             }
         }
@@ -190,7 +191,6 @@ namespace Assets.Scripts.Scenes.GameScene
             UpdatePosition();
             worldBehaviour.DiggerMoved(this);
             OnDiggerMoved.Invoke(this);
-
         }
 
         private bool SetTargets()
@@ -325,7 +325,7 @@ namespace Assets.Scripts.Scenes.GameScene
             return digger.Position;
         }
 
-        public Dictionary<Mineral, double> GetStorage()
+        public Dictionary<String, MineralAmount> GetStorage()
         {
             return digger.MinedAmount;
         }

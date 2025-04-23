@@ -204,13 +204,17 @@ public class MoneyBehaviour : MonoBehaviour
 
     public float GetMaterialPrice(Mineral mineral)
     {
-        foreach (var material in Core.Game.State.Market.MineralValues)
+        if (Core.Game.State != default)
         {
-            if (material.Mineral == mineral)
+            foreach (var material in Core.Game.State.Market.MineralValues)
             {
-                return (float) material.CurrentPrice;
+                if (material.Mineral == mineral)
+                {
+                    return (float)material.CurrentPrice;
+                }
             }
         }
+
         //Debug.LogWarning($"Material '{mineral.Name}' not found!");
         return -1f;
     }

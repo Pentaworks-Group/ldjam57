@@ -4,7 +4,9 @@ using System.Linq;
 
 using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Model.Inventories;
+
 using GameFrame.Core.Math;
+
 using TMPro;
 
 using UnityEngine;
@@ -29,13 +31,13 @@ namespace Assets.Scripts.Scenes.GameScene
         private WorldBehaviour worldBehaviour;
         private float tickInterval = 1f;
 
-
         private TransportInventoryItem upgradeOption;
         private TransportInventoryItem inventoryItem;
 
         private void Update()
         {
             transporter.Tick -= Time.deltaTime;
+
             if (transporter.Tick < 0f)
             {
                 MoveStuff();
@@ -46,12 +48,14 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void UpdateTest()
         {
-            List<string> values = new();
+            List<String> values = new();
+
             foreach (var pair in transporter.StoredAmount)
             {
-                double weight = pair.Value * pair.Key.Weight;
-                values.Add(pair.Key.Name + ": " + weight.ToString("F6"));
+                double weight = pair.Value.Amount * pair.Value.Mineral.Weight;
+                values.Add(pair.Value.Mineral.Name + ": " + weight.ToString("F6"));
             }
+
             var testText = GameFrame.Core.Json.Handler.SerializePretty(values);
             testLabel.text = testText;
         }
@@ -267,7 +271,7 @@ namespace Assets.Scripts.Scenes.GameScene
             return shaftBehaviour.GetPosition();
         }
 
-        public Dictionary<Mineral, double> GetStorage()
+        public Dictionary<String, MineralAmount> GetStorage()
         {
             return transporter.StoredAmount;
         }

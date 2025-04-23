@@ -1,14 +1,15 @@
+using System;
+using System.Collections.Generic;
 
 using Assets.Scripts.Core.Model;
-using System.Collections.Generic;
-using System;
+
 using GameFrame.Core.Math;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
     public interface IStorage
     {
-        public abstract Dictionary<Mineral, Double> GetStorage();
+        public abstract Dictionary<String, MineralAmount> GetStorage();
 
         public Double GetCapacity();
 
@@ -39,7 +40,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void StorageChanged()
         {
-            
+
         }
     }
 }

@@ -1,36 +1,41 @@
 
-using Assets.Scripts.Core.Model;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+
+using Assets.Scripts.Core.Model;
 
 namespace Assets.Scripts.Scenes.GameScene
 {
     public class StorageHelper
     {
-        public static double GetStoredAmount(Dictionary<Mineral, Double> storage, List<Mineral> selectedMinerals = null)
+        public static double GetStoredAmount(Dictionary<String, MineralAmount> storage, List<Mineral> selectedMinerals = null)
         {
             double usedCapacity = 0;
+
             List<Mineral> minerals;
+
             if (selectedMinerals == null)
             {
-                minerals = storage.Keys.ToList();
+                minerals = storage.Values.Select(m => m.Mineral).ToList();
             }
             else
             {
                 minerals = selectedMinerals.ToList();
             }
+
             foreach (var mineral in minerals)
             {
-                if (storage.TryGetValue(mineral, out double stored))
+                if (storage.TryGetValue(mineral.Reference, out var storedAmount))
                 {
-                    usedCapacity += stored * mineral.Weight;
+                    usedCapacity += storedAmount.Amount * mineral.Weight;
                 }
                 else
                 {
                     selectedMinerals?.Remove(mineral);
                 }
             }
+
             return usedCapacity;
         }
 
@@ -43,19 +48,23 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             double storedAmountTo = GetStoredAmount(to);
             double freeSpace = to.GetCapacity() - storedAmountTo;
+
             if (freeSpace <= 0.0001)
             {
                 return 0;
             }
+
             amountToMove = Math.Min(freeSpace, amountToMove);
+
             List<Mineral> allowedMaterials = new List<Mineral>();
+
             if (to.AllowsNewTypes())
             {
                 foreach (var pair in from.GetStorage())
                 {
-                    if (pair.Value > 0)
+                    if (pair.Value.Amount > 0)
                     {
-                        allowedMaterials.Add(pair.Key);
+                        allowedMaterials.Add(pair.Value.Mineral);
                     }
                 }
             }
@@ -63,33 +72,39 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 foreach (var pair in to.GetStorage())
                 {
-                    allowedMaterials.Add(pair.Key);
+                    allowedMaterials.Add(pair.Value.Mineral);
                 }
             }
+
             if (allowedMaterials.Count < 1)
             {
                 return 0;
             }
+
             double storedAmount = GetStoredAmount(from, allowedMaterials);
+
             double amountMoved = 0;
+
             if (amountToMove < storedAmount)
             {
                 var toStorage = to.GetStorage();
                 var percentage = amountToMove / storedAmount;
                 percentage = Math.Min(percentage, 1);
+
                 foreach (var mat in allowedMaterials)
                 {
-                    var value = from.GetStorage()[mat];
-                    double transferedAmount = value * percentage; ;
-                    if (toStorage.ContainsKey(mat))
+                    var mineralAmount = from.GetStorage()[mat.Reference];
+
+                    double transferedAmount = mineralAmount.Amount * percentage;
+                    if (toStorage.ContainsKey(mat.Reference))
                     {
-                        toStorage[mat] += transferedAmount;
-                        from.GetStorage()[mat] -= transferedAmount;
+                        toStorage[mat.Reference].Amount += transferedAmount;
+                        from.GetStorage()[mat.Reference].Amount -= transferedAmount;
                     }
                     else if (to.AllowsNewTypes())
                     {
-                        toStorage[mat] = transferedAmount;
-                        from.GetStorage()[mat] -= transferedAmount;
+                        toStorage[mat.Reference] = new MineralAmount(mat, transferedAmount);
+                        from.GetStorage()[mat.Reference].Amount -= transferedAmount;
                     }
                     amountMoved += transferedAmount * mat.Weight;
                 }
@@ -97,22 +112,26 @@ namespace Assets.Scripts.Scenes.GameScene
             else
             {
                 var toStorage = to.GetStorage();
+
                 foreach (var mat in allowedMaterials)
                 {
-                    var transferedAmount = from.GetStorage()[mat];
-                    if (toStorage.ContainsKey(mat))
+                    var transferedAmount = from.GetStorage()[mat.Reference];
+
+                    if (toStorage.ContainsKey(mat.Reference))
                     {
-                        toStorage[mat] += transferedAmount;
-                        from.GetStorage()[mat] = 0;
+                        toStorage[mat.Reference].Amount += transferedAmount.Amount;
+                        from.GetStorage()[mat.Reference].Amount = 0;
                     }
                     else if (to.AllowsNewTypes())
                     {
-                        toStorage[mat] = transferedAmount;
-                        from.GetStorage()[mat] = 0;
+                        toStorage[mat.Reference] = new MineralAmount(mat, transferedAmount.Amount);
+                        from.GetStorage()[mat.Reference].Amount = 0;
                     }
-                    amountMoved += transferedAmount * mat.Weight;
+
+                    amountMoved += transferedAmount.Amount * mat.Weight;
                 }
             }
+
             to.StorageChanged();
             from.StorageChanged();
             return amountMoved;

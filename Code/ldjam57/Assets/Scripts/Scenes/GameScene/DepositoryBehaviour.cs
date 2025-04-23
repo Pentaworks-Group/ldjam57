@@ -20,7 +20,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private SpriteRenderer levelRenderer;
 
-        private Dictionary<Mineral, double> storage = new();
+        private Dictionary<String, MineralAmount> storage = new();
         private GameObject popupMenu;
 
         [SerializeField]
@@ -49,7 +49,8 @@ namespace Assets.Scripts.Scenes.GameScene
             popupMenu = transform.Find("PopupMenu").gameObject;
 
             levelRenderer.color = depository.Mineral.Color.ToUnity();
-            storage[depository.Mineral] = depository.Value;
+            storage[depository.Mineral.Reference] = new MineralAmount(depository.Mineral, depository.Value);
+
             RegisterStorage();
 
             if (fillAmountBehaviour != null)
@@ -135,8 +136,10 @@ namespace Assets.Scripts.Scenes.GameScene
                 var mineralPrice = moneyBehaviour.GetMaterialPrice(depository.Mineral);
                 var totalValue = depository.Value * mineralPrice;
                 Base.Core.Game.State.Bank.Credits += totalValue;
+
                 depository.Value = 0;
-                storage[depository.Mineral] = depository.Value;
+
+                storage[depository.Mineral.Reference] = new MineralAmount(depository.Mineral, depository.Value);
 
                 GameFrame.Base.Audio.Effects.Play("MoneyRain");
             }
@@ -211,7 +214,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public Dictionary<Mineral, double> GetStorage()
+        public Dictionary<String, MineralAmount> GetStorage()
         {
             return storage;
         }
@@ -228,7 +231,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void StorageChanged()
         {
-            depository.Value = storage[depository.Mineral];
+            depository.Value = storage[depository.Mineral.Reference].Amount;
             UpdateLevel();
         }
 

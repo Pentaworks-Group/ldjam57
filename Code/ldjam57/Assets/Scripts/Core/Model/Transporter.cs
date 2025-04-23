@@ -1,7 +1,7 @@
-using Assets.Scripts.Core.Model;
-using GameFrame.Core.Math;
 using System;
 using System.Collections.Generic;
+
+using GameFrame.Core.Math;
 
 namespace Assets.Scripts.Core.Model
 {
@@ -11,8 +11,7 @@ namespace Assets.Scripts.Core.Model
         public Point2 Position { get; set; }
         public Direction Direction { get; set; }
         public Double Tick { get; set; }
-        public Dictionary<Mineral, Double> StoredAmount { get; set; } = new Dictionary<Mineral, Double>();
+        public Dictionary<String, MineralAmount> StoredAmount { get; set; } = new Dictionary<String, MineralAmount>();
         public Boolean IsActive { get; set; }
-
     }
 }
