@@ -13,6 +13,8 @@ namespace Assets.Scripts.Core.Model
             this.world = world;
         }
 
+        public Map<Int32, Tile> TileMap { get; }
+
         public List<Tile> GenerateRootTiles(Int32 initialDepth)
         {
             var tiles = new List<Tile>();
@@ -45,6 +47,8 @@ namespace Assets.Scripts.Core.Model
                 MineralAmounts = GenerateMineralAmounts(x, y, possibleMinerals)
             };
 
+            this.world.Tiles.Add(tile);
+             
             return tile;
         }
 

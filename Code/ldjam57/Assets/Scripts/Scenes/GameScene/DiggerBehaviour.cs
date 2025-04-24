@@ -64,6 +64,7 @@ namespace Assets.Scripts.Scenes.GameScene
             if (digger.IsMining)
             {
                 digger.Tick -= Time.deltaTime;
+
                 if (digger.Tick < 0f)
                 {
                     MineTargets();
@@ -103,17 +104,19 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var posi = worldBehaviour.GetUnityVector(digger.Position, -0.01f, xOffset, yOffset);
             transform.position = posi;
+
             if (shaft != null)
             {
                 shaft.DiggerBehaviour = null;
             }
-            ShaftBehaviour newShaft = (ShaftBehaviour)worldBehaviour.GetTileRelative(digger.Position, 0, 0);
-            if (newShaft != null)
+
+            if (worldBehaviour.GetTileRelative<ShaftBehaviour>(digger.Position, 0, 0, out var newShaft))
             {
                 newShaft.DiggerBehaviour = this;
                 shaft = newShaft;
+
+                RegisterStorage();
             }
-            RegisterStorage();
         }
 
         private void MineTargets()
@@ -126,8 +129,10 @@ namespace Assets.Scripts.Scenes.GameScene
                     {
                         targets.RemoveAt(i);
                     }
+
                     StoreMinerals(mined);
                 }
+
                 if (targets.Count == 0)
                 {
                     MoveDigger();
@@ -195,38 +200,55 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private bool SetTargets()
         {
-            if (digger.Direction == Direction.Left)
+            switch (digger.Direction)
             {
-                for (int i = 0; i < digger.MiningTool.Size.Y; i++)
-                {
-                    var target = worldBehaviour.GetTileRelative(digger.Position, -1, i);
-                    if (target != null && target.IsDigable())
+                case Direction.Left:
                     {
-                        targets.Add((GroundBehaviour)target);
+                        for (var i = 0; i < digger.MiningTool.Size.Y; i++)
+                        {
+                            if (worldBehaviour.GetTileRelative(digger.Position, -1, i, out var target))
+                            {
+                                if (target.IsDigable())
+                                {
+                                    targets.Add((GroundBehaviour)target);
+                                }
+                            }
+                        }
+
+                        break;
                     }
-                }
-            }
-            else if (digger.Direction == Direction.Right)
-            {
-                for (int i = 0; i < digger.MiningTool.Size.Y; i++)
-                {
-                    var target = worldBehaviour.GetTileRelative(digger.Position, 1, i);
-                    if (target != null && target.IsDigable())
+
+                case Direction.Right:
                     {
-                        targets.Add((GroundBehaviour)target);
+                        for (var i = 0; i < digger.MiningTool.Size.Y; i++)
+                        {
+                            if (worldBehaviour.GetTileRelative(digger.Position, 1, i, out var target))
+                            {
+                                if (target.IsDigable())
+                                {
+                                    targets.Add((GroundBehaviour)target);
+                                }
+                            }
+                        }
+
+                        break;
                     }
-                }
-            }
-            else if (digger.Direction == Direction.Down)
-            {
-                for (int i = 0; i < digger.MiningTool.Size.X; i++)
-                {
-                    var target = worldBehaviour.GetTileRelative(digger.Position, i, 1);
-                    if (target != null && target.IsDigable())
+
+                case Direction.Down:
                     {
-                        targets.Add((GroundBehaviour)target);
+                        for (var i = 0; i < digger.MiningTool.Size.X; i++)
+                        {
+                            if (worldBehaviour.GetTileRelative(digger.Position, i, 1, out GroundBehaviour target))
+                            {
+                                if (target.IsDigable())
+                                {
+                                    targets.Add(target);
+                                }
+                            }
+                        }
+
+                        break;
                     }
-                }
             }
 
             if (targets.Count < 1)
@@ -234,6 +256,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 StopMining();
                 return false;
             }
+
             return true;
         }
 

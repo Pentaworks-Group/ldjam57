@@ -12,8 +12,6 @@ using Assets.Scripts.UI;
 using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
 
-using Unity.VisualScripting;
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -57,13 +55,13 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private ShopMenuBehaviour shop;
 
-        private Map<int, TileBehaviour> tileMap = new();
-        private Map<int, List<IStorage>> storages = new();
+        private readonly Map<Int32, TileBehaviour> tileMap = new Map<Int32, TileBehaviour>();
+        private readonly Map<Int32, List<IStorage>> storages = new Map<Int32, List<IStorage>>();
 
-        private List<ShaftBehaviour> Shafts = new();
+        private readonly List<ShaftBehaviour> Shafts = new();
 
-        private List<SiteBehaviour> Sites = new();
-        private List<TransportSiteBehaviour> TransportSites = new();
+        private readonly List<SiteBehaviour> Sites = new();
+        private readonly List<TransportSiteBehaviour> TransportSites = new();
         private readonly Dictionary<String, DepositoryBehaviour> depositories = new Dictionary<String, DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
@@ -92,8 +90,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void DisplayPosibleDigSites()
         {
-            var miningTool = Base.Core.Game.State.Inventory.MiningTools.FirstOrDefault();
-            DisplayPosibleDigSites(miningTool);
+            //var miningTool = Base.Core.Game.State.Inventory.MiningTools.FirstOrDefault();
+            //DisplayPosibleDigSites(miningTool);
         }
 
         public Map<int, Digger> GenerateDiggerMap()
@@ -116,7 +114,7 @@ namespace Assets.Scripts.Scenes.GameScene
             switch (inventoryItem)
             {
                 case MiningToolInventoryItem miningToolInventoryItem:
-                    DisplayPosibleDigSites(miningToolInventoryItem);
+                    DisplayPosibleDigSites(miningToolInventoryItem.MiningTool);
                     break;
 
                 case TransportInventoryItem transportInventoryItem:
@@ -134,7 +132,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public void DisplayPosibleDigSites(MiningToolInventoryItem inventoryItem)
+        public void DisplayPosibleDigSites(MiningTool miningTool)
         {
             if (Sites.Count > 0)
             {
@@ -146,26 +144,35 @@ namespace Assets.Scripts.Scenes.GameScene
 
             foreach (var shaft in Shafts)
             {
-                var beneath = GetTileRelative(shaft.GetPosition(), 0, 1);
-
-                if (beneath?.IsDigable() == true && !diggerMap.TryGetValue(shaft.GetPosition().X, shaft.GetPosition().Y, out _))
+                if (GetTileRelative(shaft.GetPosition(), 0, 1, out var beneath))
                 {
-                    if (inventoryItem.MiningTool.Size.X < 2)
+                    if (beneath.IsDigable() == true && !diggerMap.TryGetValue(shaft.GetPosition().X, shaft.GetPosition().Y, out _))
                     {
-                        var tile = GetTileRelative(shaft.GetPosition(), -1, 0);
-                        if (tile?.IsDigable() == true)
+                        if (miningTool.Size.X < 2)
                         {
-                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Left);
-                        }
-                        tile = GetTileRelative(shaft.GetPosition(), 1, 0);
-                        if (tile?.IsDigable() == true)
-                        {
-                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Right);
-                        }
-                        tile = GetTileRelative(shaft.GetPosition(), 0, 1);
-                        if (tile?.IsDigable() == true)
-                        {
-                            CreateSite(shaft.GetPosition(), inventoryItem, Direction.Down);
+                            if (GetTileRelative(shaft.GetPosition(), -1, 0, out var leftTile))
+                            {
+                                if (leftTile.IsDigable() == true)
+                                {
+                                    CreateSite(shaft.GetPosition(), miningTool, Direction.Left);
+                                }
+                            }
+
+                            if (GetTileRelative(shaft.GetPosition(), 1, 0, out var rightTile))
+                            {
+                                if (rightTile.IsDigable() == true)
+                                {
+                                    CreateSite(shaft.GetPosition(), miningTool, Direction.Right);
+                                }
+                            }
+
+                            if (GetTileRelative(shaft.GetPosition(), 0, 1, out var bottomTile))
+                            {
+                                if (bottomTile.IsDigable() == true)
+                                {
+                                    CreateSite(shaft.GetPosition(), miningTool, Direction.Down);
+                                }
+                            }
                         }
                     }
                 }
@@ -182,27 +189,33 @@ namespace Assets.Scripts.Scenes.GameScene
             //}
         }
 
-        public void BuildDigSite(SiteBehaviour siteBehaviour)
+        public void AddDigSite(Digger digger)
+        {
+            var inventoryItem = Base.Core.Game.State.Inventory.MiningTools.FirstOrDefault(m => m.MiningTool.Reference == digger.MiningTool.Reference);
+
+            if (inventoryItem != default)
+            {
+                inventoryItem.Amount -= 1;
+
+                Base.Core.Game.State.ActiveDiggers.Add(digger);
+                SpawnDigSite(digger);
+
+                if (inventoryItem.Amount > 0)
+                {
+                    DisplayPosibleDigSites(digger.MiningTool);
+                }
+            }
+        }
+
+        public void SpawnDigSite(Digger digger)
         {
             var newDigger = GameObject.Instantiate(DiggerTemplate, TilesParent.transform);
-
-            var digger = new Digger()
-            {
-                Direction = siteBehaviour.GetDirection(),
-                MiningTool = siteBehaviour.GetMiningTool().MiningTool,
-                Position = siteBehaviour.GetPosition()
-            };
 
             newDigger.Init(this, digger);
             newDigger.UpdatePosition();
             newDigger.gameObject.SetActive(true);
-            Base.Core.Game.State.ActiveDiggers.Add(digger);
 
             ClearDigSites();
-            if (siteBehaviour.GetMiningTool().Amount > 0)
-            {
-                DisplayPosibleDigSites(siteBehaviour.GetMiningTool());
-            }
         }
 
         private void ClearDigSites()
@@ -215,36 +228,38 @@ namespace Assets.Scripts.Scenes.GameScene
             Sites.Clear();
         }
 
-        private void CreateSite(Point2 pos, MiningToolInventoryItem miningTool, Direction direction)
+        private void CreateSite(Point2 pos, MiningTool miningTool, Direction direction)
         {
             UnityEngine.Vector3 position;
             Quaternion rotation;
-            if (direction == Direction.Down)
+
+            switch (direction)
             {
-                position = GetUnityVector(pos, SiteTemplate.transform.position.z, yOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
-                rotation = SiteTemplate.transform.rotation;
-            }
-            else if (direction == Direction.Left)
-            {
-                position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: -(1 - SiteTemplate.transform.localScale.y) / 2);
-                rotation = SiteTemplate.transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, -90);
-            }
-            else if (direction == Direction.Right)
-            {
-                position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
-                rotation = SiteTemplate.transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, 90);
-            }
-            else
-            {
-                return;
+                case Direction.Down:
+                    position = GetUnityVector(pos, SiteTemplate.transform.position.z, yOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
+                    rotation = SiteTemplate.transform.rotation;
+                    break;
+
+                case Direction.Left:
+                    position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: -(1 - SiteTemplate.transform.localScale.y) / 2);
+                    rotation = SiteTemplate.transform.rotation;
+                    rotation *= Quaternion.Euler(0, 0, -90);
+                    break;
+
+                case Direction.Right:
+                    position = GetUnityVector(pos, SiteTemplate.transform.position.z, xOffset: (1 - SiteTemplate.transform.localScale.y) / 2);
+                    rotation = SiteTemplate.transform.rotation;
+                    rotation *= Quaternion.Euler(0, 0, 90);
+                    break;
+                default:
+                    return;
             }
 
             var newSite = GameObject.Instantiate(SiteTemplate, position, rotation, TilesParent.transform);
             newSite.Init(this, pos, miningTool, direction);
             newSite.gameObject.SetActive(true);
             newSite.gameObject.name = "DigSite_" + pos.X + "," + pos.Y;
+
             Sites.Add(newSite);
         }
 
@@ -259,6 +274,7 @@ namespace Assets.Scripts.Scenes.GameScene
             if (TransportSites.Count > 0)
             {
                 ClearTransportSites();
+
                 if (selectedTransport == transport)
                 {
                     return;
@@ -268,10 +284,12 @@ namespace Assets.Scripts.Scenes.GameScene
             selectedTransport = transport;
             foreach (var shaft in Shafts)
             {
-                if (shaft.HasTransport() || GetTileRelative(shaft.GetPosition(), 0, 1)?.IsDigable() == false)
+                if (shaft.HasTransport() 
+                    || (GetTileRelative(shaft.GetPosition(), 0, 1, out var tile) == true && tile.IsDigable() == false))
                 {
                     continue;
                 }
+
                 GenerateTransportSite(transport, shaft, Direction.Left);
                 GenerateTransportSite(transport, shaft, Direction.Right);
             }
@@ -412,7 +430,8 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateWorld()
         {
-            var world = Base.Core.Game.State.World;
+            var gameState = Base.Core.Game.State;
+            var world = gameState.World;
 
             tileGenerator = new TileGenerator(world);
 
@@ -427,7 +446,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 }
                 else
                 {
-                    GenerateGround(tile);
+                    SpawnGround(tile);
                 }
             }
 
@@ -435,16 +454,26 @@ namespace Assets.Scripts.Scenes.GameScene
 
             foreach (var depository in world.Depositories)
             {
-                GenerateDepository(depository);
+                SpawnDepository(depository);
             }
 
             for (int i = 0; i < world.Width; i++)
             {
                 CreateShaft(new Point2(i, -1), GroundLevelShaftTemplate);
             }
+
+            foreach (var digger in gameState.ActiveDiggers)
+            {
+                SpawnDigSite(digger);
+            }
+
+            foreach (var transporter in gameState.ActiveTransporters)
+            {
+
+            }
         }
 
-        private void GenerateGround(Tile tile)
+        private TileBehaviour SpawnGround(Tile tile)
         {
             var pos = tile.Position;
 
@@ -459,6 +488,8 @@ namespace Assets.Scripts.Scenes.GameScene
             groundTile.gameObject.SetActive(true);
 
             tileMap[pos.X, pos.Y] = groundTile;
+
+            return groundTile;
         }
 
         public void ReplaceTile(TileBehaviour tile)
@@ -470,15 +501,20 @@ namespace Assets.Scripts.Scenes.GameScene
         private void CreateShaft(Point2 pos, ShaftBehaviour shaftTemplate)
         {
             var position = GetUnityVector(pos, shaftTemplate.transform.position.z);
+
             var shaftBehaviour = GameObject.Instantiate(shaftTemplate, position, shaftTemplate.transform.rotation, TilesParent.transform);
+
             shaftBehaviour.gameObject.name = shaftTemplate.gameObject.name + "_" + pos.X + "," + pos.Y; ;
+
             shaftBehaviour.Init(this, pos);
+
             Shafts.Add(shaftBehaviour);
             shaftBehaviour.gameObject.SetActive(true);
+
             tileMap[pos.X, pos.Y] = shaftBehaviour;
         }
 
-        private void GenerateDepository(Depository depository)
+        private void SpawnDepository(Depository depository)
         {
             var position = GetUnityVector(depository.Position, DepositoryTemplate.transform.position.z);
 
@@ -511,6 +547,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 outX = 0;
                 outY = 0;
+
                 return false;
             }
 
@@ -519,8 +556,10 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 outX = 0;
                 outY = 0;
+
                 return false;
             }
+
             return true;
         }
 
@@ -531,7 +570,9 @@ namespace Assets.Scripts.Scenes.GameScene
                 newPos = new Point2(outX, outY);
                 return true;
             }
+
             newPos = new Point2();
+
             return false;
         }
 
@@ -545,23 +586,35 @@ namespace Assets.Scripts.Scenes.GameScene
             return new UnityEngine.Vector3(x + xOffset, -(y + yOffset), z);
         }
 
-        internal TileBehaviour GetTileRelative(Point2 pos, int x, int y)
+        internal Boolean GetTileRelative(Point2 pos, int x, int y, out TileBehaviour tile)
         {
-            if (!GetRelativePosition(pos, x, y, out int newX, out int newY))
+            tile = default;
+
+            if (GetRelativePosition(pos, x, y, out int newX, out int newY))
             {
-                return null;
+                if (this.tileMap.TryGetValue(newX, newY, out tile))
+                {
+                    return true;
+                }
             }
-            return tileMap[newX, newY];
+
+            return false;
         }
 
-        internal T GetTilerRelativeOfType<T>(Point2 pos, int x, int y)
+        internal Boolean GetTileRelative<TTile>(Point2 pos, int x, int y, out TTile actualTîle) where TTile : TileBehaviour
         {
-            var tile = GetTileRelative(pos, x, y);
-            if (tile is T typedTile)
+            actualTîle = default;
+
+            if (GetTileRelative(pos, x, y, out var tile))
             {
-                return typedTile;
+                if (tile is TTile typedTile)
+                {
+                    actualTîle = typedTile;
+                    return true;
+                }
             }
-            return default;
+
+            return false;
         }
 
         internal void DiggerMoved(DiggerBehaviour toolBehaviour)
@@ -569,34 +622,44 @@ namespace Assets.Scripts.Scenes.GameScene
             var dir = toolBehaviour.GetDirection();
             var size = toolBehaviour.GetSize();
             List<(int x, int y)> pointList = new List<(int x, int y)>();
-            if (dir == Direction.Left)
-            {
-                var numPoints = size.Y + 2; //+4 for range -2 because we start lower
-                for (int i = -2; i < numPoints; i++)
-                {
-                    pointList.Add((-2, i));
-                }
 
-            }
-            else if (dir == Direction.Right)
+            switch (dir)
             {
-                var numPoints = size.Y + 2; //+4 for range -2 because we start lower
-                for (int i = -2; i < numPoints; i++)
-                {
-                    pointList.Add((2, i));
-                }
-            }
-            else if (dir == Direction.Down)
-            {
-                var numPoints = size.X + 2; //+4 for range -2 because we start lefter
-                for (int i = -2; i < numPoints; i++)
-                {
-                    pointList.Add((i, 2));
-                }
-            }
-            else
-            {
-                return;
+                case Direction.Left:
+                    {
+                        var numPoints = size.Y + 2; //+4 for range -2 because we start lower
+                        for (var i = -2; i < numPoints; i++)
+                        {
+                            pointList.Add((-2, i));
+                        }
+
+                        break;
+                    }
+
+                case Direction.Right:
+                    {
+                        var numPoints = size.Y + 2; //+4 for range -2 because we start lower
+                        for (var i = -2; i < numPoints; i++)
+                        {
+                            pointList.Add((2, i));
+                        }
+
+                        break;
+                    }
+
+                case Direction.Down:
+                    {
+                        var numPoints = size.X + 2; //+4 for range -2 because we start lefter
+                        for (var i = -2; i < numPoints; i++)
+                        {
+                            pointList.Add((i, 2));
+                        }
+
+                        break;
+                    }
+
+                default:
+                    return;
             }
 
             var pos = toolBehaviour.GetPosition();
@@ -609,7 +672,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     var tile = tileGenerator.GenerateTile(x, y);
 
-                    GenerateGround(tile);
+                    SpawnGround(tile);
                 }
 
                 if (y > Base.Core.Game.State.World.MaxDepth)
