@@ -65,10 +65,12 @@ namespace Assets.Scripts.Scenes.GameScene
         private readonly Dictionary<String, DepositoryBehaviour> depositories = new Dictionary<String, DepositoryBehaviour>();
 
         private TileGenerator tileGenerator;
-        private TransportInventoryItem selectedTransport;
+        private TransportInventoryItem selectedTransportInventoryItem;
 
         private InputAction touchPressed;
         private InputAction touchPosition;
+
+        private GameState gameState;
 
         private void Awake()
         {
@@ -90,15 +92,27 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void DisplayPosibleDigSites()
         {
-            //var miningTool = Base.Core.Game.State.Inventory.MiningTools.FirstOrDefault();
-            //DisplayPosibleDigSites(miningTool);
+            var miningToolInventoryItem = this.gameState.Inventory.MiningTools.FirstOrDefault();
+            DisplayPosibleDigSites(miningToolInventoryItem.MiningTool);
+        }
+
+        public void DisplayPossibleHorizontalTransportSites()
+        {
+            var transport = this.gameState.Inventory.HorizontalTransports.FirstOrDefault();
+            DisplayPossibleHorizontalTransportSites(transport);
+        }
+
+        public void DisplayPossibleVerticalTransportSites()
+        {
+            var transport = this.gameState.Inventory.VerticalTransports.FirstOrDefault();
+            DisplayPossibleVerticalTransportSites(transport);
         }
 
         public Map<int, Digger> GenerateDiggerMap()
         {
             Map<int, Digger> diggerMap = new();
 
-            foreach (var digger in Base.Core.Game.State.ActiveDiggers)
+            foreach (var digger in this.gameState.ActiveDiggers)
             {
                 diggerMap[digger.Position.X, digger.Position.Y] = digger;
             }
@@ -191,13 +205,13 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void AddDigSite(Digger digger)
         {
-            var inventoryItem = Base.Core.Game.State.Inventory.MiningTools.FirstOrDefault(m => m.MiningTool.Reference == digger.MiningTool.Reference);
+            var inventoryItem = this.gameState.Inventory.MiningTools.FirstOrDefault(m => m.MiningTool.Reference == digger.MiningTool.Reference);
 
             if (inventoryItem != default)
             {
                 inventoryItem.Amount -= 1;
 
-                Base.Core.Game.State.ActiveDiggers.Add(digger);
+                this.gameState.ActiveDiggers.Add(digger);
                 SpawnDigSite(digger);
 
                 if (inventoryItem.Amount > 0)
@@ -263,66 +277,59 @@ namespace Assets.Scripts.Scenes.GameScene
             Sites.Add(newSite);
         }
 
-        public void DisplayPossibleHorizontalTransportSites()
-        {
-            var transport = Base.Core.Game.State.Inventory.HorizontalTransports.FirstOrDefault();
-            DisplayPossibleHorizontalTransportSites(transport);
-        }
-
-        private void DisplayPossibleHorizontalTransportSites(TransportInventoryItem transport)
+        private void DisplayPossibleHorizontalTransportSites(TransportInventoryItem transportInventoryItem)
         {
             if (TransportSites.Count > 0)
             {
                 ClearTransportSites();
 
-                if (selectedTransport == transport)
+                if (selectedTransportInventoryItem == transportInventoryItem)
                 {
                     return;
                 }
             }
 
-            selectedTransport = transport;
+            selectedTransportInventoryItem = transportInventoryItem;
+
             foreach (var shaft in Shafts)
             {
-                if (shaft.HasTransport() 
+                if (shaft.HasTransport()
                     || (GetTileRelative(shaft.GetPosition(), 0, 1, out var tile) == true && tile.IsDigable() == false))
                 {
                     continue;
                 }
 
-                GenerateTransportSite(transport, shaft, Direction.Left);
-                GenerateTransportSite(transport, shaft, Direction.Right);
+                GenerateTransportSite(transportInventoryItem.Transport, shaft, Direction.Left);
+                GenerateTransportSite(transportInventoryItem.Transport, shaft, Direction.Right);
             }
         }
 
-        private void GenerateTransportSite(TransportInventoryItem transport, ShaftBehaviour shaft, Direction direction)
+        private void GenerateTransportSite(Transport transport, ShaftBehaviour shaft, Direction direction)
         {
             var newSite = GameObject.Instantiate(TransportSiteTemplate, TilesParent.transform);
-            newSite.Init(this, transport.Transport, shaft, direction);
+
+            newSite.Init(this, transport, shaft, direction);
+
             var pos = shaft.GetPosition();
+
             newSite.gameObject.name = "TransportSite_" + pos.X + "," + pos.Y;
             newSite.gameObject.SetActive(true);
+
             TransportSites.Add(newSite);
         }
 
-        public void DisplayPossibleVerticalTransportSites()
-        {
-            var transport = Base.Core.Game.State.Inventory.VerticalTransports.FirstOrDefault();
-            DisplayPossibleVerticalTransportSites(transport);
-        }
-
-        private void DisplayPossibleVerticalTransportSites(TransportInventoryItem transport)
+        private void DisplayPossibleVerticalTransportSites(TransportInventoryItem transportInventoryItem)
         {
             if (TransportSites.Count > 0)
             {
                 ClearTransportSites();
-                if (selectedTransport == transport)
+                if (selectedTransportInventoryItem == transportInventoryItem)
                 {
                     return;
                 }
             }
 
-            selectedTransport = transport;
+            selectedTransportInventoryItem = transportInventoryItem;
 
             foreach (var shaft in Shafts)
             {
@@ -330,20 +337,28 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     continue;
                 }
+
                 var direction = Direction.Down;
-                GenerateTransportSite(transport, shaft, direction);
+                GenerateTransportSite(transportInventoryItem.Transport, shaft, direction);
             }
         }
 
-        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transport transport, Direction direction)
+        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transporter transporter, Direction direction)
         {
             var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
+
             var p = shaftBehaviour.transform.position;
+
+            shaftBehaviour.TransportBehaviour = transportBehaviour;
+
             transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
-            transportBehaviour.Init(this, shaftBehaviour, transport, direction);
-            var pos = shaftBehaviour.GetPosition();
-            transportBehaviour.gameObject.name = "Transport" + pos.X + "," + pos.Y;
+            transportBehaviour.Init(this, shaftBehaviour, transporter);
+
+            var shaftPosition = shaftBehaviour.GetPosition();
+
+            transportBehaviour.gameObject.name = "Transport" + shaftPosition.X + "," + shaftPosition.Y;
             transportBehaviour.gameObject.SetActive(true);
+
             return transportBehaviour;
         }
 
@@ -357,7 +372,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-
         private void OnTouched(InputAction.CallbackContext context)
         {
             if (context.phase == InputActionPhase.Performed)
@@ -367,6 +381,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 EvalutePress(position);
             }
         }
+
         private void EvalutePress(UnityEngine.Vector2 position)
         {
             Ray ray = mainCamera.ScreenPointToRay(position);
@@ -390,6 +405,8 @@ namespace Assets.Scripts.Scenes.GameScene
             inventoryMenuBehaviour.PointerExited.AddListener(() => HookActions());
 
             Base.Core.Game.OnPauseToggled.AddListener(OnPauseToggled);
+
+            this.gameState = Base.Core.Game.State;
 
             GenerateWorld();
         }
@@ -430,15 +447,14 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void GenerateWorld()
         {
-            var gameState = Base.Core.Game.State;
-            var world = gameState.World;
+            tileGenerator = new TileGenerator(this.gameState.World);
 
-            tileGenerator = new TileGenerator(world);
-
-            Headquarters.transform.position = world.Headquarters.Position.ToUnityVector3(Headquarters.transform.position.z);
+            Headquarters.transform.position = this.gameState.World.Headquarters.Position.ToUnityVector3(Headquarters.transform.position.z);
             CameraBehaviour.GotoToPosition(Headquarters.transform.position);
 
-            foreach (var tile in world.Tiles)
+            CameraBehaviour.OnBoundariesChanged(this.gameState.World.Width, this.gameState.World.MaxDepth);
+
+            foreach (var tile in this.gameState.World.Tiles)
             {
                 if (tile.DigingProgress >= 1)
                 {
@@ -446,30 +462,31 @@ namespace Assets.Scripts.Scenes.GameScene
                 }
                 else
                 {
-                    SpawnGround(tile);
+                    _ = SpawnGround(tile);
                 }
             }
 
-            CameraBehaviour.OnBoundariesChanged(world.Width, world.MaxDepth);
-
-            foreach (var depository in world.Depositories)
-            {
-                SpawnDepository(depository);
-            }
-
-            for (int i = 0; i < world.Width; i++)
+            for (int i = 0; i < this.gameState.World.Width; i++)
             {
                 CreateShaft(new Point2(i, -1), GroundLevelShaftTemplate);
             }
 
-            foreach (var digger in gameState.ActiveDiggers)
+            foreach (var depository in this.gameState.World.Depositories)
+            {
+                SpawnDepository(depository);
+            }
+
+            foreach (var digger in this.gameState.ActiveDiggers)
             {
                 SpawnDigSite(digger);
             }
 
-            foreach (var transporter in gameState.ActiveTransporters)
+            foreach (var transporter in this.gameState.ActiveTransporters)
             {
-
+                if (tileMap.TryGetValue(transporter.Position.X, transporter.Position.Y, out ShaftBehaviour shaftBehaviour))
+                {
+                    SpawnTransporter(transporter, shaftBehaviour);
+                }
             }
         }
 
@@ -492,10 +509,10 @@ namespace Assets.Scripts.Scenes.GameScene
             return groundTile;
         }
 
-        public void ReplaceTile(TileBehaviour tile)
+        public void ReplaceTile(GroundBehaviour groundBehaviour)
         {
-            CreateShaft(tile.GetPosition(), ShaftTemplate);
-            GameObject.Destroy(tile.gameObject);
+            CreateShaft(groundBehaviour.GetPosition(), ShaftTemplate);
+            GameObject.Destroy(groundBehaviour.gameObject);
         }
 
         private void CreateShaft(Point2 pos, ShaftBehaviour shaftTemplate)
@@ -521,11 +538,14 @@ namespace Assets.Scripts.Scenes.GameScene
             var depositoryGameObject = Instantiate(DepositoryTemplate, position, DepositoryTemplate.transform.rotation, DepositoryContainer.transform);
 
             var depositoryBehaviour = depositoryGameObject.GetComponent<DepositoryBehaviour>();
+
             if (depositoryGameObject.transform.Find("PopupMenu").TryGetComponent<MouseEventBehaviour>(out var mouseEventBehaviour))
             {
                 mouseEventBehaviour.PointerEntered.AddListener(UnhookActions);
                 mouseEventBehaviour.PointerExited.AddListener(HookActions);
             }
+
+            depositoryBehaviour.OnPopupOpened.AddListener(DepositoryPopupOpened);
 
             MoneyBehaviour sceneMoneyBehaviour = FindFirstObjectByType<MoneyBehaviour>();
             depositoryBehaviour.SetMoneyBehaviour(sceneMoneyBehaviour);
@@ -537,13 +557,32 @@ namespace Assets.Scripts.Scenes.GameScene
             depositoryGameObject.SetActive(true);
         }
 
+        private void DepositoryPopupOpened(DepositoryBehaviour openedDepository)
+        {
+            foreach (var depository in this.depositories.Values)
+            {
+                if (depository != openedDepository)
+                {
+                    if (depository.IsPopupOpen)
+                    {
+                        depository.ClosePopup();
+                    }
+                }
+            }
+        }
+
+        private void SpawnTransporter(Transporter transporter, ShaftBehaviour shaftBehaviour)
+        {
+            _ = GenerateTransportBehaviour(shaftBehaviour, transporter, transporter.Direction);
+        }
+
         public bool GetRelativePosition(Point2 pos, int x, int y, out int outX, out int outY)
         {
             int oldX = pos.X;
             int oldY = pos.Y;
 
             outX = x + oldX;
-            if (outX < 0 || outX > Base.Core.Game.State.World.Width)
+            if (outX < 0 || outX > this.gameState.World.Width)
             {
                 outX = 0;
                 outY = 0;
@@ -675,10 +714,10 @@ namespace Assets.Scripts.Scenes.GameScene
                     SpawnGround(tile);
                 }
 
-                if (y > Base.Core.Game.State.World.MaxDepth)
+                if (y > this.gameState.World.MaxDepth)
                 {
-                    Base.Core.Game.State.World.MaxDepth = y;
-                    CameraBehaviour.OnBoundariesChanged(Base.Core.Game.State.World.Width, y);
+                    this.gameState.World.MaxDepth = y;
+                    CameraBehaviour.OnBoundariesChanged(this.gameState.World.Width, y);
                 }
             }
         }
@@ -689,6 +728,7 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 GameObject.Destroy(site.gameObject);
             }
+
             TransportSites.Clear();
         }
 
@@ -696,22 +736,22 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             ClearTransportSites();
 
-            selectedTransport.Amount -= 1;
+            selectedTransportInventoryItem.Amount -= 1;
 
             if (transportSiteBehaviour.IsVertical())
             {
-                DisplayPossibleVerticalTransportSites(selectedTransport);
+                DisplayPossibleVerticalTransportSites(selectedTransportInventoryItem);
             }
             else
             {
 
-                DisplayPossibleHorizontalTransportSites(selectedTransport);
+                DisplayPossibleHorizontalTransportSites(selectedTransportInventoryItem);
             }
 
-            if (selectedTransport.Amount <= 0)
+            if (selectedTransportInventoryItem.Amount <= 0)
             {
                 ClearTransportSites();
-                selectedTransport = null;
+                selectedTransportInventoryItem = null;
             }
         }
 
@@ -719,6 +759,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             var pos = storage.GetPosition();
             var storagesAtPoint = EnsureStoragesAtPoint(pos);
+
             storagesAtPoint.Add(storage);
             storagesAtPoint.OrderByDescending(s => s.Priority());
         }
@@ -726,6 +767,7 @@ namespace Assets.Scripts.Scenes.GameScene
         internal void UnRegisterStorage(IStorage storage)
         {
             var pos = storage.GetPosition();
+
             var storagesAtPoint = EnsureStoragesAtPoint(pos);
             storagesAtPoint.Remove(storage);
         }
@@ -738,6 +780,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 storagesAtPoint = new();
                 storages[pos.X, pos.Y] = storagesAtPoint;
             }
+
             return storagesAtPoint;
         }
 

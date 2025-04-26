@@ -25,7 +25,7 @@ namespace Assets.Scripts.Core.Model
 
                 for (int i = 0; i < world.Width; i++)
                 {
-                    tiles.Add(GenerateTile(i, y, possibleMinerals));
+                    GenerateTile(i, y, possibleMinerals);
                 }
             }
 

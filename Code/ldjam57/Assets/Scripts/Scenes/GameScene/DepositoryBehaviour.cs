@@ -9,6 +9,7 @@ using GameFrame.Core.Math;
 using TMPro;
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.Scenes.GameScene
@@ -40,6 +41,8 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         MoneyBehaviour moneyBehaviour;
 
+        public readonly UnityEvent<DepositoryBehaviour> OnPopupOpened = new UnityEvent<DepositoryBehaviour>();
+
         public void Init(WorldBehaviour worldBehaviour, Depository depository)
         {
             this.worldBehaviour = worldBehaviour;
@@ -58,8 +61,11 @@ namespace Assets.Scripts.Scenes.GameScene
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.SetValue(0);
             }
+
             nameLabel.SetText(depository.Mineral.Name);
         }
+
+        public Boolean IsPopupOpen { get; private set; }
 
         public void Update()
         {
@@ -71,18 +77,35 @@ namespace Assets.Scripts.Scenes.GameScene
 
         public void OnClicked()
         {
-            if (popupMenu != null && !popupMenu.activeSelf)
+            if (popupMenu != null)
             {
-                popupMenu.SetActive(true);
+                if (!popupMenu.activeSelf)
+                {
+                    popupMenu.SetActive(true);
 
-                updatePopupUI();
-            }
-            else if (popupMenu != null)
-            {
-                popupMenu.SetActive(false);
+                    updatePopupUI();
+
+                    IsPopupOpen = true;
+                    OnPopupOpened.Invoke(this);
+                }
+                else
+                {
+                    ClosePopup();
+                }
             }
         }
 
+        public void ClosePopup()
+        {
+            if (this.IsPopupOpen)
+            {
+                if (popupMenu != null)
+                {
+                    popupMenu.SetActive(false);
+                    IsPopupOpen = false;
+                }
+            }
+        }
 
         /// <summary>
         /// Adds given amount to deposit.

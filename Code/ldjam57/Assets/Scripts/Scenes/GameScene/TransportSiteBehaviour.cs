@@ -20,55 +20,61 @@ namespace Assets.Scripts.Scenes.GameScene
             this.shaft = shaft;
             this.direction = direction;
             UpdatePosition();
-
         }
 
-       public void UpdatePosition()
+        public void UpdatePosition()
         {
-            if (direction == Direction.Right)
+            switch (direction)
             {
-                var lScale = transform.localScale;
-                var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (-(1 - scale.y) / 2) * .9f);
-                var rotation = transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, -90);
-                transform.rotation = rotation;
-                transform.position = position;
-                transform.localScale = scale;
+                case Direction.Right:
+                    {
+                        var lScale = transform.localScale;
+                        var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
+                        var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: -(1 - scale.y) / 2 * .9f);
+                        var rotation = transform.rotation;
+                        rotation *= Quaternion.Euler(0, 0, -90);
+
+                        transform.rotation = rotation;
+                        transform.position = position;
+                        transform.localScale = scale;
+                        break;
+                    }
+
+                case Direction.Left:
+                    {
+                        var lScale = transform.localScale;
+                        var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
+
+                        var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: (1 - scale.y) / 2 * .9f);
+                        var rotation = transform.rotation;
+                        rotation *= Quaternion.Euler(0, 0, 90);
+
+                        transform.rotation = rotation;
+                        transform.position = position;
+                        transform.localScale = scale;
+                        break;
+                    }
+
+                default:
+                    {
+                        var lScale = transform.localScale;
+                        var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
+
+                        var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, yOffset: -(1 - scale.y) / 2 * .9f);
+                        var rotation = transform.rotation;
+                        rotation *= Quaternion.Euler(0, 0, 180);
+                        transform.rotation = rotation;
+                        transform.position = position;
+                        transform.localScale = scale;
+                        break;
+                    }
             }
-            else if (direction == Direction.Left)
-            {
-                var lScale = transform.localScale;
-                var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
-
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, xOffset: ((1 - scale.y) / 2) * .9f);
-                var rotation = transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, 90);
-                transform.rotation = rotation;
-                transform.position = position;
-                transform.localScale = scale;
-            }
-            else
-            {
-                var lScale = transform.localScale;
-                var scale = new Vector3(lScale.x, lScale.y / 2, lScale.z);
-
-                var position = worldBehaviour.GetUnityVector(shaft.GetPosition(), transform.position.z, yOffset: (-(1 - scale.y) / 2) * .9f);
-                var rotation = transform.rotation;
-                rotation *= Quaternion.Euler(0, 0, 180);
-                transform.rotation = rotation;
-                transform.position = position;
-                transform.localScale = scale;
-
-            }
-
         }
 
         public bool IsVertical()
         {
             return direction == Direction.Down;
         }
-
 
         public void OnClicked()
         {
@@ -77,14 +83,21 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private TransportBehaviour GetTransportBehaviour()
         {
-            var transB = worldBehaviour.GenerateTransportBehaviour(shaft, transport, direction);
-            shaft.TransportBehaviour = transB;
-            return transB;
+            var transporter = new Transporter()
+            {
+                Transport = transport,
+                Direction = direction,
+                Position = shaft.GetPosition()
+            };
+
+            Base.Core.Game.State.ActiveTransporters.Add(transporter);
+
+            return worldBehaviour.GenerateTransportBehaviour(shaft, transporter, direction);
         }
 
         private void BuildSite()
         {
-            GetTransportBehaviour();
+            _ = GetTransportBehaviour();
             worldBehaviour.BuildTransporteSite(this);
         }
     }

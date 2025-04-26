@@ -7,7 +7,6 @@ namespace Assets.Scripts.Scenes.GameScene
     {
         protected WorldBehaviour worldBehaviour;
         protected bool digable = true;
-            
 
         public void Init(WorldBehaviour worldBehaviour)
         {

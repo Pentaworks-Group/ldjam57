@@ -49,6 +49,22 @@ namespace Assets.Scripts.Core
             return false;
         }
 
+        public Boolean TryGetValue<TRequestedValue>(TKey key1, TKey key2, out TRequestedValue value) where TRequestedValue : TValue
+        {
+            value = default;
+
+            if (TryGetValue(key1, key2, out var storedValue))
+            {
+                if (storedValue is TRequestedValue castedValue)
+                {
+                    value = castedValue;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public Boolean Remove(TKey key1, TKey key2)
         { 
             if (map.TryGetValue(key1, out var innerMap))

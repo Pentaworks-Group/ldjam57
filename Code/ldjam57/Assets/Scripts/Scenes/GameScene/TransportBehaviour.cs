@@ -60,21 +60,14 @@ namespace Assets.Scripts.Scenes.GameScene
             testLabel.text = testText;
         }
 
-        public void Init(WorldBehaviour worldBehaviour, ShaftBehaviour shaftBehaviour, Transport transport, Direction direction)
+        public void Init(WorldBehaviour worldBehaviour, ShaftBehaviour shaftBehaviour, Transporter transporter)
         {
             this.shaftBehaviour = shaftBehaviour;
             this.worldBehaviour = worldBehaviour;
-
-
-            transporter = new Transporter()
-            {
-                Transport = transport,
-                Direction = direction,
-                Position = shaftBehaviour.GetPosition()
-            };
+            this.transporter = transporter;
 
             UpdateSprite();
-            Base.Core.Game.State.ActiveTransporters.Add(transporter);
+
             //SetStorages();
             RegisterStorage();
             playSoundEffect();

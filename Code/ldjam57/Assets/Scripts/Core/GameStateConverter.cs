@@ -116,7 +116,7 @@ namespace Assets.Scripts.Core
 
             var initialDepth = 2;
 
-            world.Tiles.AddRange(tileGenerator.GenerateRootTiles(initialDepth));
+            tileGenerator.GenerateRootTiles(initialDepth);
             world.MaxDepth = initialDepth;
 
             ConvertDepositories(world);

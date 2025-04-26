@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using Assets.Scripts.Core.Model;
 
 using GameFrame.Core.Extensions;
@@ -40,6 +41,8 @@ namespace Assets.Scripts.Scenes.GameScene
                 }
             }
         }
+
+        public Tile Tile => tile;
 
         public bool UpdateProgress(MiningTool miningTool, out List<MineralAmount> amountMined)
         {
