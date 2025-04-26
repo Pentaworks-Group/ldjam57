@@ -25,8 +25,12 @@ namespace Assets.Scripts.Scenes.GameScene
         [SerializeField]
         private Button upgradeButton;
 
+        [SerializeField]
+        private GameObject fillBar;
+        [SerializeField]
+        private ProgressBarBehaviour progressBar;
+        
         private Transporter transporter;
-        private TransportRoute transportRoute;
         private ShaftBehaviour shaftBehaviour;
         private WorldBehaviour worldBehaviour;
         private float tickInterval = 1f;
@@ -42,7 +46,9 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 MoveStuff();
                 transporter.Tick = tickInterval;
-                UpdateTest();
+                //UpdateTest();
+
+                UpdateProgressBar();
             }
         }
 
@@ -71,6 +77,12 @@ namespace Assets.Scripts.Scenes.GameScene
             //SetStorages();
             RegisterStorage();
             playSoundEffect();
+
+            if (progressBar != null)
+            {
+                progressBar.setColor(Color.white);
+                progressBar.SetValue(0);
+            }
         }
 
         private void UpdateSprite()
@@ -96,6 +108,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private void MoveStuff()
         {
             var p = transporter.Position;
+
             var storages = GetStorages(p);
 
             if (storages.Count == 1)
@@ -107,28 +120,33 @@ namespace Assets.Scripts.Scenes.GameScene
             //    Debug.Log("Horizontal");
             //}
             double amountToMove = transporter.Transport.Speed;
+
             int cnt = 10;
             while (cnt > 0)
             {
                 bool moved = false;
                 int halfPoint = storages.Count / 2;
                 transporter.IsActive = false;
+
                 for (int f = 0; f < halfPoint; f++)
                 {
                     for (int t = storages.Count - 1; t >= halfPoint - 1; t--)
                     {
                         var from = storages[f];
                         var to = storages[t];
+
                         if (to == from || !from.CanBeTakenFrom() || !to.CanBePutInto())
                         {
                             continue;
                         }
+
                         var movedAmount = StorageHelper.MoveStuff(from, to, amountToMove);
                         if (movedAmount > 0)
                         {
                             moved = true;
                             transporter.IsActive = true;
                         }
+
                         amountToMove -= movedAmount;
                         if (amountToMove <= 0.001)
                         {
@@ -136,16 +154,20 @@ namespace Assets.Scripts.Scenes.GameScene
                         }
                     }
                 }
+
                 if (!moved)
                 {
                     return;
                 }
+
                 cnt--;
+
                 if (cnt < 5)
                 {
                     Debug.Log("Strange stuff hapening");
                 }
             }
+
             Debug.LogError("Error in Transporter, to many move attemts");
         }
 
@@ -165,6 +187,7 @@ namespace Assets.Scripts.Scenes.GameScene
                 AddStorages(p.X - 1, p.Y, storages);
                 AddStorages(p.X, p.Y, storages);
                 AddStorages(p.X + 1, p.Y, storages);
+
                 if (transporter.Direction == Direction.Left)
                 {
                     return storages.OrderBy(s => s.Priority()).ThenBy(s => s.GetPosition().X).ToList();
@@ -183,12 +206,14 @@ namespace Assets.Scripts.Scenes.GameScene
 
                 return storages.OrderBy(s => s.Priority()).ThenByDescending(s => s.GetPosition().Y).ToList();
             }
+
             return new();
         }
 
         private TransportInventoryItem GetUpgradeOption()
         {
             List<TransportInventoryItem> mTools;
+
             if (transporter.Direction == Direction.Down)
             {
                 mTools = Base.Core.Game.State.Inventory.VerticalTransports;
@@ -197,29 +222,33 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 mTools = Base.Core.Game.State.Inventory.HorizontalTransports;
             }
+
             for (int i = 0; i < mTools.Count; i++)
             {
                 var tTool = mTools[i];
+
                 if (tTool.Transport.Reference == transporter.Transport.Reference)
                 {
                     inventoryItem = tTool;
+
                     var nI = i + 1;
+
                     if (nI < mTools.Count && mTools[nI].Amount > 0)
                     {
                         return mTools[nI];
                     }
+
                     return null;
                 }
             }
+
             return null;
         }
-
 
         public void OnClicked()
         {
             OpenPopup();
         }
-
 
         public void Upgrade()
         {
@@ -253,7 +282,6 @@ namespace Assets.Scripts.Scenes.GameScene
             Destroy(gameObject);
         }
 
-
         public void ClosePopup()
         {
             popUpObject.SetActive(false);
@@ -284,7 +312,6 @@ namespace Assets.Scripts.Scenes.GameScene
             worldBehaviour.UnRegisterStorage(this);
         }
 
-
         void IStorage.RegisterStorage()
         {
             RegisterStorage();
@@ -313,6 +340,40 @@ namespace Assets.Scripts.Scenes.GameScene
                 if (audioClip != null)
                 {
                     GameFrame.Base.Audio.Effects.Play(audioClip);
+                }
+            }
+        }
+
+        private void UpdateProgressBar()
+        {
+            if (progressBar != null && this.transporter != default)
+            {
+                var totalStored = 0d;
+
+                foreach (var entiry in this.transporter.StoredAmount)
+                {
+                    totalStored += entiry.Value.Amount;
+                }
+
+                if (totalStored > 0)
+                {
+                    if (!fillBar.activeSelf)
+                    {
+                        fillBar.SetActive(true);
+                    }
+
+                    var level = totalStored / this.transporter.Transport.Capacity;
+
+                    progressBar.SetValue((float)level);
+                }
+                else
+                {
+                    if (fillBar.activeSelf)
+                    {
+                        fillBar.SetActive(false);
+                    }
+
+                    progressBar.SetValue(0);
                 }
             }
         }

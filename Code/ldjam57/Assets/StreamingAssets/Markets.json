@@ -80,6 +80,17 @@
         "MinPrice": 120.0,
         "MaxPrice": 500.0,
         "TrendStrength": 0.8
+      },
+      {
+        "Mineral": {
+          "Reference": "Spice",
+          "IsReferenced": true
+        },
+        "Value": 0.0,
+        "Volatility": 2,
+        "MinPrice": 0.0,
+        "MaxPrice": 1000.0,
+        "TrendStrength": 2
       }
     ],
     "UpdateInterval": 5.0,
@@ -149,6 +160,13 @@
         "Description": "Copper Prices are rising.",
         "AffectedMaterials": [ "Copper" ],
         "PriceImpact": 0.15,
+        "Duration": 10
+      },
+      {
+        "Name": "Spice found. War for the control of it started!",
+        "Description": "Spice gets expensive.",
+        "AffectedMaterials": [ "Spice" ],
+        "PriceImpact": 10,
         "Duration": 10
       }
     ]

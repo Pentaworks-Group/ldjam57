@@ -156,9 +156,14 @@ public class MoneyBehaviour : MonoBehaviour
 
             // Enforce min/max price limits if set
             if (material.MinPrice > 0 && material.CurrentPrice < material.MinPrice)
+            {
                 material.CurrentPrice = material.MinPrice;
+            }
+
             if (material.MaxPrice > 0 && material.CurrentPrice > material.MaxPrice)
+            {
                 material.CurrentPrice = material.MaxPrice;
+            }
         }
     }
 
