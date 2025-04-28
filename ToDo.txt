@@ -16,13 +16,14 @@ Bugs:
  - panning jumps sometimes (open uis?)
  - make all depository tiles storage
  - toggle debug view?
+ - Out of bounds (Bottom) when digging below ~60.
  
  
 Exceptions: 
  - 
  
 Core:
- - 
+ - Move Map into GameFrame
    
 GamePlay:
  - 
@@ -32,7 +33,8 @@ UI:
  - 
    
 Audio:
- - 
+ - Transporter (Ladder) sound effect (placement)
+ - (GameFrame) Ambience to randomly play sounds instead of continuous
   
 Refactoring:
 ----------------------------------
@@ -49,7 +51,8 @@ Nice to have:
  - pause mode
  - small permanent upkeep
  - sell smaller batches
- - use materials for tools
+ - use materials for tools (as Upkeep for instance)
+ - Transporter animation
  
  
  

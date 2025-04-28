@@ -64,6 +64,24 @@ namespace Assets.Scripts.Constants
             }
         }
 
+        public const String SavedGamesName = "SavedGamesScene";
+        private static Scene savedGames;
+        public static Scene SavedGames
+        {
+            get
+            {
+                if (savedGames == default)
+                {
+                    savedGames = new Scene()
+                    {
+                        Name = SavedGamesName
+                    };
+                }
+
+                return savedGames;
+            }
+        }
+
         public const String GameName = "GameScene";
         private static Scene game;
         public static Scene Game
@@ -87,24 +105,6 @@ namespace Assets.Scripts.Constants
                 }
 
                 return game;
-            }
-        }
-
-        public const String TerrainTestName = "TerrainTestScene";
-        private static Scene terrainTest;
-        public static Scene TerrainTest
-        {
-            get
-            {
-                if (terrainTest == default)
-                {
-                    terrainTest = new Scene()
-                    {
-                        Name = TerrainTestName
-                    };
-                }
-
-                return terrainTest;
             }
         }
 
@@ -133,8 +133,8 @@ namespace Assets.Scripts.Constants
                 MainMenu,
                 Credits,
                 Options,
+                SavedGames,
                 Game,
-                TerrainTest,
                 GameOver
             };
         }

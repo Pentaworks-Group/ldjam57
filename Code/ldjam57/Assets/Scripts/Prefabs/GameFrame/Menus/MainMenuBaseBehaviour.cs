@@ -51,6 +51,12 @@ namespace Assets.Scripts.Scenes.Menues
             Base.Core.Game.PlayButtonSound();
             Base.Core.Game.ChangeScene(SceneNames.Options);
         }
+        
+        public void ShowSavedGames()
+        {
+            Base.Core.Game.PlayButtonSound();
+            Base.Core.Game.ChangeScene(SceneNames.SavedGames);
+        }
 
         public void ShowCredits()
         {
