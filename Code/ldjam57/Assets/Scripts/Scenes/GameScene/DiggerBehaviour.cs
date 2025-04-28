@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Model.Inventories;
 
+using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
 
 using TMPro;
@@ -73,7 +74,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public void Init(WorldBehaviour worldBehaviour, Digger digger)
+        public void Init(WorldBehaviour worldBehaviour, Digger digger, Boolean isSilent = false)
         {
             base.Init(worldBehaviour);
 
@@ -88,7 +89,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
 
             UpdateAnimator();
-            StartMining();
+            StartMining(isSilent);
         }
 
         private void UpdateAnimator()
@@ -280,14 +281,16 @@ namespace Assets.Scripts.Scenes.GameScene
             return true;
         }
 
-        public void StartMining()
+        public void StartMining(Boolean isSilent = false)
         {
             if (SetTargets())
             {
 
                 digger.IsMining = true;
                 _animator.SetBool("Mining", true);
+
                 int direction = 0;
+
                 if (digger.Direction == Direction.Left)
                 {
                     direction = -1;
@@ -296,9 +299,13 @@ namespace Assets.Scripts.Scenes.GameScene
                 {
                     direction = 1;
                 }
+
                 _animator.SetInteger("Direction", direction);
 
-                playSoundEffect();
+                if (!isSilent)
+                {
+                    PlaySoundEffect();
+                }
             }
         }
 
@@ -337,12 +344,17 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             upgradeOption.Amount -= 1;
             inventoryItem.Amount += 1;
+
             digger.MiningTool = upgradeOption.MiningTool;
+
             ClosePopup();
+
             UpdateAnimator();
-            playSoundEffect();
+
+            PlaySoundEffect();
 
         }
+
         private void OpenPopup()
         {
             nameText.text = digger.MiningTool.Name;
@@ -360,6 +372,7 @@ namespace Assets.Scripts.Scenes.GameScene
         {
             Base.Core.Game.State.ActiveDiggers.Remove(digger);
             Base.Core.Game.State.Inventory.MiningTools.Find(m => m.MiningTool.Reference == digger.MiningTool.Reference).Amount += 1;
+
             Destroy(gameObject);
         }
 
@@ -403,11 +416,12 @@ namespace Assets.Scripts.Scenes.GameScene
             return digger.MiningTool.Capacity;
         }
 
-        private void playSoundEffect()
+        private void PlaySoundEffect()
         {
-            if (!string.IsNullOrEmpty(digger.MiningTool.Sound))
+            if (digger?.MiningTool?.Sound.HasValue() == true)
             {
                 var audioClip = GameFrame.Base.Resources.Manager.Audio.Get(digger.MiningTool.Sound);
+
                 if (audioClip != null)
                 {
                     GameFrame.Base.Audio.Effects.Play(audioClip);

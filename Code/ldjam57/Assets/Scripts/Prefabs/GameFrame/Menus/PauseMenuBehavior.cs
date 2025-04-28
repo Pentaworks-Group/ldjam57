@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Assets.Scripts.Constants;
 
+using TMPro;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,8 +21,8 @@ namespace Assets.Scripts.Prefabs.Menus
         private Button backButton;
         private Button continueButton;
 
-        private Text currentOpenMenu;
-        private List<Action> openSubMenues = new List<Action>();
+        private TMP_Text currentOpenMenu;
+        private readonly List<Action> openSubMenues = new List<Action>();
 
         public GameObject Tutorial;
 
@@ -34,7 +36,7 @@ namespace Assets.Scripts.Prefabs.Menus
             backButton = transform.Find("ToggleArea/Background/Background/Header/Back").GetComponent<Button>();
             continueButton = transform.Find("ToggleArea/Background/Background/Header/Continue").GetComponent<Button>();
 
-            currentOpenMenu = transform.Find("ToggleArea/Background/Background/Header/Openmenu").GetComponent<Text>();
+            currentOpenMenu = transform.Find("ToggleArea/Background/Background/Header/Openmenu").GetComponent<TMP_Text>();
         }
 
         void Start()
@@ -78,6 +80,7 @@ namespace Assets.Scripts.Prefabs.Menus
             menuToggle.SetActive(true);
             Base.Core.Game.PlayButtonSound();
         }
+
         public void ToggleMenu()
         {
             if (menuToggle.activeSelf == true)
@@ -90,6 +93,7 @@ namespace Assets.Scripts.Prefabs.Menus
                 {
                     Hide();
                     Base.Core.Game.UnPause();
+
                     foreach (GameObject gameObject in ObjectsToHide)
                     {
                         gameObject.SetActive(true);
@@ -105,9 +109,10 @@ namespace Assets.Scripts.Prefabs.Menus
                 {
                     gameObject.SetActive(false);
                 }
-                Show();
-                Base.Core.Game.PlayButtonSound();
 
+                Show();
+
+                Base.Core.Game.PlayButtonSound();
             }
         }
 
@@ -119,6 +124,8 @@ namespace Assets.Scripts.Prefabs.Menus
         public void ShowSavedGames()
         {
             Base.Core.Game.PlayButtonSound();
+
+            OpeningSubMenu(OnBackButtonClicked);
 
             SetVisible(savedGame: true);
         }

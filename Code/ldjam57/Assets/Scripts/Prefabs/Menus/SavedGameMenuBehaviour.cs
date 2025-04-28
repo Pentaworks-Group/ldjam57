@@ -29,7 +29,7 @@ namespace Assets.Scripts.Prefabs.Menus
 
         public void Awake()
         {
-            if (this.detailsContainer!= null)
+            if (this.detailsContainer != null)
             {
                 this.detailsContainer.SetActive(false);
             }
@@ -48,6 +48,8 @@ namespace Assets.Scripts.Prefabs.Menus
             {
                 Base.Core.Game.DeleteSavedGame(currentSlot.Key);
                 listContainer.UpdateList();
+
+                Base.Core.Game.PlayButtonSound();
             }
         }
 
@@ -57,6 +59,8 @@ namespace Assets.Scripts.Prefabs.Menus
             {
                 Base.Core.Game.LoadSavedGame(currentSlot.Key);
                 listContainer.UpdateList();
+
+                Base.Core.Game.PlayButtonSound();
             }
         }
 
@@ -70,7 +74,7 @@ namespace Assets.Scripts.Prefabs.Menus
         private void UpdateDetails(SavedGamePreview selectedSlot)
         {
             if (currentSlot != default)
-            {                
+            {
                 this.savedOnText.text = selectedSlot.SavedOn.ToString("G");
                 this.startedOnText.text = selectedSlot.StartedOn.ToString("G");
                 this.balanceText.text = selectedSlot.Money.ToString("F2");

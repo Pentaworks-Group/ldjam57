@@ -221,11 +221,11 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public void SpawnDigSite(Digger digger)
+        public void SpawnDigSite(Digger digger, Boolean isSilent = false)
         {
             var newDigger = GameObject.Instantiate(DiggerTemplate, TilesParent.transform);
 
-            newDigger.Init(this, digger);
+            newDigger.Init(this, digger, isSilent);
             newDigger.UpdatePosition();
             newDigger.gameObject.SetActive(true);
 
@@ -478,14 +478,14 @@ namespace Assets.Scripts.Scenes.GameScene
 
             foreach (var digger in this.gameState.ActiveDiggers)
             {
-                SpawnDigSite(digger);
+                SpawnDigSite(digger, true);
             }
 
             foreach (var transporter in this.gameState.ActiveTransporters)
             {
                 if (tileMap.TryGetValue(transporter.Position.X, transporter.Position.Y, out ShaftBehaviour shaftBehaviour))
                 {
-                    SpawnTransporter(transporter, shaftBehaviour);
+                    _ = GenerateTransportBehaviour(shaftBehaviour, transporter, true);
                 }
             }
         }
@@ -569,11 +569,6 @@ namespace Assets.Scripts.Scenes.GameScene
                     }
                 }
             }
-        }
-
-        private void SpawnTransporter(Transporter transporter, ShaftBehaviour shaftBehaviour)
-        {
-            _ = GenerateTransportBehaviour(shaftBehaviour, transporter, true);
         }
 
         public bool GetRelativePosition(Point2 pos, int x, int y, out int outX, out int outY)
