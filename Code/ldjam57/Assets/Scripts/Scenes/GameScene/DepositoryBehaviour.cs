@@ -60,6 +60,8 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 fillAmountBehaviour.setColor(depository.Mineral.Color.ToUnity());
                 fillAmountBehaviour.SetValue(0);
+
+                UpdateLevel();
             }
 
             nameLabel.SetText(depository.Mineral.Name);

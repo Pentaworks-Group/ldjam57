@@ -42,8 +42,6 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public Tile Tile => tile;
-
         public bool UpdateProgress(MiningTool miningTool, out List<MineralAmount> amountMined)
         {
             float progress = (float)(miningTool.SpeedFactor / tile.SpeedFactor);
@@ -56,18 +54,23 @@ namespace Assets.Scripts.Scenes.GameScene
             {
                 amountMined = tile.MineralAmounts;
                 worldBehaviour.ReplaceTile(this);
+
+                //HideProgressBar();
             }
             else
             {
                 amountMined = new();
+
                 foreach (var mineralAmount in tile.MineralAmounts)
                 {
-                    var newMineralAmount = new MineralAmount(
-                        mineralAmount.Mineral,
-                        mineralAmount.Amount * progress);
+                    var newMineralAmount = new MineralAmount(mineralAmount.Mineral, mineralAmount.Amount * progress);
+
                     amountMined.Add(newMineralAmount);
                 }
+
+                //UpdateProgressBar(tile.DigingProgress);
             }
+
             return finished;
         }
 

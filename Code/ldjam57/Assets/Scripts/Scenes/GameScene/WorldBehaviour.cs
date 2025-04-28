@@ -343,7 +343,7 @@ namespace Assets.Scripts.Scenes.GameScene
             }
         }
 
-        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transporter transporter, Direction direction)
+        public TransportBehaviour GenerateTransportBehaviour(ShaftBehaviour shaftBehaviour, Transporter transporter, Boolean isSilent = false)
         {
             var transportBehaviour = GameObject.Instantiate(TransportTemplate, TilesParent.transform);
 
@@ -352,7 +352,7 @@ namespace Assets.Scripts.Scenes.GameScene
             shaftBehaviour.TransportBehaviour = transportBehaviour;
 
             transportBehaviour.transform.position = new UnityEngine.Vector3(p.x, p.y, TransportTemplate.transform.position.z);
-            transportBehaviour.Init(this, shaftBehaviour, transporter);
+            transportBehaviour.Init(this, shaftBehaviour, transporter, isSilent);
 
             var shaftPosition = shaftBehaviour.GetPosition();
 
@@ -573,7 +573,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void SpawnTransporter(Transporter transporter, ShaftBehaviour shaftBehaviour)
         {
-            _ = GenerateTransportBehaviour(shaftBehaviour, transporter, transporter.Direction);
+            _ = GenerateTransportBehaviour(shaftBehaviour, transporter, true);
         }
 
         public bool GetRelativePosition(Point2 pos, int x, int y, out int outX, out int outY)

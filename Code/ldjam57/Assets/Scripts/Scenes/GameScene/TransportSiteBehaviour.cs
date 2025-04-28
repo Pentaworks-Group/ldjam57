@@ -92,7 +92,7 @@ namespace Assets.Scripts.Scenes.GameScene
 
             Base.Core.Game.State.ActiveTransporters.Add(transporter);
 
-            return worldBehaviour.GenerateTransportBehaviour(shaft, transporter, direction);
+            return worldBehaviour.GenerateTransportBehaviour(shaft, transporter);
         }
 
         private void BuildSite()

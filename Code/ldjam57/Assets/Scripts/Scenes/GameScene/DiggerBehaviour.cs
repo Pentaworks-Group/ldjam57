@@ -76,14 +76,17 @@ namespace Assets.Scripts.Scenes.GameScene
         public void Init(WorldBehaviour worldBehaviour, Digger digger)
         {
             base.Init(worldBehaviour);
+
             this.digger = digger;
             _animator = gameObject.GetComponent<Animator>();
             _animator.gameObject.SetActive(true);
+
             if (digger.Direction == Direction.Left)
             {
                 var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
                 spriteRenderer.flipX = true;
             }
+
             UpdateAnimator();
             StartMining();
         }
@@ -121,7 +124,10 @@ namespace Assets.Scripts.Scenes.GameScene
 
         private void MineTargets()
         {
-            if (StorageHelper.GetStoredAmount(this) < digger.MiningTool.Capacity)
+            var storedAmount = StorageHelper.GetStoredAmount(this);
+            var storageCapacity = storedAmount / digger.MiningTool.Capacity;
+
+            if (storageCapacity < 1)
             {
                 for (int i = targets.Count - 1; i >= 0; i--)
                 {
@@ -139,6 +145,8 @@ namespace Assets.Scripts.Scenes.GameScene
                     SetTargets();
                 }
             }
+
+            //UpdateProgressBar((Single)storageCapacity);
         }
 
         private void StoreMinerals(List<MineralAmount> mined)
@@ -159,41 +167,53 @@ namespace Assets.Scripts.Scenes.GameScene
         private void MoveDigger()
         {
             Point2 newPoint;
-            if (digger.Direction == Direction.Left)
+            switch (digger.Direction)
             {
-                var validPos = worldBehaviour.GetRelativePosition(digger.Position, -1, 0, out newPoint);
-                if (!validPos)
-                {
-                    StopMining();
+                case Direction.Left:
+                    {
+                        var validPos = worldBehaviour.GetRelativePosition(digger.Position, -1, 0, out newPoint);
+                        if (!validPos)
+                        {
+                            StopMining();
+                            return;
+                        }
+
+                        break;
+                    }
+
+                case Direction.Right:
+                    {
+                        var validPos = worldBehaviour.GetRelativePosition(digger.Position, 1, 0, out newPoint);
+                        if (!validPos)
+                        {
+                            StopMining();
+                            return;
+                        }
+
+                        break;
+                    }
+
+                case Direction.Down:
+                    {
+                        var validPos = worldBehaviour.GetRelativePosition(digger.Position, 0, 1, out newPoint);
+                        if (!validPos)
+                        {
+                            StopMining();
+                            return;
+                        }
+
+                        break;
+                    }
+
+                default:
                     return;
-                }
-            }
-            else if (digger.Direction == Direction.Right)
-            {
-                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 1, 0, out newPoint);
-                if (!validPos)
-                {
-                    StopMining();
-                    return;
-                }
-            }
-            else if (digger.Direction == Direction.Down)
-            {
-                var validPos = worldBehaviour.GetRelativePosition(digger.Position, 0, 1, out newPoint);
-                if (!validPos)
-                {
-                    StopMining();
-                    return;
-                }
-            }
-            else
-            {
-                return;
             }
 
             UnRegisterStorage();
+
             digger.Position = newPoint;
             UpdatePosition();
+
             worldBehaviour.DiggerMoved(this);
             OnDiggerMoved.Invoke(this);
         }

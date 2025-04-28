@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.Scripts.Core.Model;
 using Assets.Scripts.Core.Model.Inventories;
 
+using GameFrame.Core.Extensions;
 using GameFrame.Core.Math;
 
 using TMPro;
@@ -29,7 +30,7 @@ namespace Assets.Scripts.Scenes.GameScene
         private GameObject fillBar;
         [SerializeField]
         private ProgressBarBehaviour progressBar;
-        
+
         private Transporter transporter;
         private ShaftBehaviour shaftBehaviour;
         private WorldBehaviour worldBehaviour;
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Scenes.GameScene
             testLabel.text = testText;
         }
 
-        public void Init(WorldBehaviour worldBehaviour, ShaftBehaviour shaftBehaviour, Transporter transporter)
+        public void Init(WorldBehaviour worldBehaviour, ShaftBehaviour shaftBehaviour, Transporter transporter, Boolean isSilent = false)
         {
             this.shaftBehaviour = shaftBehaviour;
             this.worldBehaviour = worldBehaviour;
@@ -76,12 +77,18 @@ namespace Assets.Scripts.Scenes.GameScene
 
             //SetStorages();
             RegisterStorage();
-            playSoundEffect();
+
+            if (!isSilent)
+            {
+                PlaySoundEffect();
+            }
 
             if (progressBar != null)
             {
                 progressBar.setColor(Color.white);
                 progressBar.SetValue(0);
+
+                UpdateProgressBar();
             }
         }
 
@@ -257,7 +264,7 @@ namespace Assets.Scripts.Scenes.GameScene
             transporter.Transport = upgradeOption.Transport;
             UpdateSprite();
             ClosePopup();
-            playSoundEffect();
+            PlaySoundEffect();
 
         }
         private void OpenPopup()
@@ -332,11 +339,12 @@ namespace Assets.Scripts.Scenes.GameScene
             return -1;
         }
 
-        private void playSoundEffect()
+        private void PlaySoundEffect()
         {
-            if (!string.IsNullOrEmpty(transporter.Transport.Sound))
+            if (transporter.Transport.Sound.HasValue())
             {
                 var audioClip = GameFrame.Base.Resources.Manager.Audio.Get(transporter.Transport.Sound);
+
                 if (audioClip != null)
                 {
                     GameFrame.Base.Audio.Effects.Play(audioClip);
