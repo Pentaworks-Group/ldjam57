@@ -46,5 +46,6 @@ You get a starting inventory of items (tools, transportation options) and a bit 
 
 
 |     Date   | Version | Description
+|------------|---------|------------
 | 2025.04.08 |  1.0.0  | Ludum Dare
 
