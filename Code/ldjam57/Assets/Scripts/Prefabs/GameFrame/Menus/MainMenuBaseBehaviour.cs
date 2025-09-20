@@ -9,8 +9,6 @@ namespace Assets.Scripts.Scenes.Menues
 {
     public class MainMenuBaseBehaviour : BaseMenuBehaviour
     {
-        [DllImport("__Internal")]
-        private static extern void Quit();
 
         [SerializeField]
         private GameObject quitButton;
@@ -69,7 +67,7 @@ namespace Assets.Scripts.Scenes.Menues
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #elif UNITY_WEBGL
-                        Quit();
+                         Application.Quit(); 
 #elif UNITY_STANDALONE
                         Application.Quit();            
 #endif
