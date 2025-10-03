@@ -1,17 +1,21 @@
-using Assets.Scripts.Base;
-using Assets.Scripts.Constants;
-using Assets.Scripts.Core.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
+using Assets.Scripts.Base;
+using Assets.Scripts.Constants;
+using Assets.Scripts.Core.Model;
+
+using GameFrame.Core.Extensions;
+
 using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 public class MoneyBehaviour : MonoBehaviour
 {
-	[SerializeField]
-	TextMeshProUGUI cashLabel;
+    [SerializeField]
+    TextMeshProUGUI cashLabel;
     [SerializeField]
     NewsBehaviour newsBehaviour;
 
@@ -29,11 +33,12 @@ public class MoneyBehaviour : MonoBehaviour
 
     private bool isInited = false;
 
-    private List<MarketEvent> activeEvents = new List<MarketEvent>();
+    private readonly List<MarketEvent> activeEvents = new List<MarketEvent>();
 
     private void Awake()
     {
-        Core.Game.ExecuteAfterInstantation(() => {
+        Core.Game.ExecuteAfterInstantation(() =>
+        {
             isInited = true;
 
             random = new System.Random();
@@ -61,7 +66,7 @@ public class MoneyBehaviour : MonoBehaviour
 
             Core.Game.State.Bank.Credits -= calcDiggingCosts(Time.deltaTime);
 
-            if (Core.Game.State.Bank.Credits < 0 ) 
+            if (Core.Game.State.Bank.Credits < 0)
             {
                 //TODO: do a game over event
             }
@@ -72,7 +77,7 @@ public class MoneyBehaviour : MonoBehaviour
                 nextUpdateTime = Time.time + (float)Core.Game.State.Market.UpdateInterval;
             }
 
-            if (Core.Game.State.Bank.Credits < 0 )
+            if (Core.Game.State.Bank.Credits < 0)
             {
                 Core.Game.ChangeScene(SceneNames.GameOver);
             }
@@ -92,15 +97,15 @@ public class MoneyBehaviour : MonoBehaviour
         float totalOperatingCost = 0;
         foreach (var digger in Core.Game.State.ActiveDiggers)
         {
-            if(digger.IsMining && digger.MiningTool!=null)
+            if (digger.IsMining && digger.MiningTool != null)
             {
-                totalOperatingCost += (float) digger.MiningTool.OperatingCost * dt;
+                totalOperatingCost += (float)digger.MiningTool.OperatingCost * dt;
             }
         }
 
         foreach (var transporter in Core.Game.State.ActiveTransporters)
         {
-            if(transporter.Transport!=null && transporter.IsActive)
+            if (transporter.Transport != null && transporter.IsActive)
             {
                 totalOperatingCost += (float)transporter.Transport.OperatingCost * dt;
             }
@@ -130,7 +135,7 @@ public class MoneyBehaviour : MonoBehaviour
             float randomFactor = (float)((random.NextDouble() * 2 - 1) * material.Volatility * 0.1f);
 
             // Combined price movement
-            float priceChange = (float) (material.Value * (randomFactor + marketFactor * material.TrendStrength));
+            float priceChange = (float)(material.Value * (randomFactor + marketFactor * material.TrendStrength));
 
             // Apply random events
             if (Core.Game.State.Market.EnableRandomEvents && UnityEngine.Random.value < currentProbability)
@@ -141,15 +146,16 @@ public class MoneyBehaviour : MonoBehaviour
 
                 eventCooldownPeriod = 10f + UnityEngine.Random.Range(0f, eventCooldownRandomFactor);
             }
-            activeEvents.ForEach(e =>
+
+            foreach (var activeEvent in activeEvents)
             {
-                if (e.AffectedMaterials.Contains(material.Mineral.Name))
+                if (activeEvent.AffectedMaterials.Contains(material.Mineral.Name))
                 {
-                    float eventImpact = (float)(e.PriceImpact * Core.Game.State.Market.EventImpactMultiplier);
+                    float eventImpact = (float)(activeEvent.PriceImpact * Core.Game.State.Market.EventImpactMultiplier);
                     priceChange += (float)material.Value * eventImpact;
                     Debug.Log($"Random event affected {material.Mineral.Name}: {eventImpact:P2} change");
                 }
-            });
+            }
 
             // Update price with some influence from market mood
             material.CurrentPrice += priceChange + (marketMood * material.TrendStrength * 0.01f * material.Value);
@@ -169,19 +175,27 @@ public class MoneyBehaviour : MonoBehaviour
 
     public MarketEvent TriggerRandomEvent(bool forcePositive = false, bool forceNegative = false)
     {
-        if(Core.Game.State.Market.Events.Count > 0)
+        if (Core.Game.State.Market.Events.Count > 0)
         {
             // Pick a random event
-            MarketEvent selectedEvent = Core.Game.State.Market.Events[UnityEngine.Random.Range(0, Core.Game.State.Market.Events.Count)];
+            MarketEvent selectedEvent = Core.Game.State.Market.Events.GetRandomEntry();
 
             // Log the event
             Debug.Log($"MARKET EVENT: {selectedEvent.Name} - {selectedEvent.Description}");
 
-            // Trigger price effects
-            StartCoroutine(ApplyEventEffect(selectedEvent));
+            //if (selectedEvent.Condition != default)
+            //{
+
+            //}
+            //else
+            //{
+                // Trigger price effects
+                StartCoroutine(ApplyEventEffect(selectedEvent));
+            //}
 
             return selectedEvent;
         }
+
         return null;
     }
 
@@ -189,7 +203,7 @@ public class MoneyBehaviour : MonoBehaviour
     {
         activeEvents.Add(marketEvent);
 
-        if (newsBehaviour != null )
+        if (newsBehaviour != null)
         {
             newsBehaviour.ShowEvent(marketEvent);
         }
@@ -199,10 +213,10 @@ public class MoneyBehaviour : MonoBehaviour
 
         activeEvents.Remove(marketEvent);
 
-        if(activeEvents.Count == 0 && newsBehaviour != null)
+        if (activeEvents.Count == 0 && newsBehaviour != null)
         {
             newsBehaviour.Hide();
-        } 
+        }
 
         // Event effect ends (you might want to gradually return to normal)
     }
